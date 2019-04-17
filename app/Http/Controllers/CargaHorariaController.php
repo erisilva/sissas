@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Cargo;
+use App\CargaHoraria;
 use App\Perpage;
 
 use Response;
@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Gate;
 
 use Illuminate\Support\Facades\DB;
 
-
-class CargoController extends Controller
+class CargaHorariaController extends Controller
 {
     protected $pdf;
 
@@ -27,7 +26,7 @@ class CargoController extends Controller
      *
      * @return 
      */
-    public function __construct(\App\Reports\CargoReport $pdf)
+    public function __construct(\App\Reports\CargaHorariaReport $pdf)
     {
         $this->middleware(['middleware' => 'auth']);
         $this->middleware(['middleware' => 'hasaccess']);
@@ -42,14 +41,14 @@ class CargoController extends Controller
      */
     public function index()
     {
-        if (Gate::denies('cargo.index')) {
+        if (Gate::denies('cargahoraria.index')) {
             abort(403, 'Acesso negado.');
         }
 
-        $cargos = new Cargo;
+        $cargahorarias = new CargaHoraria;
 
         // ordena
-        $cargos = $cargos->orderBy('nome', 'asc');
+        $cargahorarias = $cargahorarias->orderBy('descricao', 'asc');
 
         // se a requisição tiver um novo valor para a quantidade
         // de páginas por visualização ele altera aqui
@@ -62,9 +61,9 @@ class CargoController extends Controller
         $perpages = Perpage::orderBy('valor')->get();
 
         // paginação
-        $cargos = $cargos->paginate(session('perPage', '5'));
+        $cargahorarias = $cargahorarias->paginate(session('perPage', '5'));
 
-        return view('cargos.index', compact('cargos', 'perpages'));
+        return view('cargahorarias.index', compact('cargahorarias', 'perpages'));
     }
 
     /**
@@ -74,11 +73,11 @@ class CargoController extends Controller
      */
     public function create()
     {
-        if (Gate::denies('cargo.create')) {
+        if (Gate::denies('cargahoraria.create')) {
             abort(403, 'Acesso negado.');
-        } 
+        }
 
-        return view('cargos.create');
+        return view('cargahorarias.create');
     }
 
     /**
@@ -90,17 +89,16 @@ class CargoController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-          'nome' => 'required',
-          'cbo' => 'required',
+          'descricao' => 'required',
         ]);
 
-        $cargo = $request->all();
+        $cargahoraria = $request->all();
 
-        Cargo::create($cargo); //salva
+        CargaHoraria::create($cargahoraria); //salva
 
-        Session::flash('create_cargo', 'Cargo cadastrado com sucesso!');
+        Session::flash('create_cargahoraria', 'Carga horária cadastrada com sucesso!');
 
-        return redirect(route('cargos.index'));
+        return redirect(route('cargahorarias.index'));
     }
 
     /**
@@ -111,13 +109,13 @@ class CargoController extends Controller
      */
     public function show($id)
     {
-        if (Gate::denies('cargo.show')) {
+        if (Gate::denies('cargahoraria.show')) {
             abort(403, 'Acesso negado.');
         }
 
-        $cargo = Cargo::findOrFail($id);
+        $cargahoraria = CargaHoraria::findOrFail($id);
 
-        return view('cargos.show', compact('cargo'));
+        return view('cargahorarias.show', compact('cargahoraria'));
     }
 
     /**
@@ -128,13 +126,13 @@ class CargoController extends Controller
      */
     public function edit($id)
     {
-        if (Gate::denies('cargo.edit')) {
+        if (Gate::denies('cargahoraria.edit')) {
             abort(403, 'Acesso negado.');
         }
 
-        $cargo = Cargo::findOrFail($id);
+        $cargahoraria = CargaHoraria::findOrFail($id);
 
-        return view('cargos.edit', compact('cargo'));
+        return view('cargahorarias.edit', compact('cargahoraria'));
     }
 
     /**
@@ -147,17 +145,16 @@ class CargoController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-          'nome' => 'required',
-          'cbo' => 'required',
+          'descricao' => 'required',
         ]);
 
-        $cargo = Cargo::findOrFail($id);
+        $cargahoraria = CargaHoraria::findOrFail($id);
             
-        $cargo->update($request->all());
+        $cargahoraria->update($request->all());
         
-        Session::flash('edited_cargo', 'Cargo alterado com sucesso!');
+        Session::flash('edited_cargahoraria', 'Carga horária alterado com sucesso!');
 
-        return redirect(route('cargos.edit', $id));
+        return redirect(route('cargahorarias.edit', $id));
     }
 
     /**
@@ -168,11 +165,15 @@ class CargoController extends Controller
      */
     public function destroy($id)
     {
-        Cargo::findOrFail($id)->delete();
+        if (Gate::denies('cargahoraria.delete')) {
+            abort(403, 'Acesso negado.');
+        }
 
-        Session::flash('deleted_cargo', 'Cargo excluído com sucesso!');
+        CargaHoraria::findOrFail($id)->delete();
 
-        return redirect(route('cargos.index'));
+        Session::flash('deleted_cargahoraria', 'Carga horária excluída com sucesso!');
+
+        return redirect(route('cargahorarias.index'));
     }
 
     /**
@@ -183,22 +184,25 @@ class CargoController extends Controller
      */
     public function exportcsv()
     {
+        if (Gate::denies('cargahoraria.export')) {
+            abort(403, 'Acesso negado.');
+        }
 
        $headers = [
                 'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
             ,   'Content-type'        => 'text/csv'
-            ,   'Content-Disposition' => 'attachment; filename=Cargos_' .  date("Y-m-d H:i:s") . '.csv'
+            ,   'Content-Disposition' => 'attachment; filename=CargaHoraria_' .  date("Y-m-d H:i:s") . '.csv'
             ,   'Expires'             => '0'
             ,   'Pragma'              => 'public'
         ];
 
-        $cargos = DB::table('cargos');
+        $cargahorarias = DB::table('carga_horarias');
 
-        $cargos = $cargos->select('nome', 'cbo');
+        $cargahorarias = $cargahorarias->select('descricao');
 
-        $cargos = $cargos->orderBy('nome', 'asc');
+        $cargahorarias = $cargahorarias->orderBy('descricao', 'asc');
 
-        $list = $cargos->get()->toArray();
+        $list = $cargahorarias->get()->toArray();
 
         # converte os objetos para uma array
         $list = json_decode(json_encode($list), true);
@@ -227,30 +231,33 @@ class CargoController extends Controller
      */
     public function exportpdf()
     {
+        if (Gate::denies('cargahoraria.export')) {
+            abort(403, 'Acesso negado.');
+        }
 
         $this->pdf->AliasNbPages();   
         $this->pdf->SetMargins(12, 10, 12);
         $this->pdf->SetFont('Arial', '', 12);
         $this->pdf->AddPage();
 
-        $cargos = DB::table('cargos');
+        $cargahorarias = DB::table('carga_horarias');
 
-        $cargos = $cargos->select('nome', 'cbo');
-
-
-        $cargos = $cargos->orderBy('nome', 'asc');    
+        $cargahorarias = $cargahorarias->select('descricao');
 
 
-        $cargos = $cargos->get();
+        $cargahorarias = $cargahorarias->orderBy('descricao', 'asc');    
 
-        foreach ($cargos as $cargo) {
-            $this->pdf->Cell(100, 6, utf8_decode($cargo->nome), 0, 0,'L');
-            $this->pdf->Cell(86, 6, utf8_decode($cargo->cbo), 0, 0,'L');
+
+        $cargahorarias = $cargahorarias->get();
+
+        foreach ($cargahorarias as $cargahoraria) {
+            $this->pdf->Cell(186, 6, utf8_decode($cargahoraria->descricao), 0, 0,'L');
             $this->pdf->Ln();
         }
 
-        $this->pdf->Output('D', 'Cargos_' .  date("Y-m-d H:i:s") . '.pdf', true);
+        $this->pdf->Output('D', 'CargaHoraria_' .  date("Y-m-d H:i:s") . '.pdf', true);
         exit;
 
-    }       
+    }      
+
 }

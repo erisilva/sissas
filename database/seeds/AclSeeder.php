@@ -85,6 +85,36 @@ class AclSeeder extends Seeder
 		$cargo_delete = Permission::where('name', '=', 'cargo.delete')->get()->first();
 		$cargo_show = Permission::where('name', '=', 'cargo.show')->get()->first();  
 		$cargo_export = Permission::where('name', '=', 'cargo.export')->get()->first();
+		// para cargas horárias
+		$cargahoraria_index = Permission::where('name', '=', 'cargahoraria.index')->get()->first(); 
+		$cargahoraria_create = Permission::where('name', '=', 'cargahoraria.create')->get()->first();
+		$cargahoraria_edit = Permission::where('name', '=', 'cargahoraria.edit')->get()->first();  
+		$cargahoraria_delete = Permission::where('name', '=', 'cargahoraria.delete')->get()->first();
+		$cargahoraria_show = Permission::where('name', '=', 'cargahoraria.show')->get()->first();  
+		$cargahoraria_export = Permission::where('name', '=', 'cargahoraria.export')->get()->first();
+		// para vínculos
+		$vinculo_index = Permission::where('name', '=', 'vinculo.index')->get()->first(); 
+		$vinculo_create = Permission::where('name', '=', 'vinculo.create')->get()->first();
+		$vinculo_edit = Permission::where('name', '=', 'vinculo.edit')->get()->first();  
+		$vinculo_delete = Permission::where('name', '=', 'vinculo.delete')->get()->first();
+		$vinculo_show = Permission::where('name', '=', 'vinculo.show')->get()->first();  
+		$vinculo_export = Permission::where('name', '=', 'vinculo.export')->get()->first();
+		// para tipos de vínculos
+		$vinculotipo_index = Permission::where('name', '=', 'vinculotipo.index')->get()->first(); 
+		$vinculotipo_create = Permission::where('name', '=', 'vinculotipo.create')->get()->first();
+		$vinculotipo_edit = Permission::where('name', '=', 'vinculotipo.edit')->get()->first();  
+		$vinculotipo_delete = Permission::where('name', '=', 'vinculotipo.delete')->get()->first();
+		$vinculotipo_show = Permission::where('name', '=', 'vinculotipo.show')->get()->first();  
+		$vinculotipo_export = Permission::where('name', '=', 'vinculotipo.export')->get()->first();
+		// para tipos de licenças
+		$licencatipo_index = Permission::where('name', '=', 'licencatipo.index')->get()->first(); 
+		$licencatipo_create = Permission::where('name', '=', 'licencatipo.create')->get()->first();
+		$licencatipo_edit = Permission::where('name', '=', 'licencatipo.edit')->get()->first();  
+		$licencatipo_delete = Permission::where('name', '=', 'licencatipo.delete')->get()->first();
+		$licencatipo_show = Permission::where('name', '=', 'licencatipo.show')->get()->first();  
+		$licencatipo_export = Permission::where('name', '=', 'licencatipo.export')->get()->first();
+
+
 
 
 
@@ -130,6 +160,36 @@ class AclSeeder extends Seeder
 		$administrador_perfil->permissions()->attach($cargo_delete);
 		$administrador_perfil->permissions()->attach($cargo_show);
 		$administrador_perfil->permissions()->attach($cargo_export);
+		# cargas horárias
+		$administrador_perfil->permissions()->attach($cargahoraria_index);
+		$administrador_perfil->permissions()->attach($cargahoraria_create);
+		$administrador_perfil->permissions()->attach($cargahoraria_edit);
+		$administrador_perfil->permissions()->attach($cargahoraria_delete);
+		$administrador_perfil->permissions()->attach($cargahoraria_show);
+		$administrador_perfil->permissions()->attach($cargahoraria_export);
+		# vínculos
+		$administrador_perfil->permissions()->attach($vinculo_index);
+		$administrador_perfil->permissions()->attach($vinculo_create);
+		$administrador_perfil->permissions()->attach($vinculo_edit);
+		$administrador_perfil->permissions()->attach($vinculo_delete);
+		$administrador_perfil->permissions()->attach($vinculo_show);
+		$administrador_perfil->permissions()->attach($vinculo_export);
+		# tipos vínculos
+		$administrador_perfil->permissions()->attach($vinculotipo_index);
+		$administrador_perfil->permissions()->attach($vinculotipo_create);
+		$administrador_perfil->permissions()->attach($vinculotipo_edit);
+		$administrador_perfil->permissions()->attach($vinculotipo_delete);
+		$administrador_perfil->permissions()->attach($vinculotipo_show);
+		$administrador_perfil->permissions()->attach($vinculotipo_export);
+		# tipos licenças
+		$administrador_perfil->permissions()->attach($licencatipo_index);
+		$administrador_perfil->permissions()->attach($licencatipo_create);
+		$administrador_perfil->permissions()->attach($licencatipo_edit);
+		$administrador_perfil->permissions()->attach($licencatipo_delete);
+		$administrador_perfil->permissions()->attach($licencatipo_show);
+		$administrador_perfil->permissions()->attach($licencatipo_export);
+
+
 
 
 
@@ -157,6 +217,31 @@ class AclSeeder extends Seeder
 		$gerente_perfil->permissions()->attach($cargo_edit);
 		$gerente_perfil->permissions()->attach($cargo_show);
 		$gerente_perfil->permissions()->attach($cargo_export);
+		# cargas horárias
+		$gerente_perfil->permissions()->attach($cargahoraria_index);
+		$gerente_perfil->permissions()->attach($cargahoraria_create);
+		$gerente_perfil->permissions()->attach($cargahoraria_edit);
+		$gerente_perfil->permissions()->attach($cargahoraria_show);
+		$gerente_perfil->permissions()->attach($cargahoraria_export);
+		# vínculos
+		$gerente_perfil->permissions()->attach($vinculo_index);
+		$gerente_perfil->permissions()->attach($vinculo_create);
+		$gerente_perfil->permissions()->attach($vinculo_edit);
+		$gerente_perfil->permissions()->attach($vinculo_show);
+		$gerente_perfil->permissions()->attach($vinculo_export);
+		# tipos vínculos
+		$gerente_perfil->permissions()->attach($vinculotipo_index);
+		$gerente_perfil->permissions()->attach($vinculotipo_create);
+		$gerente_perfil->permissions()->attach($vinculotipo_edit);
+		$gerente_perfil->permissions()->attach($vinculotipo_show);
+		$gerente_perfil->permissions()->attach($vinculotipo_export);
+		# tipos licença
+		$gerente_perfil->permissions()->attach($licencatipo_index);
+		$gerente_perfil->permissions()->attach($licencatipo_create);
+		$gerente_perfil->permissions()->attach($licencatipo_edit);
+		$gerente_perfil->permissions()->attach($licencatipo_show);
+		$gerente_perfil->permissions()->attach($licencatipo_export);
+
 
 
 		// o operador é o nível de operação do sistema não pode criar
@@ -178,6 +263,22 @@ class AclSeeder extends Seeder
 		$operador_perfil->permissions()->attach($cargo_index);
 		$operador_perfil->permissions()->attach($cargo_show);
 		$operador_perfil->permissions()->attach($cargo_export);
+		# cargas horárias
+		$operador_perfil->permissions()->attach($cargahoraria_index);
+		$operador_perfil->permissions()->attach($cargahoraria_show);
+		$operador_perfil->permissions()->attach($cargahoraria_export);
+		# vínculos
+		$operador_perfil->permissions()->attach($vinculo_index);
+		$operador_perfil->permissions()->attach($vinculo_show);
+		$operador_perfil->permissions()->attach($vinculo_export);
+		# tipos de vínculos
+		$operador_perfil->permissions()->attach($vinculotipo_index);
+		$operador_perfil->permissions()->attach($vinculotipo_show);
+		$operador_perfil->permissions()->attach($vinculotipo_export);
+		# tipos de licença
+		$operador_perfil->permissions()->attach($licencatipo_index);
+		$operador_perfil->permissions()->attach($licencatipo_show);
+		$operador_perfil->permissions()->attach($licencatipo_export);
 
 
 
@@ -195,7 +296,18 @@ class AclSeeder extends Seeder
 		# cargos
 		$leitor_perfil->permissions()->attach($cargo_index);
 		$leitor_perfil->permissions()->attach($cargo_show);
-
+		# cargas horárias
+		$leitor_perfil->permissions()->attach($cargahoraria_index);
+		$leitor_perfil->permissions()->attach($cargahoraria_show);
+		# vínculos
+		$leitor_perfil->permissions()->attach($vinculo_index);
+		$leitor_perfil->permissions()->attach($vinculo_show);
+		# vínculos tipos
+		$leitor_perfil->permissions()->attach($vinculotipo_index);
+		$leitor_perfil->permissions()->attach($vinculotipo_show);
+		# licença tipo
+		$leitor_perfil->permissions()->attach($licencatipo_index);
+		$leitor_perfil->permissions()->attach($licencatipo_show);
 
 
 

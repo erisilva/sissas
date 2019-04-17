@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Cargo;
+use App\VinculoTipo;
 use App\Perpage;
 
 use Response;
@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Gate;
 
 use Illuminate\Support\Facades\DB;
 
-
-class CargoController extends Controller
+class VinculoTipoController extends Controller
 {
     protected $pdf;
 
@@ -27,7 +26,7 @@ class CargoController extends Controller
      *
      * @return 
      */
-    public function __construct(\App\Reports\CargoReport $pdf)
+    public function __construct(\App\Reports\VinculoTipoReport $pdf)
     {
         $this->middleware(['middleware' => 'auth']);
         $this->middleware(['middleware' => 'hasaccess']);
@@ -42,14 +41,14 @@ class CargoController extends Controller
      */
     public function index()
     {
-        if (Gate::denies('cargo.index')) {
+        if (Gate::denies('vinculotipo.index')) {
             abort(403, 'Acesso negado.');
         }
 
-        $cargos = new Cargo;
+        $vinculotipos = new VinculoTipo;
 
         // ordena
-        $cargos = $cargos->orderBy('nome', 'asc');
+        $vinculotipos = $vinculotipos->orderBy('descricao', 'asc');
 
         // se a requisição tiver um novo valor para a quantidade
         // de páginas por visualização ele altera aqui
@@ -62,9 +61,9 @@ class CargoController extends Controller
         $perpages = Perpage::orderBy('valor')->get();
 
         // paginação
-        $cargos = $cargos->paginate(session('perPage', '5'));
+        $vinculotipos = $vinculotipos->paginate(session('perPage', '5'));
 
-        return view('cargos.index', compact('cargos', 'perpages'));
+        return view('vinculotipos.index', compact('vinculotipos', 'perpages'));
     }
 
     /**
@@ -74,11 +73,11 @@ class CargoController extends Controller
      */
     public function create()
     {
-        if (Gate::denies('cargo.create')) {
+        if (Gate::denies('vinculotipo.create')) {
             abort(403, 'Acesso negado.');
-        } 
+        }
 
-        return view('cargos.create');
+        return view('vinculotipos.create');
     }
 
     /**
@@ -90,17 +89,16 @@ class CargoController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-          'nome' => 'required',
-          'cbo' => 'required',
+          'descricao' => 'required',
         ]);
 
-        $cargo = $request->all();
+        $vinculotipo = $request->all();
 
-        Cargo::create($cargo); //salva
+        VinculoTipo::create($vinculotipo); //salva
 
-        Session::flash('create_cargo', 'Cargo cadastrado com sucesso!');
+        Session::flash('create_vinculotipo', 'Tipo de vínculo cadastrado com sucesso!');
 
-        return redirect(route('cargos.index'));
+        return redirect(route('vinculotipos.index'));
     }
 
     /**
@@ -111,13 +109,13 @@ class CargoController extends Controller
      */
     public function show($id)
     {
-        if (Gate::denies('cargo.show')) {
+        if (Gate::denies('vinculotipo.show')) {
             abort(403, 'Acesso negado.');
         }
 
-        $cargo = Cargo::findOrFail($id);
+        $vinculotipo = VinculoTipo::findOrFail($id);
 
-        return view('cargos.show', compact('cargo'));
+        return view('vinculotipos.show', compact('vinculotipo'));
     }
 
     /**
@@ -128,13 +126,13 @@ class CargoController extends Controller
      */
     public function edit($id)
     {
-        if (Gate::denies('cargo.edit')) {
+        if (Gate::denies('vinculotipo.edit')) {
             abort(403, 'Acesso negado.');
         }
 
-        $cargo = Cargo::findOrFail($id);
+        $vinculotipo = VinculoTipo::findOrFail($id);
 
-        return view('cargos.edit', compact('cargo'));
+        return view('vinculotipos.edit', compact('vinculotipo'));
     }
 
     /**
@@ -147,17 +145,16 @@ class CargoController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-          'nome' => 'required',
-          'cbo' => 'required',
+          'descricao' => 'required',
         ]);
 
-        $cargo = Cargo::findOrFail($id);
+        $vinculotipo = VinculoTipo::findOrFail($id);
             
-        $cargo->update($request->all());
+        $vinculotipo->update($request->all());
         
-        Session::flash('edited_cargo', 'Cargo alterado com sucesso!');
+        Session::flash('edited_vinculotipo', 'Tipo de vínculo alterado com sucesso!');
 
-        return redirect(route('cargos.edit', $id));
+        return redirect(route('vinculotipos.edit', $id));
     }
 
     /**
@@ -168,11 +165,15 @@ class CargoController extends Controller
      */
     public function destroy($id)
     {
-        Cargo::findOrFail($id)->delete();
+        if (Gate::denies('vinculotipo.delete')) {
+            abort(403, 'Acesso negado.');
+        }
 
-        Session::flash('deleted_cargo', 'Cargo excluído com sucesso!');
+        VinculoTipo::findOrFail($id)->delete();
 
-        return redirect(route('cargos.index'));
+        Session::flash('deleted_vinculotipo', 'Tipo de vínculo excluído com sucesso!');
+
+        return redirect(route('vinculotipos.index'));
     }
 
     /**
@@ -183,22 +184,25 @@ class CargoController extends Controller
      */
     public function exportcsv()
     {
+        if (Gate::denies('vinculotipo.export')) {
+            abort(403, 'Acesso negado.');
+        }
 
        $headers = [
                 'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
             ,   'Content-type'        => 'text/csv'
-            ,   'Content-Disposition' => 'attachment; filename=Cargos_' .  date("Y-m-d H:i:s") . '.csv'
+            ,   'Content-Disposition' => 'attachment; filename=TiposdeVinculos_' .  date("Y-m-d H:i:s") . '.csv'
             ,   'Expires'             => '0'
             ,   'Pragma'              => 'public'
         ];
 
-        $cargos = DB::table('cargos');
+        $vinculotipos = DB::table('vinculo_tipos');
 
-        $cargos = $cargos->select('nome', 'cbo');
+        $vinculotipos = $vinculotipos->select('descricao');
 
-        $cargos = $cargos->orderBy('nome', 'asc');
+        $vinculotipos = $vinculotipos->orderBy('descricao', 'asc');
 
-        $list = $cargos->get()->toArray();
+        $list = $vinculotipos->get()->toArray();
 
         # converte os objetos para uma array
         $list = json_decode(json_encode($list), true);
@@ -227,30 +231,32 @@ class CargoController extends Controller
      */
     public function exportpdf()
     {
+        if (Gate::denies('vinculotipo.export')) {
+            abort(403, 'Acesso negado.');
+        }
 
         $this->pdf->AliasNbPages();   
         $this->pdf->SetMargins(12, 10, 12);
         $this->pdf->SetFont('Arial', '', 12);
         $this->pdf->AddPage();
 
-        $cargos = DB::table('cargos');
+        $vinculotipos = DB::table('vinculo_tipos');
 
-        $cargos = $cargos->select('nome', 'cbo');
-
-
-        $cargos = $cargos->orderBy('nome', 'asc');    
+        $vinculotipos = $vinculotipos->select('descricao');
 
 
-        $cargos = $cargos->get();
+        $vinculotipos = $vinculotipos->orderBy('descricao', 'asc');    
 
-        foreach ($cargos as $cargo) {
-            $this->pdf->Cell(100, 6, utf8_decode($cargo->nome), 0, 0,'L');
-            $this->pdf->Cell(86, 6, utf8_decode($cargo->cbo), 0, 0,'L');
+
+        $vinculotipos = $vinculotipos->get();
+
+        foreach ($vinculotipos as $vinculotipo) {
+            $this->pdf->Cell(186, 6, utf8_decode($vinculotipo->descricao), 0, 0,'L');
             $this->pdf->Ln();
         }
 
-        $this->pdf->Output('D', 'Cargos_' .  date("Y-m-d H:i:s") . '.pdf', true);
+        $this->pdf->Output('D', 'TiposdeVinculos_' .  date("Y-m-d H:i:s") . '.pdf', true);
         exit;
 
-    }       
+    }           
 }

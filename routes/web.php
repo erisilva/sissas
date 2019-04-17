@@ -58,3 +58,23 @@ Route::resource('/unidades', 'UnidadeController');
 Route::get('/cargos/export/csv', 'CargoController@exportcsv')->name('cargos.export.csv');
 Route::get('/cargos/export/pdf', 'CargoController@exportpdf')->name('cargos.export.pdf');
 Route::resource('/cargos', 'CargoController');
+
+/* Carga Horária */
+Route::get('/cargahorarias/export/csv', 'CargaHorariaController@exportcsv')->name('cargahorarias.export.csv');
+Route::get('/cargahorarias/export/pdf', 'CargaHorariaController@exportpdf')->name('cargahorarias.export.pdf');
+Route::resource('/cargahorarias', 'CargaHorariaController');
+
+/* Vínculos */
+Route::get('/vinculos/export/csv', 'VinculoController@exportcsv')->name('vinculos.export.csv');
+Route::get('/vinculos/export/pdf', 'VinculoController@exportpdf')->name('vinculos.export.pdf');
+Route::resource('/vinculos', 'VinculoController');
+
+/* Tipos de Vínculos */
+Route::get('/vinculotipos/export/csv', 'VinculoTipoController@exportcsv')->name('vinculotipos.export.csv');
+Route::get('/vinculotipos/export/pdf', 'VinculoTipoController@exportpdf')->name('vinculotipos.export.pdf');
+Route::resource('/vinculotipos', 'VinculoTipoController');
+
+/* Tipos de Licenças */
+Route::get('/licencatipos/export/csv', 'LicencaTipoController@exportcsv')->name('licencatipos.export.csv');
+Route::get('/licencatipos/export/pdf', 'LicencaTipoController@exportpdf')->name('licencatipos.export.pdf');
+Route::resource('/licencatipos', 'LicencaTipoController');

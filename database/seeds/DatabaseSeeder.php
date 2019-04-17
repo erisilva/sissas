@@ -18,6 +18,10 @@ class DatabaseSeeder extends Seeder
         $this->call(DistritosTableSeeder::class);
         $this->call(UnidadesTableSeeder::class);
         $this->call(CargosTableSeeder::class);
+        $this->call(CargaHorariasTableSeeder::class);
+        $this->call(VinculosTableSeeder::class);
+        $this->call(VinculoTiposTableSeeder::class);
+        $this->call(LicencaTiposTableSeeder::class);
 
 
         // rodar sempre no fim

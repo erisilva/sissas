@@ -44,6 +44,12 @@
                           <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="{{ route('distritos.index') }}"><i class="fas fa-map-marked-alt"></i> Distritos</a>
                           <a class="dropdown-item" href="{{ route('unidades.index') }}"><i class="fas fa-hospital"></i> Unidades</a>
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item" href="{{ route('cargos.index') }}"><i class="fas fa-table"></i> Cargos</a>
+                          <a class="dropdown-item" href="{{ route('cargahorarias.index') }}"><i class="fas fa-table"></i> Cargas Horárias</a>
+                          <a class="dropdown-item" href="{{ route('vinculos.index') }}"><i class="fas fa-table"></i> Vínculos</a>
+                          <a class="dropdown-item" href="{{ route('vinculotipos.index') }}"><i class="fas fa-table"></i> Tipos de Vínculo</a>
+                          <a class="dropdown-item" href="{{ route('licencatipos.index') }}"><i class="fas fa-table"></i> Tipos de Licença</a>
                         </div>
                       </li>
                     <li class="nav-item">
