@@ -50,6 +50,8 @@
                           <a class="dropdown-item" href="{{ route('vinculos.index') }}"><i class="fas fa-table"></i> Vínculos</a>
                           <a class="dropdown-item" href="{{ route('vinculotipos.index') }}"><i class="fas fa-table"></i> Tipos de Vínculo</a>
                           <a class="dropdown-item" href="{{ route('licencatipos.index') }}"><i class="fas fa-table"></i> Tipos de Licença</a>
+                          <a class="dropdown-item" href="{{ route('feriastipos.index') }}"><i class="fas fa-table"></i> Tipos de Férias</a>
+                          <a class="dropdown-item" href="{{ route('capacitacaotipos.index') }}"><i class="fas fa-table"></i> Tipos de Capacitações</a>
                         </div>
                       </li>
                     <li class="nav-item">

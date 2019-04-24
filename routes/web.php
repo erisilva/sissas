@@ -78,3 +78,13 @@ Route::resource('/vinculotipos', 'VinculoTipoController');
 Route::get('/licencatipos/export/csv', 'LicencaTipoController@exportcsv')->name('licencatipos.export.csv');
 Route::get('/licencatipos/export/pdf', 'LicencaTipoController@exportpdf')->name('licencatipos.export.pdf');
 Route::resource('/licencatipos', 'LicencaTipoController');
+
+/* Tipos de Férias */
+Route::get('/feriastipos/export/csv', 'FeriasTipoController@exportcsv')->name('feriastipos.export.csv');
+Route::get('/feriastipos/export/pdf', 'FeriasTipoController@exportpdf')->name('feriastipos.export.pdf');
+Route::resource('/feriastipos', 'FeriasTipoController');
+
+/* Tipos de Capacitações */
+Route::get('/capacitacaotipos/export/csv', 'CapacitacaoTipoController@exportcsv')->name('capacitacaotipos.export.csv');
+Route::get('/capacitacaotipos/export/pdf', 'CapacitacaoTipoController@exportpdf')->name('capacitacaotipos.export.pdf');
+Route::resource('/capacitacaotipos', 'CapacitacaoTipoController');

@@ -113,6 +113,20 @@ class AclSeeder extends Seeder
 		$licencatipo_delete = Permission::where('name', '=', 'licencatipo.delete')->get()->first();
 		$licencatipo_show = Permission::where('name', '=', 'licencatipo.show')->get()->first();  
 		$licencatipo_export = Permission::where('name', '=', 'licencatipo.export')->get()->first();
+		// para tipos de licenças
+		$feriastipo_index = Permission::where('name', '=', 'feriastipo.index')->get()->first(); 
+		$feriastipo_create = Permission::where('name', '=', 'feriastipo.create')->get()->first();
+		$feriastipo_edit = Permission::where('name', '=', 'feriastipo.edit')->get()->first();  
+		$feriastipo_delete = Permission::where('name', '=', 'feriastipo.delete')->get()->first();
+		$feriastipo_show = Permission::where('name', '=', 'feriastipo.show')->get()->first();  
+		$feriastipo_export = Permission::where('name', '=', 'feriastipo.export')->get()->first();
+		// para tipos de capacitações
+		$capacitacaotipo_index = Permission::where('name', '=', 'capacitacaotipo.index')->get()->first(); 
+		$capacitacaotipo_create = Permission::where('name', '=', 'capacitacaotipo.create')->get()->first();
+		$capacitacaotipo_edit = Permission::where('name', '=', 'capacitacaotipo.edit')->get()->first();  
+		$capacitacaotipo_delete = Permission::where('name', '=', 'capacitacaotipo.delete')->get()->first();
+		$capacitacaotipo_show = Permission::where('name', '=', 'capacitacaotipo.show')->get()->first();  
+		$capacitacaotipo_export = Permission::where('name', '=', 'capacitacaotipo.export')->get()->first();
 
 
 
@@ -188,6 +202,20 @@ class AclSeeder extends Seeder
 		$administrador_perfil->permissions()->attach($licencatipo_delete);
 		$administrador_perfil->permissions()->attach($licencatipo_show);
 		$administrador_perfil->permissions()->attach($licencatipo_export);
+		# tipos férias
+		$administrador_perfil->permissions()->attach($feriastipo_index);
+		$administrador_perfil->permissions()->attach($feriastipo_create);
+		$administrador_perfil->permissions()->attach($feriastipo_edit);
+		$administrador_perfil->permissions()->attach($feriastipo_delete);
+		$administrador_perfil->permissions()->attach($feriastipo_show);
+		$administrador_perfil->permissions()->attach($feriastipo_export);
+		# tipos de capacitações
+		$administrador_perfil->permissions()->attach($capacitacaotipo_index);
+		$administrador_perfil->permissions()->attach($capacitacaotipo_create);
+		$administrador_perfil->permissions()->attach($capacitacaotipo_edit);
+		$administrador_perfil->permissions()->attach($capacitacaotipo_delete);
+		$administrador_perfil->permissions()->attach($capacitacaotipo_show);
+		$administrador_perfil->permissions()->attach($capacitacaotipo_export);
 
 
 
@@ -241,6 +269,18 @@ class AclSeeder extends Seeder
 		$gerente_perfil->permissions()->attach($licencatipo_edit);
 		$gerente_perfil->permissions()->attach($licencatipo_show);
 		$gerente_perfil->permissions()->attach($licencatipo_export);
+		# tipos férias
+		$gerente_perfil->permissions()->attach($feriastipo_index);
+		$gerente_perfil->permissions()->attach($feriastipo_create);
+		$gerente_perfil->permissions()->attach($feriastipo_edit);
+		$gerente_perfil->permissions()->attach($feriastipo_show);
+		$gerente_perfil->permissions()->attach($feriastipo_export);
+		# tipos de capacitação
+		$gerente_perfil->permissions()->attach($capacitacaotipo_index);
+		$gerente_perfil->permissions()->attach($capacitacaotipo_create);
+		$gerente_perfil->permissions()->attach($capacitacaotipo_edit);
+		$gerente_perfil->permissions()->attach($capacitacaotipo_show);
+		$gerente_perfil->permissions()->attach($capacitacaotipo_export);
 
 
 
@@ -279,6 +319,14 @@ class AclSeeder extends Seeder
 		$operador_perfil->permissions()->attach($licencatipo_index);
 		$operador_perfil->permissions()->attach($licencatipo_show);
 		$operador_perfil->permissions()->attach($licencatipo_export);
+		# tipos de férias
+		$operador_perfil->permissions()->attach($feriastipo_index);
+		$operador_perfil->permissions()->attach($feriastipo_show);
+		$operador_perfil->permissions()->attach($feriastipo_export);
+		# tipos de capacitação
+		$operador_perfil->permissions()->attach($capacitacaotipo_index);
+		$operador_perfil->permissions()->attach($capacitacaotipo_show);
+		$operador_perfil->permissions()->attach($capacitacaotipo_export);
 
 
 
@@ -308,6 +356,12 @@ class AclSeeder extends Seeder
 		# licença tipo
 		$leitor_perfil->permissions()->attach($licencatipo_index);
 		$leitor_perfil->permissions()->attach($licencatipo_show);
+		# férias tipo
+		$leitor_perfil->permissions()->attach($feriastipo_index);
+		$leitor_perfil->permissions()->attach($feriastipo_show);
+		# tipos de capacitações
+		$leitor_perfil->permissions()->attach($capacitacaotipo_index);
+		$leitor_perfil->permissions()->attach($capacitacaotipo_show);
 
 
 

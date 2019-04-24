@@ -279,5 +279,60 @@ class PermissionsTableSeeder extends Seeder
             'name' => 'licencatipo.export',
             'description' => 'Exportação de dados dos tipos de licença',
         ]);
+
+
+        //tipos de Férias
+        DB::table('permissions')->insert([
+            'name' => 'feriastipo.index',
+            'description' => 'Lista de tipos de férias',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'feriastipo.create',
+            'description' => 'Registrar novo tipo de férias',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'feriastipo.edit',
+            'description' => 'Alterar dados de um tipo de férias',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'feriastipo.delete',
+            'description' => 'Excluir tipo de férias',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'feriastipo.show',
+            'description' => 'Mostrar dados dos tipos de férias',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'feriastipo.export',
+            'description' => 'Exportação de dados dos tipos de férias',
+        ]);
+
+        //tipos de Capacitações
+        DB::table('permissions')->insert([
+            'name' => 'capacitacaotipo.index',
+            'description' => 'Lista de tipos de Capacitações',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'capacitacaotipo.create',
+            'description' => 'Registrar novo tipo de capacitação',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'capacitacaotipo.edit',
+            'description' => 'Alterar dados de um tipo de capacitação',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'capacitacaotipo.delete',
+            'description' => 'Excluir tipo de capacitação',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'capacitacaotipo.show',
+            'description' => 'Mostrar dados dos tipos de capacitação',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'capacitacaotipo.export',
+            'description' => 'Exportação de dados dos tipos de Capacitações',
+        ]);
+
+
     }
 }
