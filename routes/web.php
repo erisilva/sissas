@@ -88,3 +88,8 @@ Route::resource('/feriastipos', 'FeriasTipoController');
 Route::get('/capacitacaotipos/export/csv', 'CapacitacaoTipoController@exportcsv')->name('capacitacaotipos.export.csv');
 Route::get('/capacitacaotipos/export/pdf', 'CapacitacaoTipoController@exportpdf')->name('capacitacaotipos.export.pdf');
 Route::resource('/capacitacaotipos', 'CapacitacaoTipoController');
+
+/* Profissionais */
+Route::get('/profissionals/export/csv', 'ProfissionalController@exportcsv')->name('profissionals.export.csv');
+Route::get('/profissionals/export/pdf', 'ProfissionalController@exportpdf')->name('profissionals.export.pdf');
+Route::resource('/profissionals', 'ProfissionalController');

@@ -55,7 +55,7 @@
                         </div>
                       </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">To-Do</a>
+                        <a class="nav-link" href="{{ route('profissionals.index') }}">Profissionais</a>
                     </li>    
                     @endif
                 </ul>

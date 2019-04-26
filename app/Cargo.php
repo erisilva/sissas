@@ -9,4 +9,9 @@ class Cargo extends Model
     protected $fillable = [
         'nome', 'cbo'
     ];
+
+    public function profissionals()
+    {
+        return $this->hasMany('App\Profissional');
+    }
 }
