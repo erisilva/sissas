@@ -59,5 +59,15 @@ class Profissional extends Model
         return $this->belongsTo('App\VinculoTipo');
     }
 
+    /**
+     * Férias do profissional
+     *
+     * @var Ferias
+     */
+    public function ferias()
+    {
+        return $this->belongsToMany('App\Ferias');
+    }
+
     protected $dates = ['deleted_at', 'admissao'];
 }

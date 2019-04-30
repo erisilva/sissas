@@ -197,6 +197,143 @@
     <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Alterar Dados do Profissional</button>
   </form>
 </div>
+
+<br>
+
+<div class="container">
+
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="ferias-tab" data-toggle="tab" href="#ferias" role="tab" aria-controls="ferias" aria-selected="true">Férias</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="licenca-tab" data-toggle="tab" href="#licenca" role="tab" aria-controls="licenca" aria-selected="false">Licenças</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="capacitacao-tab" data-toggle="tab" href="#capacitacao" role="tab" aria-controls="capacitacao" aria-selected="false">Capacitações</a>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="ferias" role="tabpanel" aria-labelledby="ferias-tab">
+      
+      <div class="container">
+        <br>
+        {{-- avisa se uma permissão foi alterada --}}
+        @if(Session::has('delete_ferias'))
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Info!</strong>  {{ session('delete_ferias') }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        @endif
+          {{-- avisa quando um usuário foi criado --}}
+        @if(Session::has('create_ferias'))
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Info!</strong>  {{ session('create_ferias') }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        @endif
+        <form method="POST" action="{{ route('ferias.store') }}">
+          @csrf
+          <input type="hidden" id="profissional_id" name="profissional_id" value="{{ $profissional->id }}">      
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="ferias_tipo_id">Tipo do Férias</label>
+              <select class="form-control {{ $errors->has('ferias_tipo_id') ? ' is-invalid' : '' }}" name="ferias_tipo_id" id="ferias_tipo_id">
+                <option value="" selected>Selecionar ... </option>
+                @foreach($feriastipos as $feriastipo)
+                <option value="{{$feriastipo->id}}">{{$feriastipo->descricao}}</option>
+                @endforeach
+              </select>
+              @if ($errors->has('ferias_tipo_id'))
+              <div class="invalid-feedback">
+              {{ $errors->first('ferias_tipo_id') }}
+              </div>
+              @endif
+            </div>
+            <div class="form-group col-md-3">
+              <label for="ferias_inicio">Data inicial</label>
+              <input type="text" class="form-control{{ $errors->has('ferias_inicio') ? ' is-invalid' : '' }}" id="ferias_inicio" name="ferias_inicio" value="{{ old('ferias_inicio') ?? '' }}" autocomplete="off">
+              @if ($errors->has('ferias_inicio'))
+              <div class="invalid-feedback">
+              {{ $errors->first('ferias_inicio') }}
+              </div>
+              @endif  
+            </div>
+            <div class="form-group col-md-3">
+              <label for="ferias_final">Data final</label>
+              <input type="text" class="form-control{{ $errors->has('ferias_final') ? ' is-invalid' : '' }}" id="ferias_final" name="ferias_final" value="{{ old('ferias_final') ?? '' }}" autocomplete="off">
+              @if ($errors->has('ferias_final'))
+              <div class="invalid-feedback">
+              {{ $errors->first('ferias_final') }}
+              </div>
+              @endif 
+            </div>  
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="ferias_justificativa">Justificativa</label>  
+              <input type="text" class="form-control" name="ferias_justificativa"  value="{{ old('ferias_justificativa') ?? '' }}">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="ferias_observacao">Observações</label>  
+              <input type="text" class="form-control" name="ferias_observacao"  value="{{ old('ferias_observacao') ?? '' }}">
+            </div>              
+          </div>    
+          <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Incluir Período de Férias</button> 
+        </form>
+        <br>
+        @if (count($ferias))
+        <div class="table-responsive">
+          <table class="table table-striped">
+              <thead>
+                  <tr>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Inicial</th>
+                      <th scope="col">Final</th>
+                      <th scope="col">Justificativa</th>
+                      <th scope="col">Observações</th>
+                      <th scope="col"></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  @foreach($ferias as $ferias_index)
+                  <tr>
+                      <td>{{ $ferias_index->feriasTipo->descricao }}</td>
+                      <td>{{ isset($ferias_index->inicio) ?  $ferias_index->inicio->format('d/m/Y') : '-' }}</td>
+                      <td>{{ isset($ferias_index->fim) ?  $ferias_index->fim->format('d/m/Y') : '-' }}</td>
+                      <td>{{ $ferias_index->justificativa }}</td>
+                      <td>{{ $ferias_index->observacao }}</td>
+                      <td>
+                        <form method="post" action="{{route('ferias.destroy', $ferias_index->id)}}">
+                          @csrf
+                          @method('DELETE')  
+                          <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                      </td>
+                  </tr>    
+                  @endforeach                                                 
+              </tbody>
+          </table>
+        </div>
+
+        @endif
+      </div>  
+    </div>
+    <div class="tab-pane fade" id="licenca" role="tabpanel" aria-labelledby="licenca-tab">
+      teste 2
+    </div>
+    <div class="tab-pane fade" id="capacitacao" role="tabpanel" aria-labelledby="capacitacao-tab">
+      teste 3
+    </div>
+  </div>
+
+</div>
+<br>
+
 <div class="container">
   <div class="float-right">
     <a href="{{ route('profissionals.index') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>
@@ -211,13 +348,31 @@
 <script>
   $(document).ready(function(){
 
-        $('#admissao').datepicker({
-          format: "dd/mm/yyyy",
-          todayBtn: "linked",
-          clearBtn: true,
-          language: "pt-BR",
-          autoclose: true,
-          todayHighlight: true
+      $('#admissao').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
+      });
+
+      $('#ferias_final').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
+      });
+
+      $('#ferias_inicio').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
       });
 
       $("#cel").inputmask({"mask": "(99) 99999-9999"});

@@ -73,7 +73,7 @@
   </div>
   <!-- Janela de filtragem da consulta -->
   <div class="modal fade" id="modalFilter" tabindex="-1" role="dialog" aria-labelledby="JanelaFiltro" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalCenterTitle"><i class="fas fa-filter"></i> Filtro</h5>
@@ -83,6 +83,41 @@
         </div>
         <div class="modal-body">
           <!-- Filtragem dos dados -->
+          <form method="GET" action="{{ route('profissionals.index') }}">
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="matricula">Nº Matrícula</label>
+                <input type="text" class="form-control" id="matricula" name="matricula" value="{{request()->input('matricula')}}">
+              </div>
+              <div class="form-group col-md-8">
+                <label for="nome">Nome</label>
+                <input type="text" class="form-control" id="nome" name="nome" value="{{request()->input('nome')}}">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-8">
+                <label for="cargo_id">Cargo</label>
+                <select class="form-control" name="cargo_id" id="cargo_id">
+                  <option value="">Mostrar todos</option>    
+                  @foreach($cargos as $cargo)
+                  <option value="{{$cargo->id}}" {{ ($cargo->id == request()->input('cargo_id')) ? ' selected' : '' }} >{{$cargo->nome . " CBO:" . $cargo->cbo}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="vinculo_id">Vínculo</label>
+                <select class="form-control" name="vinculo_id" id="vinculo_id">
+                  <option value="">Mostrar todos</option>
+                  @foreach($vinculos as $vinculo)
+                  <option value="{{$vinculo->id}}" {{ ($vinculo->id == request()->input('vinculo_id')) ? ' selected' : '' }} >{{$vinculo->descricao}}</option>
+                  @endforeach
+                </select>
+              </div> 
+            </div> 
+            <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Pesquisar</button>
+            <a href="{{ route('profissionals.index') }}" class="btn btn-primary btn-sm" role="button">Limpar</a>
+          </form>
+          <br>
           <!-- Seleção de número de resultados por página -->
           <div class="form-group">
             <select class="form-control" name="perpage" id="perpage">

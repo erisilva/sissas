@@ -93,3 +93,6 @@ Route::resource('/capacitacaotipos', 'CapacitacaoTipoController');
 Route::get('/profissionals/export/csv', 'ProfissionalController@exportcsv')->name('profissionals.export.csv');
 Route::get('/profissionals/export/pdf', 'ProfissionalController@exportpdf')->name('profissionals.export.pdf');
 Route::resource('/profissionals', 'ProfissionalController');
+
+/* Férias dos profissionais */
+Route::resource('/ferias', 'FeriasController')->only(['store', 'destroy',]);

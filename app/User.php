@@ -87,6 +87,14 @@ class User extends Authenticatable
 
     }
 
-
+    /**
+     * Férias do profissional
+     *
+     * @var Ferias
+     */
+    public function ferias()
+    {
+        return $this->belongsToMany('App\Ferias');
+    }
 
 }
