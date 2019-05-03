@@ -96,3 +96,9 @@ Route::resource('/profissionals', 'ProfissionalController');
 
 /* Férias dos profissionais */
 Route::resource('/ferias', 'FeriasController')->only(['store', 'destroy',]);
+
+/* Licenças dos profissionais */
+Route::resource('/licencas', 'LicencaController')->only(['store', 'destroy',]);
+
+/* Capacitações dos profissionais */
+Route::resource('/capacitacaos', 'CapacitacaoController')->only(['store', 'destroy',]);

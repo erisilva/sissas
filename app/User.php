@@ -97,4 +97,24 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Ferias');
     }
 
+    /**
+     * Licenças do profissional
+     *
+     * @var Licencas
+     */
+    public function licencas()
+    {
+        return $this->belongsToMany('App\Licenca');
+    }
+
+    /**
+     * capacitações do profissional
+     *
+     * @var Capacitacao
+     */
+    public function capacitacaos()
+    {
+        return $this->belongsToMany('App\Capacitacao');
+    }
+
 }

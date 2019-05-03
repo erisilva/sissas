@@ -12,6 +12,12 @@ use App\Perpage;
 use App\FeriasTipo;
 use App\Ferias;
 
+use App\LicencaTipo;
+use App\Licenca;
+
+use App\Capacitacao;
+use App\CapacitacaoTipo;
+
 use Response;
 
 use Illuminate\Http\Request;
@@ -211,6 +217,12 @@ class ProfissionalController extends Controller
         // consulta a tabela dos de tipo de férias
         $feriastipos = FeriasTipo::orderBy('descricao', 'asc')->get();
 
+        // consulta a tabela dos de tipo de licenças
+        $licencatipos = LicencaTipo::orderBy('descricao', 'asc')->get();
+
+        // consulta a tabela dos de tipo de capacitacaoes
+        $capacitacaotipos = CapacitacaoTipo::orderBy('descricao', 'asc')->get();
+
         // consulta a tabela dos cargos
         $cargos = Cargo::orderBy('nome', 'asc')->get();
 
@@ -226,7 +238,13 @@ class ProfissionalController extends Controller
         // consulta todas férias do profissional
         $ferias = Ferias::where('profissional_id', '=', $id)->orderBy('id', 'desc')->get();
 
-        return view('profissionals.edit', compact('profissional', 'cargos', 'vinculos', 'vinculotipos', 'cargahorarias', 'feriastipos', 'ferias'));
+        // consulta todas licenças do profissional
+        $licencas = Licenca::where('profissional_id', '=', $id)->orderBy('id', 'desc')->get();
+
+        // consulta todas capacitações do profissional
+        $capacitacaos = Capacitacao::where('profissional_id', '=', $id)->orderBy('id', 'desc')->get();
+
+        return view('profissionals.edit', compact('profissional', 'cargos', 'vinculos', 'vinculotipos', 'cargahorarias', 'feriastipos', 'ferias', 'licencatipos', 'licencas', 'capacitacaos', 'capacitacaotipos'));
     }
 
     /**

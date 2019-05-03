@@ -197,11 +197,56 @@
     <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Alterar Dados do Profissional</button>
   </form>
 </div>
-
 <br>
-
 <div class="container">
-
+  @if(Session::has('delete_ferias'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Info!</strong>  {{ session('delete_ferias') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
+  @if(Session::has('create_ferias'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Info!</strong>  {{ session('create_ferias') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
+  @if(Session::has('delete_licenca'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Info!</strong>  {{ session('delete_licenca') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
+  @if(Session::has('create_licenca'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Info!</strong>  {{ session('create_licenca') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
+    @if(Session::has('delete_capacitacao'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Info!</strong>  {{ session('delete_capacitacao') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
+  @if(Session::has('create_capacitacao'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Info!</strong>  {{ session('create_capacitacao') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
       <a class="nav-link active" id="ferias-tab" data-toggle="tab" href="#ferias" role="tab" aria-controls="ferias" aria-selected="true">Férias</a>
@@ -214,28 +259,9 @@
     </li>
   </ul>
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="ferias" role="tabpanel" aria-labelledby="ferias-tab">
-      
+    <div class="tab-pane fade show active" id="ferias" role="tabpanel" aria-labelledby="ferias-tab">     
       <div class="container">
-        <br>
-        {{-- avisa se uma permissão foi alterada --}}
-        @if(Session::has('delete_ferias'))
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-          <strong>Info!</strong>  {{ session('delete_ferias') }}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        @endif
-          {{-- avisa quando um usuário foi criado --}}
-        @if(Session::has('create_ferias'))
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-          <strong>Info!</strong>  {{ session('create_ferias') }}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        @endif
+        <br>     
         <form method="POST" action="{{ route('ferias.store') }}">
           @csrf
           <input type="hidden" id="profissional_id" name="profissional_id" value="{{ $profissional->id }}">      
@@ -314,20 +340,183 @@
                           <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
                         </form>
                       </td>
-                  </tr>    
+                  </tr>
                   @endforeach                                                 
               </tbody>
           </table>
         </div>
-
         @endif
       </div>  
     </div>
     <div class="tab-pane fade" id="licenca" role="tabpanel" aria-labelledby="licenca-tab">
-      teste 2
+      <div class="container">
+        <br>
+        <form method="POST" action="{{ route('licencas.store') }}">
+          @csrf
+          <input type="hidden" id="profissional_id" name="profissional_id" value="{{ $profissional->id }}">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="licenca_tipo_id">Tipo do Licença</label>
+              <select class="form-control {{ $errors->has('licenca_tipo_id') ? ' is-invalid' : '' }}" name="licenca_tipo_id" id="licenca_tipo_id">
+                <option value="" selected>Selecionar ... </option>
+                @foreach($licencatipos as $licencatipo)
+                <option value="{{$licencatipo->id}}">{{$licencatipo->descricao}}</option>
+                @endforeach
+              </select>
+              @if ($errors->has('licenca_tipo_id'))
+              <div class="invalid-feedback">
+              {{ $errors->first('licenca_tipo_id') }}
+              </div>
+              @endif
+            </div>
+            <div class="form-group col-md-3">
+              <label for="licenca_inicio">Data inicial</label>
+              <input type="text" class="form-control{{ $errors->has('licenca_inicio') ? ' is-invalid' : '' }}" id="licenca_inicio" name="licenca_inicio" value="{{ old('licenca_inicio') ?? '' }}" autocomplete="off">
+              @if ($errors->has('licenca_inicio'))
+              <div class="invalid-feedback">
+              {{ $errors->first('licenca_inicio') }}
+              </div>
+              @endif  
+            </div>
+            <div class="form-group col-md-3">
+              <label for="licenca_final">Data final</label>
+              <input type="text" class="form-control{{ $errors->has('licenca_final') ? ' is-invalid' : '' }}" id="licenca_final" name="licenca_final" value="{{ old('licenca_final') ?? '' }}" autocomplete="off">
+              @if ($errors->has('licenca_final'))
+              <div class="invalid-feedback">
+              {{ $errors->first('licenca_final') }}
+              </div>
+              @endif 
+            </div>  
+          </div>
+          <div class="form-group">
+            <label for="licenca_observacao">Observações</label>  
+            <input type="text" class="form-control" name="licenca_observacao"  value="{{ old('licenca_observacao') ?? '' }}">
+          </div> 
+          <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Incluir Período de Licença</button> 
+        </form>
+        <br>
+        @if (count($licencas))
+        <div class="table-responsive">
+          <table class="table table-striped">
+              <thead>
+                  <tr>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Inicial</th>
+                      <th scope="col">Final</th>
+                      <th scope="col">Observações</th>
+                      <th scope="col"></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  @foreach($licencas as $licenca)
+                  <tr>
+                      <td>{{ $licenca->licencaTipo->descricao }}</td>
+                      <td>{{ isset($licenca->inicio) ?  $licenca->inicio->format('d/m/Y') : '-' }}</td>
+                      <td>{{ isset($licenca->fim) ?  $licenca->fim->format('d/m/Y') : '-' }}</td>
+                      <td>{{ $licenca->observacao }}</td>
+                      <td>
+                        <form method="post" action="{{route('licencas.destroy', $licenca->id)}}">
+                          @csrf
+                          @method('DELETE')  
+                          <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                      </td>
+                  </tr>
+                  @endforeach                                                 
+              </tbody>
+          </table>
+        </div>
+        @endif
+      </div>  
     </div>
     <div class="tab-pane fade" id="capacitacao" role="tabpanel" aria-labelledby="capacitacao-tab">
-      teste 3
+      <div class="container">
+        <br>
+        <form method="POST" action="{{ route('capacitacaos.store') }}">
+          @csrf
+          <input type="hidden" id="profissional_id" name="profissional_id" value="{{ $profissional->id }}">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="capacitacao_tipo_id">Tipo do Capacitação</label>
+              <select class="form-control {{ $errors->has('capacitacao_tipo_id') ? ' is-invalid' : '' }}" name="capacitacao_tipo_id" id="capacitacao_tipo_id">
+                <option value="" selected>Selecionar ... </option>
+                @foreach($capacitacaotipos as $capacitacaotipo)
+                <option value="{{$capacitacaotipo->id}}">{{$capacitacaotipo->descricao}}</option>
+                @endforeach
+              </select>
+              @if ($errors->has('capacitacao_tipo_id'))
+              <div class="invalid-feedback">
+              {{ $errors->first('capacitacao_tipo_id') }}
+              </div>
+              @endif
+            </div>
+            <div class="form-group col-md-3">
+              <label for="capacitacao_inicio">Data inicial</label>
+              <input type="text" class="form-control{{ $errors->has('capacitacao_inicio') ? ' is-invalid' : '' }}" id="capacitacao_inicio" name="capacitacao_inicio" value="{{ old('capacitacao_inicio') ?? '' }}" autocomplete="off">
+              @if ($errors->has('capacitacao_inicio'))
+              <div class="invalid-feedback">
+              {{ $errors->first('capacitacao_inicio') }}
+              </div>
+              @endif  
+            </div>
+            <div class="form-group col-md-3">
+              <label for="capacitacao_final">Data final</label>
+              <input type="text" class="form-control{{ $errors->has('capacitacao_final') ? ' is-invalid' : '' }}" id="capacitacao_final" name="capacitacao_final" value="{{ old('capacitacao_final') ?? '' }}" autocomplete="off">
+              @if ($errors->has('capacitacao_final'))
+              <div class="invalid-feedback">
+              {{ $errors->first('capacitacao_final') }}
+              </div>
+              @endif 
+            </div>  
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="capacitacao_cargahoraria">Carga Horária</label>  
+              <input type="text" class="form-control" name="capacitacao_cargahoraria"  value="{{ old('capacitacao_cargahoraria') ?? '' }}">
+            </div>
+            <div class="form-group col-md-9">
+              <label for="capacitacao_observacao">Observações</label>  
+              <input type="text" class="form-control" name="capacitacao_observacao"  value="{{ old('capacitacao_observacao') ?? '' }}">
+            </div>              
+          </div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Incluir Capacitação</button> 
+        </form>
+        <br>
+        @if (count($capacitacaos))
+        <div class="table-responsive">
+          <table class="table table-striped">
+              <thead>
+                  <tr>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Inicial</th>
+                      <th scope="col">Final</th>
+                      <th scope="col">Justificativa</th>
+                      <th scope="col">Observações</th>
+                      <th scope="col"></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  @foreach($capacitacaos as $capacitacao_index)
+                  <tr>
+                      <td>{{ $capacitacao_index->capacitacaoTipo->descricao }}</td>
+                      <td>{{ isset($capacitacao_index->inicio) ?  $capacitacao_index->inicio->format('d/m/Y') : '-' }}</td>
+                      <td>{{ isset($capacitacao_index->fim) ?  $capacitacao_index->fim->format('d/m/Y') : '-' }}</td>
+                      <td>{{ $capacitacao_index->cargahoraria }}</td>
+                      <td>{{ $capacitacao_index->observacao }}</td>
+                      <td>
+                        <form method="post" action="{{route('capacitacaos.destroy', $ferias_index->id)}}">
+                          @csrf
+                          @method('DELETE')  
+                          <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                        </form>
+                      </td>
+                  </tr>
+                  @endforeach                                                 
+              </tbody>
+          </table>
+        </div>
+        @endif
+      </div>    
     </div>
   </div>
 
@@ -367,6 +556,42 @@
       });
 
       $('#ferias_inicio').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
+      });
+
+      $('#licenca_final').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
+      });
+
+      $('#licenca_inicio').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
+      });
+
+      $('#capacitacao_final').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
+      });
+
+      $('#capacitacao_inicio').datepicker({
         format: "dd/mm/yyyy",
         todayBtn: "linked",
         clearBtn: true,
@@ -422,6 +647,19 @@
           }
       });
   });
+
+$(document).ready(function() {
+  if (location.hash) {
+        $("a[href='" + location.hash + "']").tab("show");
+    }
+    $(document.body).on("click", "a[data-toggle]", function(event) {
+        location.hash = this.getAttribute("href");
+    });
+});
+$(window).on("popstate", function() {
+    var anchor = location.hash || $("a[data-toggle='tab']").first().attr("href");
+    $("a[href='" + anchor + "']").tab("show");
+});
 </script>
 
 @endsection

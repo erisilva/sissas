@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Ferias extends Model
+class Licenca extends Model
 {
     protected $fillable = [
-        'inicio', 'fim', 'justificativa', 'observacao', 'ferias_tipo_id', 'profissional_id', 'user_id'
+        'inicio', 'fim', 'observacao', 'licenca_tipo_id', 'profissional_id', 'user_id'
     ];
 
     protected $dates = ['inicio', 'fim'];
@@ -17,14 +17,13 @@ class Ferias extends Model
         return $this->belongsTo('App\Profissional');
     }
 
-    public function feriasTipo()
+    public function licencaTipo()
     {
-        return $this->belongsTo('App\FeriasTipo');
+        return $this->belongsTo('App\LicencaTipo');
     }
 
     public function user()
     {
         return $this->belongsTo('App\User');
     }
-
 }

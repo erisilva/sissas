@@ -29,10 +29,10 @@ use Illuminate\Support\Facades\Redirect; // para poder usar o redirect
 
 use Auth; // receber o id do operador logado no sistema
 
-use Illuminate\Support\Facades\DB;
 
-class FeriasController extends Controller
+class LicencaController extends Controller
 {
+
     /**
      * Construtor.
      *
@@ -45,7 +45,6 @@ class FeriasController extends Controller
     {
         $this->middleware(['middleware' => 'auth']);
         $this->middleware(['middleware' => 'hasaccess']);
-
     }
 
     /**
@@ -57,44 +56,41 @@ class FeriasController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-          'ferias_inicio' => 'required',
-          'ferias_final' => 'required',
-          'ferias_tipo_id' => 'required',
+            'licenca_inicio' => 'required',
+            'licenca_final' => 'required',
+            'licenca_tipo_id' => 'required',
         ],
         [
-            'ferias_inicio.required' => 'Data inicial do período deve ser preenchida',
-            'ferias_final.required' => 'Data final do período deve ser preenchida',
-            'ferias_tipo_id.required' => 'Selecione na lista o tipo de férias',
+            'licenca_inicio.required' => 'Data inicial do período deve ser preenchida',
+            'licenca_final.required' => 'Data final do período deve ser preenchida',
+            'licenca_tipo_id.required' => 'Selecione na lista o tipo de licença',
         ]);
 
-        $input_ferias = $request->all();
+        $input_licenca = $request->all();
 
-        if ($input_ferias['ferias_inicio'] != ""){
-            $dataFormatadaMysql = Carbon::createFromFormat('d/m/Y', request('ferias_inicio'))->format('Y-m-d');
-            // salva a data formatada com a variável correta        
-            $input_ferias['inicio'] =  $dataFormatadaMysql;            
+        if ($input_licenca['licenca_inicio'] != ""){
+            $dataFormatadaMysql = Carbon::createFromFormat('d/m/Y', request('licenca_inicio'))->format('Y-m-d');
+            // salva a data formatada com a variável correta  
+            $input_licenca['inicio'] =  $dataFormatadaMysql;      
         }
 
-        if ($input_ferias['ferias_final'] != ""){
-            $dataFormatadaMysql = Carbon::createFromFormat('d/m/Y', request('ferias_final'))->format('Y-m-d');
+        if ($input_licenca['licenca_final'] != ""){
+            $dataFormatadaMysql = Carbon::createFromFormat('d/m/Y', request('licenca_final'))->format('Y-m-d');
             // salva a data formatada com a variável correta        
-            $input_ferias['fim'] =  $dataFormatadaMysql;            
+            $input_licenca['fim'] =  $dataFormatadaMysql;       
         }
 
-        // ajusta a observação e justificativa
-        $input_ferias['justificativa'] = $input_ferias['ferias_justificativa'];
-        $input_ferias['observacao'] = $input_ferias['ferias_observacao'];
+        // ajusta a observação
+        $input_licenca['observacao'] = $input_licenca['licenca_observacao'];
 
 
         // recebi o usuário logado no sistema
         $user = Auth::user();
 
-        $input_ferias['user_id'] = $user->id;
+        $input_licenca['user_id'] = $user->id;
 
         // salva
-        Ferias::create($input_ferias);
-
-
+        Licenca::create($input_licenca);
 
         // consulta a tabela dos cargos
         $cargos = Cargo::orderBy('nome', 'asc')->get();
@@ -118,7 +114,7 @@ class FeriasController extends Controller
         $cargahorarias = CargaHoraria::orderBy('descricao', 'asc')->get();
 
         // consulta os dados do profissional
-        $profissional = Profissional::find($input_ferias['profissional_id']);
+        $profissional = Profissional::find($input_licenca['profissional_id']);
 
         // consulta todas férias do profissional
         $ferias = Ferias::where('profissional_id', '=', $profissional->id)->orderBy('id', 'desc')->get();
@@ -129,10 +125,10 @@ class FeriasController extends Controller
         // consulta todas licenças do profissional
         $capacitacaos = Capacitacao::where('profissional_id', '=', $profissional->id)->orderBy('id', 'desc')->get();
 
-
-        Session::flash('create_ferias', 'Período de férias inserido com sucesso!');        
+        Session::flash('create_licenca', 'Período de licença inserido com sucesso!');        
 
         return Redirect::route('profissionals.edit', $profissional->id)->with('profissional', 'cargos', 'vinculos', 'vinculotipos', 'cargahorarias', 'ferias', 'feriastipos', 'licencatipos', 'licencas', 'capacitacaotipos', 'capacitacaos');
+
 
     }
 
@@ -145,9 +141,9 @@ class FeriasController extends Controller
      */
     public function destroy($id)
     {
-        $ferias_deletar = Ferias::findOrFail($id);
+        $licenca_deletar = Licenca::findOrFail($id);
 
-         // consulta a tabela dos cargos
+        // consulta a tabela dos cargos
         $cargos = Cargo::orderBy('nome', 'asc')->get();
 
         // consulta a tabela dos de tipo de férias
@@ -169,10 +165,10 @@ class FeriasController extends Controller
         $cargahorarias = CargaHoraria::orderBy('descricao', 'asc')->get();
 
         // consulta os dados do profissional
-        $profissional = Profissional::find($ferias_deletar->profissional_id);
+        $profissional = Profissional::find($licenca_deletar->profissional_id);
 
         // consulta todas férias do profissional
-        $ferias = Ferias::where('profissional_id', '=', $ferias_deletar->profissional_id)->orderBy('id', 'desc')->get();
+        $ferias = Ferias::where('profissional_id', '=', $profissional->id)->orderBy('id', 'desc')->get();
 
         // consulta todas licenças do profissional
         $licencas = Licenca::where('profissional_id', '=', $profissional->id)->orderBy('id', 'desc')->get();
@@ -180,11 +176,10 @@ class FeriasController extends Controller
         // consulta todas licenças do profissional
         $capacitacaos = Capacitacao::where('profissional_id', '=', $profissional->id)->orderBy('id', 'desc')->get();
 
-        $ferias_deletar->delete();        
+        $licenca_deletar->delete();        
 
-        Session::flash('delete_ferias', 'Período de férias excluído com sucesso!');
+        Session::flash('delete_licenca', 'Período de licença excluído com sucesso!');
 
-        return Redirect::route('profissionals.edit', $ferias_deletar->profissional_id)->with('profissional', 'cargos', 'vinculos', 'vinculotipos', 'cargahorarias', 'ferias', 'licencas', 'feriastipos', 'licencatipos', 'capacitacaotipos', 'capacitacaos');
-
+        return Redirect::route('profissionals.edit', $licenca_deletar->profissional_id)->with('profissional', 'cargos', 'vinculos', 'vinculotipos', 'cargahorarias', 'ferias', 'licencas', 'capacitacaotipos', 'capacitacaos');
     }
 }
