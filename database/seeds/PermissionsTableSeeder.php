@@ -333,6 +333,50 @@ class PermissionsTableSeeder extends Seeder
             'description' => 'Exportação de dados dos tipos de Capacitações',
         ]);
 
+        // Profissionais
+        DB::table('permissions')->insert([
+            'name' => 'profissional.index',
+            'description' => 'Lista de profissionais',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'profissional.create',
+            'description' => 'Registrar novo profissional',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'profissional.edit',
+            'description' => 'Alterar dados de um profissional',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'profissional.delete',
+            'description' => 'Enviar profissional para lixeira',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'profissional.show',
+            'description' => 'Mostrar dados dos profissionais',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'profissional.export',
+            'description' => 'Exportação de dados dos profissionais',
+        ]);
 
+        // Profissionais (LIXEIRA)
+        DB::table('permissions')->insert([
+            'name' => 'profissional.trash.index',
+            'description' => 'Exibir a lixeira de profissionais',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'profissional.trash.restore',
+            'description' => 'Restaurar registro da lixeira de profissionais',
+        ]);
+
+        // Profissionais->férias
+        DB::table('permissions')->insert([
+            'name' => 'profissional.ferias.create',
+            'description' => 'Registrar férias para os profissionais',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'profissional.ferias.delete',
+            'description' => 'Excluir férias dos profissionais',
+        ]);
     }
 }

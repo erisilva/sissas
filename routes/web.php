@@ -92,7 +92,16 @@ Route::resource('/capacitacaotipos', 'CapacitacaoTipoController');
 /* Profissionais */
 Route::get('/profissionals/export/csv', 'ProfissionalController@exportcsv')->name('profissionals.export.csv');
 Route::get('/profissionals/export/pdf', 'ProfissionalController@exportpdf')->name('profissionals.export.pdf');
+Route::get('/profissionals/export/pdf/simples', 'ProfissionalController@exportpdfsimples')->name('profissionals.export.pdf.simples');
+Route::get('/profissionals/export/pdf/{id}/individual', 'ProfissionalController@exportpdfindividual')->name('profissionals.export.pdf.individual');
+# lixeira
+Route::get('/profissionals/trash', 'ProfissionalTrashController@index')->name('profissionals.trash');
+Route::get('/profissionals/trash/{id}', 'ProfissionalTrashController@show')->name('profissionals.trash.show');
+Route::post('/profissionals/trash/{id}/restore', 'ProfissionalTrashController@restore')->name('profissionals.trash.restore');
+# resource
 Route::resource('/profissionals', 'ProfissionalController');
+
+
 
 /* Férias dos profissionais */
 Route::resource('/ferias', 'FeriasController')->only(['store', 'destroy',]);

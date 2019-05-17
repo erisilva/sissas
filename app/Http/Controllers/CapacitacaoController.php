@@ -80,7 +80,7 @@ class CapacitacaoController extends Controller
 
         // ajusta a observação
         $input_capacitacao['observacao'] = $input_capacitacao['capacitacao_observacao'];
-        $input_capacitacao['cargahoraria'] = $input_capacitacao['capacitacao_cargahoraria'];
+        $input_capacitacao['cargaHoraria'] = $input_capacitacao['capacitacao_cargahoraria'];
 
 
         // recebi o usuário logado no sistema

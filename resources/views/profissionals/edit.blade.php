@@ -23,6 +23,14 @@
     </button>
   </div>
   @endif
+  @if(Session::has('create_profissional'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Info!</strong>  {{ session('create_profissional') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
   <form method="POST" action="{{ route('profissionals.update', $profissional->id) }}">
     @csrf
     @method('PUT')
@@ -193,7 +201,11 @@
         </div>
         @endif
       </div>    
-    </div> 
+    </div>
+    <div class="form-group">
+      <label for="observacao">Observações</label>
+      <textarea class="form-control" name="observacao" rows="3">{{ $profissional->observacao }}</textarea>      
+    </div>
     <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Alterar Dados do Profissional</button>
   </form>
 </div>
@@ -207,6 +219,7 @@
     </button>
   </div>
   @endif
+  {{-- Avisos --}}
   @if(Session::has('create_ferias'))
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>Info!</strong>  {{ session('create_ferias') }}
@@ -490,7 +503,7 @@
                       <th scope="col">Tipo</th>
                       <th scope="col">Inicial</th>
                       <th scope="col">Final</th>
-                      <th scope="col">Justificativa</th>
+                      <th scope="col">Carga Horária</th>
                       <th scope="col">Observações</th>
                       <th scope="col"></th>
                   </tr>
@@ -501,10 +514,10 @@
                       <td>{{ $capacitacao_index->capacitacaoTipo->descricao }}</td>
                       <td>{{ isset($capacitacao_index->inicio) ?  $capacitacao_index->inicio->format('d/m/Y') : '-' }}</td>
                       <td>{{ isset($capacitacao_index->fim) ?  $capacitacao_index->fim->format('d/m/Y') : '-' }}</td>
-                      <td>{{ $capacitacao_index->cargahoraria }}</td>
+                      <td>{{ $capacitacao_index->cargaHoraria }}</td>
                       <td>{{ $capacitacao_index->observacao }}</td>
                       <td>
-                        <form method="post" action="{{route('capacitacaos.destroy', $ferias_index->id)}}">
+                        <form method="post" action="{{route('capacitacaos.destroy', $capacitacao_index->id)}}">
                           @csrf
                           @method('DELETE')  
                           <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
@@ -519,10 +532,8 @@
       </div>    
     </div>
   </div>
-
 </div>
 <br>
-
 <div class="container">
   <div class="float-right">
     <a href="{{ route('profissionals.index') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>

@@ -56,6 +56,10 @@ class FeriasController extends Controller
      */
     public function store(Request $request)
     {
+        if (Gate::denies('profissional.ferias.create')) {
+            abort(403, 'Acesso negado.');
+        }
+
         $this->validate($request, [
           'ferias_inicio' => 'required',
           'ferias_final' => 'required',
@@ -145,6 +149,10 @@ class FeriasController extends Controller
      */
     public function destroy($id)
     {
+        if (Gate::denies('profissional.ferias.delete')) {
+            abort(403, 'Acesso negado.');
+        }
+        
         $ferias_deletar = Ferias::findOrFail($id);
 
          // consulta a tabela dos cargos

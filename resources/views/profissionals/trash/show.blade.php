@@ -5,7 +5,8 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('profissionals.index') }}">Lista de Profissionais</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Exibir Registro</li>
+      <li class="breadcrumb-item" aria-current="page"><a href="{{ route('profissionals.trash') }}">Lixeira</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Exibir e Restaurar Registro</li>
     </ol>
   </nav>
 </div>
@@ -200,11 +201,10 @@
   @endif
   <br>
   <div class="container">
-    <form method="post" action="{{route('profissionals.destroy', $profissional->id)}}">
+    <form method="post" action="{{route('profissionals.trash.restore', array($profissional->id))}}">
       @csrf
-      @method('DELETE')
-      <a href="{{ route('profissionals.index') }}" class="btn btn-primary" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>
-      <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Enviar para Lixeira</button>
+      <a href="{{ route('profissionals.trash') }}" class="btn btn-primary" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>
+      <button type="submit" class="btn btn-success"><i class="fas fa-trash-restore"></i> Restaurar</button>
     </form>
   </div>
 </div>

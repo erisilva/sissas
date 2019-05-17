@@ -54,7 +54,6 @@
         @endif
       </div>
     </div>
-
     <div class="form-row">
       <div class="form-group col-md-6">
         <label for="email">E-mail</label>  
@@ -69,7 +68,6 @@
         <input type="text" class="form-control" name="cel" id="cel" value="{{ old('cel') ?? '' }}">
       </div>
     </div>
-
     <div class="form-row">
       <div class="form-group col-md-2">
         <label for="cep">CEP</label>  
@@ -102,7 +100,6 @@
         <input type="text" class="form-control" name="uf" id="uf" value="{{ old('uf') ?? '' }}">
       </div>
     </div>
-
     <div class="form-row">
       <div class="form-group col-md-5">
         <label for="cargo_id">Cargo</label>
@@ -147,9 +144,7 @@
         @endif
       </div>
     </div>
-
     <div class="form-row">
-
       <div class="form-group col-md-3">
         <label for="carga_horaria_id">Carga Horária</label>
         <select class="form-control {{ $errors->has('carga_horaria_id') ? ' is-invalid' : '' }}" name="carga_horaria_id" id="carga_horaria_id">
@@ -164,7 +159,6 @@
         </div>
         @endif
       </div>
-
       <div class="form-group col-md-6">
         <p>Flexibilização</p>
         <div class="form-check form-check-inline">
@@ -180,7 +174,6 @@
           <label class="form-check-label" for="inlineRadio3">Redução</label>
         </div>
       </div>
-
       <div class="form-group col-md-3">  
         <label for="admissao">Admissão</label>  
         <input type="text" class="form-control{{ $errors->has('admissao') ? ' is-invalid' : '' }}" name="admissao" id="admissao" value="{{ old('admissao') ?? '' }}" autocomplete="off">
@@ -190,8 +183,11 @@
         </div>
         @endif
       </div>    
-
-    </div> 
+    </div>
+    <div class="form-group">
+      <label for="observacao">Observações</label>
+      <textarea class="form-control" name="observacao" rows="3">{{ old('observacao') ?? '' }}</textarea>      
+    </div>
 
     <button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Incluir Profissional</button>
   </form>

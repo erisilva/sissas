@@ -4,7 +4,8 @@
 <div class="container-fluid">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('profissionals.index') }}">Lista de Profissionais</a></li>
+      <li class="breadcrumb-item" aria-current="page"><a href="{{ route('profissionals.index') }}">Lista de Profissionais</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('profissionals.trash') }}">Lixeira</a></li>
     </ol>
   </nav>
   {{-- avisa se um usuario foi excluido --}}
@@ -25,15 +26,6 @@
     </button>
   </div>
   @endif
-  {{-- avisa quando um usuário foi modificado --}}
-  @if(Session::has('restore_profissional'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Info!</strong>  {{ session('restore_profissional') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  @endif
   <div class="btn-group py-1" role="group" aria-label="Opções">
     <a href="{{ route('profissionals.create') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-plus-square"></i> Novo Registro</a>
     <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalFilter"><i class="fas fa-filter"></i> Filtrar</button>
@@ -44,7 +36,6 @@
       <div class="dropdown-menu" aria-labelledby="btnGroupDropOptions">
         <a class="dropdown-item" href="#" id="btnExportarCSV"><i class="fas fa-file-download"></i> Exportar Planilha</a>
         <a class="dropdown-item" href="#" id="btnExportarPDF"><i class="fas fa-file-download"></i> Exportar PDF</a>
-        <a class="dropdown-item" href="#" id="btnExportarPDFsimples"><i class="fas fa-file-download"></i> Exportar PDF (Simplificado)</a>
       </div>
     </div>
     <a href="{{ route('profissionals.trash') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-trash-alt"></i> Lixeira</a>
@@ -57,6 +48,7 @@
                 <th scope="col">Nome</th>
                 <th scope="col">Cargo</th>
                 <th scope="col">Vínculo</th>
+                <th scope="col">Excluído em</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -67,11 +59,10 @@
                 <td>{{$profissional->nome}}</td>
                 <td>{{$profissional->cargo->nome}}</td>
                 <td>{{$profissional->vinculo->descricao}}</td>
+                <td>{{$profissional->deleted_at->format('d/m/Y')}}</td>
                 <td>
                   <div class="btn-group" role="group">
-                    <a href="{{route('profissionals.edit', $profissional->id)}}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-edit"></i></a>
-                    <a href="{{route('profissionals.show', $profissional->id)}}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
-                    <a href="{{ route('profissionals.export.pdf.individual', $profissional->id) }}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-print"></i></a>
+                    <a href="{{route('profissionals.trash.show', array($profissional->id))}}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
                   </div>
                 </td>
             </tr>    
@@ -95,7 +86,7 @@
         </div>
         <div class="modal-body">
           <!-- Filtragem dos dados -->
-          <form method="GET" action="{{ route('profissionals.index') }}">
+          <form method="GET" action="{{ route('profissionals.trash') }}">
             <div class="form-row">
               <div class="form-group col-md-4">
                 <label for="matricula">Nº Matrícula</label>
@@ -127,7 +118,7 @@
               </div> 
             </div> 
             <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Pesquisar</button>
-            <a href="{{ route('profissionals.index') }}" class="btn btn-primary btn-sm" role="button">Limpar</a>
+            <a href="{{ route('profissionals.trash') }}" class="btn btn-primary btn-sm" role="button">Limpar</a>
           </form>
           <br>
           <!-- Seleção de número de resultados por página -->
@@ -157,54 +148,11 @@ $(document).ready(function(){
     });
 
     $('#btnExportarCSV').on('click', function(){
-      var filtro_matricula = $('input[name="matricula"]').val();
-      var filtro_nome = $('input[name="nome"]').val();
-
-      var filtro_cargo_id = $('select[name="cargo_id"]').val();
-      if (typeof filtro_cargo_id === "undefined") {
-          filtro_cargo_id = "";
-      }
-
-      var filtro_vinculo_id = $('select[name="vinculo_id"]').val();
-      if (typeof filtro_vinculo_id === "undefined") {
-          filtro_vinculo_id = "";
-      }  
-
-      window.open("{{ route('profissionals.export.csv') }}" + "?matricula=" + filtro_matricula + "&nome=" + filtro_nome + "&cargo_id=" + filtro_cargo_id + "&vinculo_id=" + filtro_vinculo_id,"_self");
+        window.open("{{ route('profissionals.export.csv') }}","_self");
     });
 
     $('#btnExportarPDF').on('click', function(){
-      var filtro_matricula = $('input[name="matricula"]').val();
-      var filtro_nome = $('input[name="nome"]').val();
-
-      var filtro_cargo_id = $('select[name="cargo_id"]').val();
-      if (typeof filtro_cargo_id === "undefined") {
-          filtro_cargo_id = "";
-      }
-
-      var filtro_vinculo_id = $('select[name="vinculo_id"]').val();
-      if (typeof filtro_vinculo_id === "undefined") {
-          filtro_vinculo_id = "";
-      }  
-
-      window.open("{{ route('profissionals.export.pdf') }}" + "?matricula=" + filtro_matricula + "&nome=" + filtro_nome + "&cargo_id=" + filtro_cargo_id + "&vinculo_id=" + filtro_vinculo_id,"_self");
-    });
-
-    $('#btnExportarPDFsimples').on('click', function(){
-      var filtro_matricula = $('input[name="matricula"]').val();
-      var filtro_nome = $('input[name="nome"]').val();
-
-      var filtro_cargo_id = $('select[name="cargo_id"]').val();
-      if (typeof filtro_cargo_id === "undefined") {
-          filtro_cargo_id = "";
-      }
-
-      var filtro_vinculo_id = $('select[name="vinculo_id"]').val();
-      if (typeof filtro_vinculo_id === "undefined") {
-          filtro_vinculo_id = "";
-      }  
-
-      window.open("{{ route('profissionals.export.pdf.simples') }}" + "?matricula=" + filtro_matricula + "&nome=" + filtro_nome + "&cargo_id=" + filtro_cargo_id + "&vinculo_id=" + filtro_vinculo_id,"_self");
+        window.open("{{ route('profissionals.export.pdf') }}","_self");
     });
 }); 
 </script>

@@ -127,6 +127,20 @@ class AclSeeder extends Seeder
 		$capacitacaotipo_delete = Permission::where('name', '=', 'capacitacaotipo.delete')->get()->first();
 		$capacitacaotipo_show = Permission::where('name', '=', 'capacitacaotipo.show')->get()->first();  
 		$capacitacaotipo_export = Permission::where('name', '=', 'capacitacaotipo.export')->get()->first();
+		// para profissionais
+		$profissional_index = Permission::where('name', '=', 'profissional.index')->get()->first(); 
+		$profissional_create = Permission::where('name', '=', 'profissional.create')->get()->first();
+		$profissional_edit = Permission::where('name', '=', 'profissional.edit')->get()->first();  
+		$profissional_delete = Permission::where('name', '=', 'profissional.delete')->get()->first();
+		$profissional_show = Permission::where('name', '=', 'profissional.show')->get()->first();  
+		$profissional_export = Permission::where('name', '=', 'profissional.export')->get()->first();
+		// para profissionais (LIXEIRA)
+		$profissional_trash_index = Permission::where('name', '=', 'profissional.trash.index')->get()->first(); 
+		$profissional_trash_restore = Permission::where('name', '=', 'profissional.trash.restore')->get()->first();
+		// para profissionais->férias
+		$profissional_ferias_create = Permission::where('name', '=', 'profissional.ferias.create')->get()->first();  
+		$profissional_ferias_delete = Permission::where('name', '=', 'profissional.ferias.delete')->get()->first();
+
 
 
 
@@ -216,8 +230,19 @@ class AclSeeder extends Seeder
 		$administrador_perfil->permissions()->attach($capacitacaotipo_delete);
 		$administrador_perfil->permissions()->attach($capacitacaotipo_show);
 		$administrador_perfil->permissions()->attach($capacitacaotipo_export);
-
-
+		# Profissionais
+		$administrador_perfil->permissions()->attach($profissional_index);
+		$administrador_perfil->permissions()->attach($profissional_create);
+		$administrador_perfil->permissions()->attach($profissional_edit);
+		$administrador_perfil->permissions()->attach($profissional_delete);
+		$administrador_perfil->permissions()->attach($profissional_show);
+		$administrador_perfil->permissions()->attach($profissional_export);
+		#profissionais LIXEIRA
+		$administrador_perfil->permissions()->attach($profissional_trash_index);
+		$administrador_perfil->permissions()->attach($profissional_trash_restore);
+		# Profissionais->férias
+		$administrador_perfil->permissions()->attach($profissional_ferias_create);
+		$administrador_perfil->permissions()->attach($profissional_ferias_delete);
 
 
 
@@ -281,6 +306,19 @@ class AclSeeder extends Seeder
 		$gerente_perfil->permissions()->attach($capacitacaotipo_edit);
 		$gerente_perfil->permissions()->attach($capacitacaotipo_show);
 		$gerente_perfil->permissions()->attach($capacitacaotipo_export);
+		# Profissionais -- pode enviar para a lixeira
+		$gerente_perfil->permissions()->attach($profissional_index);
+		$gerente_perfil->permissions()->attach($profissional_create);
+		$gerente_perfil->permissions()->attach($profissional_edit);
+		$gerente_perfil->permissions()->attach($profissional_delete);
+		$gerente_perfil->permissions()->attach($profissional_show);
+		$gerente_perfil->permissions()->attach($profissional_export);
+		#profissionais LIXEIRA
+		$gerente_perfil->permissions()->attach($profissional_trash_index);
+		$gerente_perfil->permissions()->attach($profissional_trash_restore);
+		# Profissionais->férias
+		$gerente_perfil->permissions()->attach($profissional_ferias_create);
+		$gerente_perfil->permissions()->attach($profissional_ferias_delete);
 
 
 
@@ -327,6 +365,16 @@ class AclSeeder extends Seeder
 		$operador_perfil->permissions()->attach($capacitacaotipo_index);
 		$operador_perfil->permissions()->attach($capacitacaotipo_show);
 		$operador_perfil->permissions()->attach($capacitacaotipo_export);
+		# profissionais, o operador pode cadastrar e alterar os dados
+		$operador_perfil->permissions()->attach($profissional_index);
+		$operador_perfil->permissions()->attach($profissional_edit);
+		$operador_perfil->permissions()->attach($profissional_create);
+		$operador_perfil->permissions()->attach($profissional_show);
+		$operador_perfil->permissions()->attach($profissional_export);
+		#profissionais LIXEIRA
+		$operador_perfil->permissions()->attach($profissional_trash_index);
+		# profissionais->férias
+		$operador_perfil->permissions()->attach($profissional_ferias_create);
 
 
 
@@ -362,6 +410,9 @@ class AclSeeder extends Seeder
 		# tipos de capacitações
 		$leitor_perfil->permissions()->attach($capacitacaotipo_index);
 		$leitor_perfil->permissions()->attach($capacitacaotipo_show);
+		# profissionais
+		$leitor_perfil->permissions()->attach($profissional_index);
+		$leitor_perfil->permissions()->attach($profissional_show);
 
 
 
