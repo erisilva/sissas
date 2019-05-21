@@ -53,6 +53,10 @@ class CapacitacaoController extends Controller
      */
     public function store(Request $request)
     {
+        if (Gate::denies('profissional.capacitacao.create')) {
+            abort(403, 'Acesso negado.');
+        }
+
         $this->validate($request, [
             'capacitacao_inicio' => 'required',
             'capacitacao_final' => 'required',
@@ -139,6 +143,10 @@ class CapacitacaoController extends Controller
      */
     public function destroy($id)
     {
+        if (Gate::denies('licenca.capacitacao.delete')) {
+            abort(403, 'Acesso negado.');
+        }
+
         $capacitacao_deletar = Capacitacao::findOrFail($id);
 
         // consulta a tabela dos cargos

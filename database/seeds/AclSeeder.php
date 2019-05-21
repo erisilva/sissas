@@ -140,6 +140,12 @@ class AclSeeder extends Seeder
 		// para profissionais->férias
 		$profissional_ferias_create = Permission::where('name', '=', 'profissional.ferias.create')->get()->first();  
 		$profissional_ferias_delete = Permission::where('name', '=', 'profissional.ferias.delete')->get()->first();
+		// para profissionais->licenças
+		$profissional_licenca_create = Permission::where('name', '=', 'profissional.licenca.create')->get()->first();  
+		$profissional_licenca_delete = Permission::where('name', '=', 'profissional.licenca.delete')->get()->first();
+		// para profissionais->capacitações
+		$profissional_capacitacao_create = Permission::where('name', '=', 'profissional.capacitacao.create')->get()->first();  
+		$profissional_capacitacao_delete = Permission::where('name', '=', 'profissional.capacitacao.delete')->get()->first();
 
 
 
@@ -243,6 +249,12 @@ class AclSeeder extends Seeder
 		# Profissionais->férias
 		$administrador_perfil->permissions()->attach($profissional_ferias_create);
 		$administrador_perfil->permissions()->attach($profissional_ferias_delete);
+		# Profissionais->licenças
+		$administrador_perfil->permissions()->attach($profissional_licenca_create);
+		$administrador_perfil->permissions()->attach($profissional_licenca_delete);
+		# Profissionais->capacitações
+		$administrador_perfil->permissions()->attach($profissional_capacitacao_create);
+		$administrador_perfil->permissions()->attach($profissional_capacitacao_delete);
 
 
 
@@ -319,6 +331,12 @@ class AclSeeder extends Seeder
 		# Profissionais->férias
 		$gerente_perfil->permissions()->attach($profissional_ferias_create);
 		$gerente_perfil->permissions()->attach($profissional_ferias_delete);
+		# Profissionais->licenças
+		$gerente_perfil->permissions()->attach($profissional_licenca_create);
+		$gerente_perfil->permissions()->attach($profissional_licenca_delete);
+		# Profissionais->capacitações
+		$gerente_perfil->permissions()->attach($profissional_capacitacao_create);
+		$gerente_perfil->permissions()->attach($profissional_capacitacao_delete);
 
 
 
@@ -375,7 +393,10 @@ class AclSeeder extends Seeder
 		$operador_perfil->permissions()->attach($profissional_trash_index);
 		# profissionais->férias
 		$operador_perfil->permissions()->attach($profissional_ferias_create);
-
+		# profissionais->licenças
+		$operador_perfil->permissions()->attach($profissional_licenca_create);
+		# profissionais->capacitações
+		$operador_perfil->permissions()->attach($profissional_capacitacao_create);
 
 
 

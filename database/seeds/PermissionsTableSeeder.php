@@ -378,5 +378,25 @@ class PermissionsTableSeeder extends Seeder
             'name' => 'profissional.ferias.delete',
             'description' => 'Excluir férias dos profissionais',
         ]);
+
+        // Profissionais->licença
+        DB::table('permissions')->insert([
+            'name' => 'profissional.licenca.create',
+            'description' => 'Registrar licença para os profissionais',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'profissional.licenca.delete',
+            'description' => 'Excluir licença dos profissionais',
+        ]);
+
+        // Profissionais->capacitação
+        DB::table('permissions')->insert([
+            'name' => 'profissional.capacitacao.create',
+            'description' => 'Registrar capacitação para os profissionais',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'profissional.capacitacao.delete',
+            'description' => 'Excluir capacitação dos profissionais',
+        ]);
     }
 }

@@ -55,6 +55,10 @@ class LicencaController extends Controller
      */
     public function store(Request $request)
     {
+        if (Gate::denies('profissional.licenca.create')) {
+            abort(403, 'Acesso negado.');
+        }
+
         $this->validate($request, [
             'licenca_inicio' => 'required',
             'licenca_final' => 'required',
@@ -141,6 +145,10 @@ class LicencaController extends Controller
      */
     public function destroy($id)
     {
+        if (Gate::denies('licenca.ferias.delete')) {
+            abort(403, 'Acesso negado.');
+        }
+
         $licenca_deletar = Licenca::findOrFail($id);
 
         // consulta a tabela dos cargos
