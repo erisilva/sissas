@@ -6,6 +6,7 @@ use App\Profissional;
 use App\Cargo;
 use App\Vinculo;
 use App\VinculoTipo;
+use App\OrgaoEmissor;
 use App\CargaHoraria;
 use App\Perpage;
 
@@ -137,10 +138,13 @@ class ProfissionalController extends Controller
         // consulta a tabela dos tipos de vínculos
         $vinculotipos = VinculoTipo::orderBy('descricao', 'asc')->get();
 
+        // consulta a tabela dos orgão emissores 
+        $orgaoemissores = OrgaoEmissor::orderBy('descricao', 'asc')->get();
+
         // consulta a tabela dos carga horária
         $cargahorarias = CargaHoraria::orderBy('descricao', 'asc')->get();
 
-        return view('profissionals.create', compact('cargos', 'vinculos', 'vinculotipos', 'cargahorarias'));
+        return view('profissionals.create', compact('cargos', 'vinculos', 'vinculotipos', 'cargahorarias', 'orgaoemissores'));
     }
 
     /**
@@ -245,6 +249,9 @@ class ProfissionalController extends Controller
         // consulta a tabela dos tipos de vínculos
         $vinculotipos = VinculoTipo::orderBy('descricao', 'asc')->get();
 
+        // consulta a tabela dos orgão emissores 
+        $orgaoemissores = OrgaoEmissor::orderBy('descricao', 'asc')->get();
+
         // consulta a tabela dos carga horária
         $cargahorarias = CargaHoraria::orderBy('descricao', 'asc')->get();
 
@@ -257,7 +264,7 @@ class ProfissionalController extends Controller
         // consulta todas capacitações do profissional
         $capacitacaos = Capacitacao::where('profissional_id', '=', $id)->orderBy('id', 'desc')->get();
 
-        return view('profissionals.edit', compact('profissional', 'cargos', 'vinculos', 'vinculotipos', 'cargahorarias', 'feriastipos', 'ferias', 'licencatipos', 'licencas', 'capacitacaos', 'capacitacaotipos'));
+        return view('profissionals.edit', compact('profissional', 'cargos', 'vinculos', 'vinculotipos', 'cargahorarias', 'feriastipos', 'ferias', 'licencatipos', 'licencas', 'capacitacaos', 'capacitacaotipos', 'orgaoemissores'));
     }
 
     /**

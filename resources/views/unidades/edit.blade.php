@@ -89,7 +89,7 @@
       </div>      
     </div>
 
-    <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Alterar Dados do Tipo da Unidade</button>
+    <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Alterar Dados da Unidade</button>
   </form>
 </div>
 <div class="container">

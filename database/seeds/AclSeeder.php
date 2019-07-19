@@ -146,6 +146,13 @@ class AclSeeder extends Seeder
 		// para profissionais->capacitações
 		$profissional_capacitacao_create = Permission::where('name', '=', 'profissional.capacitacao.create')->get()->first();  
 		$profissional_capacitacao_delete = Permission::where('name', '=', 'profissional.capacitacao.delete')->get()->first();
+		// para profissionais
+		$orgaoemissor_index = Permission::where('name', '=', 'orgaoemissor.index')->get()->first(); 
+		$orgaoemissor_create = Permission::where('name', '=', 'orgaoemissor.create')->get()->first();
+		$orgaoemissor_edit = Permission::where('name', '=', 'orgaoemissor.edit')->get()->first();  
+		$orgaoemissor_delete = Permission::where('name', '=', 'orgaoemissor.delete')->get()->first();
+		$orgaoemissor_show = Permission::where('name', '=', 'orgaoemissor.show')->get()->first();  
+		$orgaoemissor_export = Permission::where('name', '=', 'orgaoemissor.export')->get()->first();
 
 
 
@@ -255,6 +262,13 @@ class AclSeeder extends Seeder
 		# Profissionais->capacitações
 		$administrador_perfil->permissions()->attach($profissional_capacitacao_create);
 		$administrador_perfil->permissions()->attach($profissional_capacitacao_delete);
+		# Orgão Emissor
+		$administrador_perfil->permissions()->attach($orgaoemissor_index);
+		$administrador_perfil->permissions()->attach($orgaoemissor_create);
+		$administrador_perfil->permissions()->attach($orgaoemissor_edit);
+		$administrador_perfil->permissions()->attach($orgaoemissor_delete);
+		$administrador_perfil->permissions()->attach($orgaoemissor_show);
+		$administrador_perfil->permissions()->attach($orgaoemissor_export);
 
 
 
@@ -337,6 +351,12 @@ class AclSeeder extends Seeder
 		# Profissionais->capacitações
 		$gerente_perfil->permissions()->attach($profissional_capacitacao_create);
 		$gerente_perfil->permissions()->attach($profissional_capacitacao_delete);
+		# Orgão Emissor
+		$gerente_perfil->permissions()->attach($orgaoemissor_index);
+		$gerente_perfil->permissions()->attach($orgaoemissor_create);
+		$gerente_perfil->permissions()->attach($orgaoemissor_edit);
+		$gerente_perfil->permissions()->attach($orgaoemissor_show);
+		$gerente_perfil->permissions()->attach($orgaoemissor_export);
 
 
 
@@ -397,6 +417,12 @@ class AclSeeder extends Seeder
 		$operador_perfil->permissions()->attach($profissional_licenca_create);
 		# profissionais->capacitações
 		$operador_perfil->permissions()->attach($profissional_capacitacao_create);
+		# Orgão Emissor
+		$operador_perfil->permissions()->attach($orgaoemissor_index);
+		$operador_perfil->permissions()->attach($orgaoemissor_edit);
+		$operador_perfil->permissions()->attach($orgaoemissor_create);
+		$operador_perfil->permissions()->attach($orgaoemissor_show);
+		$operador_perfil->permissions()->attach($orgaoemissor_export);		
 
 
 
@@ -434,6 +460,9 @@ class AclSeeder extends Seeder
 		# profissionais
 		$leitor_perfil->permissions()->attach($profissional_index);
 		$leitor_perfil->permissions()->attach($profissional_show);
+		# orgão emissor
+		$leitor_perfil->permissions()->attach($orgaoemissor_index);
+		$leitor_perfil->permissions()->attach($orgaoemissor_show);
 
 
 

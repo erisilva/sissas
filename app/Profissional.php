@@ -16,7 +16,7 @@ class Profissional extends Model
      * @var array
      */
     protected $fillable = [
-        'nome', 'matricula', 'cns', 'cpf', 'flexibilizacao', 'admissao', 'observacao', 'tel', 'cel', 'email', 'cep', 'logradouro', 'bairro', 'numero', 'complemento', 'cidade', 'uf', 'cargo_id', 'carga_horaria_id', 'vinculo_id', 'vinculo_tipo_id'
+        'nome', 'matricula', 'cns', 'cpf', 'flexibilizacao', 'admissao', 'observacao', 'tel', 'cel', 'email', 'cep', 'logradouro', 'bairro', 'numero', 'complemento', 'cidade', 'uf', 'cargo_id', 'carga_horaria_id', 'vinculo_id', 'vinculo_tipo_id', 'orgao_emissor_id', 'registroClasse', 'ufOrgaoEmissor'
     ];
 
     /**
@@ -57,6 +57,16 @@ class Profissional extends Model
     public function vinculoTipo()
     {
         return $this->belongsTo('App\VinculoTipo');
+    }
+
+    /**
+     * Orgão Emissor do Registro de classe do profissional
+     *
+     * @var VinculoTipo
+     */
+    public function orgaoEmissor()
+    {
+        return $this->belongsTo('App\OrgaoEmissor');
     }
 
     /**

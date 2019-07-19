@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LicencaTiposTableSeeder::class);
         $this->call(FeriasTiposTableSeeder::class);
         $this->call(CapacitacaoTiposTableSeeder::class);
+        $this->call(OrgaoEmissorsTableSeeder::class);
 
 
         // rodar sempre no fim

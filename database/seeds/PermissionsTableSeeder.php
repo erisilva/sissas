@@ -398,5 +398,31 @@ class PermissionsTableSeeder extends Seeder
             'name' => 'profissional.capacitacao.delete',
             'description' => 'Excluir capacitação dos profissionais',
         ]);
+
+        // Orgão Emissor
+        DB::table('permissions')->insert([
+            'name' => 'orgaoemissor.index',
+            'description' => 'Lista de orgãos emissores',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'orgaoemissor.create',
+            'description' => 'Registrar novo orgão emissor',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'orgaoemissor.edit',
+            'description' => 'Alterar dados de um orgão emissor',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'orgaoemissor.delete',
+            'description' => 'Excluir orgão emissor',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'orgaoemissor.show',
+            'description' => 'Mostrar dados dos orgãos emissores',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'orgaoemissor.export',
+            'description' => 'Exportação de dados dos orgãos emissores',
+        ]);
     }
 }

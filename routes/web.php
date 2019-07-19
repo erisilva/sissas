@@ -69,6 +69,11 @@ Route::get('/vinculos/export/csv', 'VinculoController@exportcsv')->name('vinculo
 Route::get('/vinculos/export/pdf', 'VinculoController@exportpdf')->name('vinculos.export.pdf');
 Route::resource('/vinculos', 'VinculoController');
 
+/* Orgão Emissor */
+Route::get('/orgaoemissores/export/csv', 'OrgaoEmissorController@exportcsv')->name('orgaoemissores.export.csv');
+Route::get('/orgaoemissores/export/pdf', 'OrgaoEmissorController@exportpdf')->name('orgaoemissores.export.pdf');
+Route::resource('/orgaoemissores', 'OrgaoEmissorController');
+
 /* Tipos de Vínculos */
 Route::get('/vinculotipos/export/csv', 'VinculoTipoController@exportcsv')->name('vinculotipos.export.csv');
 Route::get('/vinculotipos/export/pdf', 'VinculoTipoController@exportpdf')->name('vinculotipos.export.pdf');

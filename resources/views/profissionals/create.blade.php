@@ -184,11 +184,29 @@
         @endif
       </div>    
     </div>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="registroClasse">Registro de Classe</label>  
+        <input type="text" class="form-control" name="registroClasse" id="registroClasse" value="{{ old('registroClasse') ?? '' }}">
+      </div>
+      <div class="form-group col-md-6">  
+        <label for="orgao_emissor_id">Orgão Emissor</label>
+        <select class="form-control" name="orgao_emissor_id" id="orgao_emissor_id">
+          <option value="1" selected="true">Não Possui</option>        
+          @foreach($orgaoemissores as $orgaoemissor)
+          <option value="{{$orgaoemissor->id}}">{{$orgaoemissor->descricao}}</option>
+          @endforeach
+        </select>
+      </div> 
+      <div class="form-group col-md-2">  
+        <label for="ufOrgaoEmissor">UF/SSP</label>  
+        <input type="text" class="form-control" name="ufOrgaoEmissor" id="ufOrgaoEmissor" value="{{ old('ufOrgaoEmissor') ?? '' }}" maxlength="2" style="text-transform:uppercase">
+      </div>
+    </div>
     <div class="form-group">
       <label for="observacao">Observações</label>
       <textarea class="form-control" name="observacao" rows="3">{{ old('observacao') ?? '' }}</textarea>      
     </div>
-
     <button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Incluir Profissional</button>
   </form>
   <div class="float-right">

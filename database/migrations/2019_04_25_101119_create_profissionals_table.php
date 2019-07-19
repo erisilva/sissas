@@ -35,12 +35,16 @@ class CreateProfissionalsTable extends Migration
             $table->string('complemento')->nullable();
             $table->string('cidade')->nullable();
             $table->string('uf')->nullable();
+            
+            $table->string('registroClasse')->nullable();
+            $table->string('ufOrgaoEmissor', '2')->nullable();
 
             // fks
             $table->integer('cargo_id')->unsigned();
             $table->integer('carga_horaria_id')->unsigned();
             $table->integer('vinculo_id')->unsigned();
             $table->integer('vinculo_tipo_id')->unsigned();
+            $table->integer('orgao_emissor_id')->unsigned();
 
             $table->softDeletes();
             $table->timestamps();
@@ -50,6 +54,7 @@ class CreateProfissionalsTable extends Migration
             $table->foreign('carga_horaria_id')->references('id')->on('carga_horarias')->onDelete('cascade');
             $table->foreign('vinculo_id')->references('id')->on('vinculos')->onDelete('cascade');
             $table->foreign('vinculo_tipo_id')->references('id')->on('vinculo_tipos')->onDelete('cascade');
+            $table->foreign('orgao_emissor_id')->references('id')->on('orgao_emissors')->onDelete('cascade');
         });
     }
 
@@ -65,6 +70,7 @@ class CreateProfissionalsTable extends Migration
             $table->dropForeign('profissionals_carga_horaria_id_foreign');
             $table->dropForeign('profissionals_vinculo_id_foreign');
             $table->dropForeign('profissionals_vinculo_tipo_id_foreign');
+            $table->dropForeign('profissionals_orgao_emissor_id_foreign');
         });
 
         Schema::dropIfExists('profissionals');

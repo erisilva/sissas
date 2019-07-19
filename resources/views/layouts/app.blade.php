@@ -35,6 +35,12 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
                     @if (!Auth::guest())
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('profissionals.index') }}">Profissionais</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('unidades.index') }}">Unidades</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarConfig" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Configurações
@@ -52,11 +58,9 @@
                           <a class="dropdown-item" href="{{ route('licencatipos.index') }}"><i class="fas fa-table"></i> Tipos de Licença</a>
                           <a class="dropdown-item" href="{{ route('feriastipos.index') }}"><i class="fas fa-table"></i> Tipos de Férias</a>
                           <a class="dropdown-item" href="{{ route('capacitacaotipos.index') }}"><i class="fas fa-table"></i> Tipos de Capacitações</a>
+                          <a class="dropdown-item" href="{{ route('orgaoemissores.index') }}"><i class="fas fa-table"></i> Orgão Emissor</a>
                         </div>
-                      </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('profissionals.index') }}">Profissionais</a>
-                    </li>    
+                    </li>
                     @endif
                 </ul>
 
