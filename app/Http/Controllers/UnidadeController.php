@@ -356,4 +356,20 @@ class UnidadeController extends Controller
         exit;
 
     }
+
+
+    /**
+     * Função de autocompletar para ser usada pelo typehead
+     *
+     * @param  
+     * @return json
+     */
+    public function autocomplete(Request $request)
+    {
+        $unidades = 
+         Unidade::select(DB::raw('descricao as text, id as value'))
+                    ->where("descricao","LIKE","%{$request->input('query')}%")
+                    ->get();
+        return response()->json($unidades, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
+    }      
 }

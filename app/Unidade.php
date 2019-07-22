@@ -14,4 +14,9 @@ class Unidade extends Model
     {
         return $this->belongsTo('App\Distrito');
     }
+
+    public function equipes()
+    {
+        return $this->hasMany('App\Equipe');
+    }
 }

@@ -52,6 +52,7 @@ Route::resource('/distritos', 'DistritoController');
 /* Unidades */
 Route::get('/unidades/export/csv', 'UnidadeController@exportcsv')->name('unidades.export.csv');
 Route::get('/unidades/export/pdf', 'UnidadeController@exportpdf')->name('unidades.export.pdf');
+Route::get('/unidades/autocomplete', 'UnidadeController@autocomplete')->name('unidades.autocomplete');
 Route::resource('/unidades', 'UnidadeController');
 
 /* Cargos */
@@ -116,3 +117,9 @@ Route::resource('/licencas', 'LicencaController')->only(['store', 'destroy',]);
 
 /* Capacitações dos profissionais */
 Route::resource('/capacitacaos', 'CapacitacaoController')->only(['store', 'destroy',]);
+
+/* Equipes/Vagas */
+Route::get('/equipes/export/csv', 'EquipeController@exportcsv')->name('equipes.export.csv');
+Route::get('/equipes/export/pdf', 'EquipeController@exportpdf')->name('equipes.export.pdf');
+Route::get('/equipes/export/pdf/{id}/individual', 'EquipeController@exportpdfindividual')->name('equipes.export.pdf.individual');
+Route::resource('/equipes', 'EquipeController');
