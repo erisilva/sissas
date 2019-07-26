@@ -5,7 +5,8 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('equipes.index') }}">Lista de Equipes e Vagas</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Exibir Registro</li>
+      <li class="breadcrumb-item"><a href="{{ route('equipes.trash') }}">Lixeira</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Exibir e Restaurar Registro</li>
     </ol>
   </nav>
 </div>
@@ -56,12 +57,10 @@
   </form>
   <br>
   <div class="container">
-    <form method="post" action="{{route('equipes.destroy', $equipe->id)}}">
+    <form method="post" action="{{route('equipes.trash.restore', array($equipe->id))}}">
       @csrf
-      @method('DELETE')
-      <a href="{{ route('equipes.index') }}" class="btn btn-primary" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>
-      <a href="{{ route('equipes.export.pdf.individual', $equipe->id) }}" class="btn btn-primary" role="button"><i class="fas fa-print"></i> Exportar para PDF</a>
-      <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Enviar para Lixeira</button>
+      <a href="{{ route('equipes.trash') }}" class="btn btn-primary" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>
+      <button type="submit" class="btn btn-success"><i class="fas fa-trash-restore"></i> Restaurar</button>
     </form>
   </div>
 </div>

@@ -150,6 +150,16 @@ class PermissionsTableSeeder extends Seeder
             'description' => 'Exportação de dados das unidades',
         ]);
 
+        //unidades e profissionais
+        DB::table('permissions')->insert([
+            'name' => 'unidade.profissional.create',
+            'description' => 'Adicionar um profissional a unidade',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'unidade.profissional.delete',
+            'description' => 'Excluir um profissional da unidade',
+        ]);
+
         //cargos
         DB::table('permissions')->insert([
             'name' => 'cargo.index',
@@ -423,6 +433,42 @@ class PermissionsTableSeeder extends Seeder
         DB::table('permissions')->insert([
             'name' => 'orgaoemissor.export',
             'description' => 'Exportação de dados dos orgãos emissores',
+        ]);
+
+        // Equipes e Vagas
+        DB::table('permissions')->insert([
+            'name' => 'equipe.index',
+            'description' => 'Lista de equipes',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'equipe.create',
+            'description' => 'Registrar nova equipe',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'equipe.edit',
+            'description' => 'Alterar dados de uma equipe',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'equipe.delete',
+            'description' => 'Enviar equipe para lixeira',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'equipe.show',
+            'description' => 'Mostrar dados das equipes',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'equipe.export',
+            'description' => 'Exportação de dados das equipes',
+        ]);
+
+        // Equipes e vagas (LIXEIRA)
+        DB::table('permissions')->insert([
+            'name' => 'equipe.trash.index',
+            'description' => 'Exibir a lixeira das equipes',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'equipe.trash.restore',
+            'description' => 'Restaurar registro da lixeira da equipe',
         ]);
     }
 }

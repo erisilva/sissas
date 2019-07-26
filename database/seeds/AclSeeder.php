@@ -71,13 +71,16 @@ class AclSeeder extends Seeder
 		$distrito_delete = Permission::where('name', '=', 'distrito.delete')->get()->first();
 		$distrito_show = Permission::where('name', '=', 'distrito.show')->get()->first();  
 		$distrito_export = Permission::where('name', '=', 'distrito.export')->get()->first();
-		// para distritos
+		// para unidades
 		$unidade_index = Permission::where('name', '=', 'unidade.index')->get()->first(); 
 		$unidade_create = Permission::where('name', '=', 'unidade.create')->get()->first();
 		$unidade_edit = Permission::where('name', '=', 'unidade.edit')->get()->first();  
 		$unidade_delete = Permission::where('name', '=', 'unidade.delete')->get()->first();
 		$unidade_show = Permission::where('name', '=', 'unidade.show')->get()->first();  
 		$unidade_export = Permission::where('name', '=', 'unidade.export')->get()->first();
+		# para unidades e profissionais
+		$unidade_profissional_create = Permission::where('name', '=', 'unidade.profissional.create')->get()->first();
+		$unidade_profissional_delete = Permission::where('name', '=', 'unidade.profissional.delete')->get()->first();
 		// para cargos
 		$cargo_index = Permission::where('name', '=', 'cargo.index')->get()->first(); 
 		$cargo_create = Permission::where('name', '=', 'cargo.create')->get()->first();
@@ -146,13 +149,24 @@ class AclSeeder extends Seeder
 		// para profissionais->capacitações
 		$profissional_capacitacao_create = Permission::where('name', '=', 'profissional.capacitacao.create')->get()->first();  
 		$profissional_capacitacao_delete = Permission::where('name', '=', 'profissional.capacitacao.delete')->get()->first();
-		// para profissionais
+		// para orgão emissores
 		$orgaoemissor_index = Permission::where('name', '=', 'orgaoemissor.index')->get()->first(); 
 		$orgaoemissor_create = Permission::where('name', '=', 'orgaoemissor.create')->get()->first();
 		$orgaoemissor_edit = Permission::where('name', '=', 'orgaoemissor.edit')->get()->first();  
 		$orgaoemissor_delete = Permission::where('name', '=', 'orgaoemissor.delete')->get()->first();
 		$orgaoemissor_show = Permission::where('name', '=', 'orgaoemissor.show')->get()->first();  
 		$orgaoemissor_export = Permission::where('name', '=', 'orgaoemissor.export')->get()->first();
+		// para equipes (e vagas)
+		$equipe_index = Permission::where('name', '=', 'equipe.index')->get()->first(); 
+		$equipe_create = Permission::where('name', '=', 'equipe.create')->get()->first();
+		$equipe_edit = Permission::where('name', '=', 'equipe.edit')->get()->first();  
+		$equipe_delete = Permission::where('name', '=', 'equipe.delete')->get()->first();
+		$equipe_show = Permission::where('name', '=', 'equipe.show')->get()->first();  
+		$equipe_export = Permission::where('name', '=', 'equipe.export')->get()->first();
+		// para equipes (e vagas) (LIXEIRA)
+		$equipe_trash_index = Permission::where('name', '=', 'equipe.trash.index')->get()->first(); 
+		$equipe_trash_restore = Permission::where('name', '=', 'equipe.trash.restore')->get()->first();
+
 
 
 
@@ -194,6 +208,9 @@ class AclSeeder extends Seeder
 		$administrador_perfil->permissions()->attach($unidade_delete);
 		$administrador_perfil->permissions()->attach($unidade_show);
 		$administrador_perfil->permissions()->attach($unidade_export);
+		#unidades e profissionais
+		$administrador_perfil->permissions()->attach($unidade_profissional_create);
+		$administrador_perfil->permissions()->attach($unidade_profissional_delete);
 		# cargos
 		$administrador_perfil->permissions()->attach($cargo_index);
 		$administrador_perfil->permissions()->attach($cargo_create);
@@ -269,6 +286,16 @@ class AclSeeder extends Seeder
 		$administrador_perfil->permissions()->attach($orgaoemissor_delete);
 		$administrador_perfil->permissions()->attach($orgaoemissor_show);
 		$administrador_perfil->permissions()->attach($orgaoemissor_export);
+		# Equipes (e vagas)
+		$administrador_perfil->permissions()->attach($equipe_index);
+		$administrador_perfil->permissions()->attach($equipe_create);
+		$administrador_perfil->permissions()->attach($equipe_edit);
+		$administrador_perfil->permissions()->attach($equipe_delete);
+		$administrador_perfil->permissions()->attach($equipe_show);
+		$administrador_perfil->permissions()->attach($equipe_export);
+		# Equipes (e vagas) LIXEIRA
+		$administrador_perfil->permissions()->attach($equipe_trash_index);
+		$administrador_perfil->permissions()->attach($equipe_trash_restore);
 
 
 
@@ -290,6 +317,9 @@ class AclSeeder extends Seeder
 		$gerente_perfil->permissions()->attach($unidade_edit);
 		$gerente_perfil->permissions()->attach($unidade_show);
 		$gerente_perfil->permissions()->attach($unidade_export);
+		#unidades e profissionais
+		$gerente_perfil->permissions()->attach($unidade_profissional_create);
+		$gerente_perfil->permissions()->attach($unidade_profissional_delete);
 		# cargos
 		$gerente_perfil->permissions()->attach($cargo_index);
 		$gerente_perfil->permissions()->attach($cargo_create);
@@ -357,6 +387,16 @@ class AclSeeder extends Seeder
 		$gerente_perfil->permissions()->attach($orgaoemissor_edit);
 		$gerente_perfil->permissions()->attach($orgaoemissor_show);
 		$gerente_perfil->permissions()->attach($orgaoemissor_export);
+		# Equipes (e vagas) -- pode enviar para a lixeira
+		$gerente_perfil->permissions()->attach($equipe_index);
+		$gerente_perfil->permissions()->attach($equipe_create);
+		$gerente_perfil->permissions()->attach($equipe_edit);
+		$gerente_perfil->permissions()->attach($equipe_delete);
+		$gerente_perfil->permissions()->attach($equipe_show);
+		$gerente_perfil->permissions()->attach($equipe_export);
+		# Equipes (e vagas) LIXEIRA
+		$gerente_perfil->permissions()->attach($equipe_trash_index);
+		$gerente_perfil->permissions()->attach($equipe_trash_restore);
 
 
 
@@ -375,6 +415,8 @@ class AclSeeder extends Seeder
 		$operador_perfil->permissions()->attach($unidade_export);
 		$operador_perfil->permissions()->attach($unidade_edit); // operador pode criar e editar
 		$operador_perfil->permissions()->attach($unidade_create);
+		# unidade e profissionais
+		$operador_perfil->permissions()->attach($unidade_profissional_create);
 		# cargos
 		$operador_perfil->permissions()->attach($cargo_index);
 		$operador_perfil->permissions()->attach($cargo_show);
@@ -422,7 +464,15 @@ class AclSeeder extends Seeder
 		$operador_perfil->permissions()->attach($orgaoemissor_edit);
 		$operador_perfil->permissions()->attach($orgaoemissor_create);
 		$operador_perfil->permissions()->attach($orgaoemissor_show);
-		$operador_perfil->permissions()->attach($orgaoemissor_export);		
+		$operador_perfil->permissions()->attach($orgaoemissor_export);
+		# Equipe (e vagas)
+		$operador_perfil->permissions()->attach($equipe_index);
+		$operador_perfil->permissions()->attach($equipe_edit);
+		$operador_perfil->permissions()->attach($equipe_create);
+		$operador_perfil->permissions()->attach($equipe_show);
+		$operador_perfil->permissions()->attach($equipe_export);
+		# Equipe (e vagas) LIXEIRA
+		$operador_perfil->permissions()->attach($equipe_trash_index);	
 
 
 
@@ -463,6 +513,9 @@ class AclSeeder extends Seeder
 		# orgão emissor
 		$leitor_perfil->permissions()->attach($orgaoemissor_index);
 		$leitor_perfil->permissions()->attach($orgaoemissor_show);
+		# equipes (e vagas)
+		$leitor_perfil->permissions()->attach($equipe_index);
+		$leitor_perfil->permissions()->attach($equipe_show);
 
 
 

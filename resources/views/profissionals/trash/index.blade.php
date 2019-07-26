@@ -4,40 +4,13 @@
 <div class="container-fluid">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item" aria-current="page"><a href="{{ route('profissionals.index') }}">Lista de Profissionais</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('profissionals.index') }}">Lista de Profissionais</a></li>
       <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('profissionals.trash') }}">Lixeira</a></li>
     </ol>
   </nav>
-  {{-- avisa se um usuario foi excluido --}}
-  @if(Session::has('deleted_profissional'))
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Info!</strong>  {{ session('deleted_profissional') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  @endif
-  {{-- avisa quando um usuário foi modificado --}}
-  @if(Session::has('create_profissional'))
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Info!</strong>  {{ session('create_profissional') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  @endif
   <div class="btn-group py-1" role="group" aria-label="Opções">
-    <a href="{{ route('profissionals.create') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-plus-square"></i> Novo Registro</a>
+    <a href="{{ route('profissionals.index') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</a>
     <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalFilter"><i class="fas fa-filter"></i> Filtrar</button>
-    <div class="btn-group" role="group">
-      <button id="btnGroupDropOptions" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-print"></i> Relatórios
-      </button>
-      <div class="dropdown-menu" aria-labelledby="btnGroupDropOptions">
-        <a class="dropdown-item" href="#" id="btnExportarCSV"><i class="fas fa-file-download"></i> Exportar Planilha</a>
-        <a class="dropdown-item" href="#" id="btnExportarPDF"><i class="fas fa-file-download"></i> Exportar PDF</a>
-      </div>
-    </div>
     <a href="{{ route('profissionals.trash') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-trash-alt"></i> Lixeira</a>
   </div>
   <div class="table-responsive">
@@ -142,17 +115,8 @@
 <script>
 $(document).ready(function(){
     $('#perpage').on('change', function() {
-        perpage = $(this).find(":selected").val(); 
-        
-        window.open("{{ route('profissionals.index') }}" + "?perpage=" + perpage,"_self");
-    });
-
-    $('#btnExportarCSV').on('click', function(){
-        window.open("{{ route('profissionals.export.csv') }}","_self");
-    });
-
-    $('#btnExportarPDF').on('click', function(){
-        window.open("{{ route('profissionals.export.pdf') }}","_self");
+        perpage = $(this).find(":selected").val();      
+        window.open("{{ route('profissionals.trash') }}" + "?perpage=" + perpage,"_self");
     });
 }); 
 </script>

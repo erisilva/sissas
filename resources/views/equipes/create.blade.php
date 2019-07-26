@@ -54,8 +54,6 @@
         @endif
       </div>
     </div>
-
-
     <div class="form-row">
       <div class="form-group col-md-4">
         <label for="cnes">CNES</label>
@@ -87,19 +85,22 @@
         </div>         
       </div>
     </div>
-
-
-    <div class="form-group">
-      <label for="unidade_descricao">Unidade</label>
-      <input type="text" class="form-control typeahead {{ $errors->has('unidade_id') ? ' is-invalid' : '' }}" name="unidade_descricao" id="unidade_descricao" value="{{ old('unidade_descricao') ?? '' }}" autocomplete="off">       
-      <input type="hidden" id="unidade_id" name="unidade_id" value="{{ old('unidade_id') ?? '' }}">
-      @if ($errors->has('unidade_id'))
-        <div class="invalid-feedback">
-        {{ $errors->first('unidade_id') }}
-        </div>
-      @endif
+    <div class="form-row">
+      <div class="form-group col-md-8">
+        <label for="unidade_descricao">Unidade</label>
+        <input type="text" class="form-control typeahead {{ $errors->has('unidade_id') ? ' is-invalid' : '' }}" name="unidade_descricao" id="unidade_descricao" value="{{ old('unidade_descricao') ?? '' }}" autocomplete="off">       
+        <input type="hidden" id="unidade_id" name="unidade_id" value="{{ old('unidade_id') ?? '' }}">
+        @if ($errors->has('unidade_id'))
+          <div class="invalid-feedback">
+          {{ $errors->first('unidade_id') }}
+          </div>
+        @endif
+      </div>
+      <div class="form-group col-md-4">
+        <label for="distrito_descricao">Distrito</label>
+        <input type="text" class="form-control" name="distrito_descricao" id="distrito_descricao" value="" readonly>
+      </div> 
     </div>
-
     <button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Incluir Equipe</button>
   </form>
   <div class="float-right">
@@ -132,27 +133,32 @@ $(document).ready(function(){
   {
       name: "unidades",
       displayKey: "text",
+
       source: unidades.ttAdapter(),
       templates: {
         empty: [
           '<div class="empty-message">',
-            'Não encontrado',
+            '<p class="text-center font-weight-bold text-warning">Não foi encontrado nenhuma unidade com o texto digitado.</p>',
           '</div>'
         ].join('\n'),
         suggestion: function(data) {
-            return '<div>' + data.text + '</div>';
+            return '<div>' + data.text + '<strong> - Distrito: ' + data.distrito + '</strong>' + '</div>';
           }
       }    
       }).on("typeahead:selected", function(obj, datum, name) {
           console.log(datum);
           $(this).data("seletectedId", datum.value);
           $('#unidade_id').val(datum.value);
+          $('#distrito_descricao').val(datum.distrito);
           console.log(datum.value);
+          console.log(datum.distrito);
       }).on('typeahead:autocompleted', function (e, datum) {
           console.log(datum);
           $(this).data("seletectedId", datum.value);
           $('#unidade_id').val(datum.value);
+          $('#distrito_descricao').val(datum.distrito);
           console.log(datum.value);
+          console.log(datum.distrito);
   });
 
 });

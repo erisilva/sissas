@@ -54,6 +54,8 @@ Route::get('/unidades/export/csv', 'UnidadeController@exportcsv')->name('unidade
 Route::get('/unidades/export/pdf', 'UnidadeController@exportpdf')->name('unidades.export.pdf');
 Route::get('/unidades/autocomplete', 'UnidadeController@autocomplete')->name('unidades.autocomplete');
 Route::resource('/unidades', 'UnidadeController');
+# Profissionais por Unidade
+Route::resource('/unidadeprofissionais', 'UnidadeProfissionalController')->only(['store', 'destroy',]);
 
 /* Cargos */
 Route::get('/cargos/export/csv', 'CargoController@exportcsv')->name('cargos.export.csv');
@@ -100,6 +102,7 @@ Route::get('/profissionals/export/csv', 'ProfissionalController@exportcsv')->nam
 Route::get('/profissionals/export/pdf', 'ProfissionalController@exportpdf')->name('profissionals.export.pdf');
 Route::get('/profissionals/export/pdf/simples', 'ProfissionalController@exportpdfsimples')->name('profissionals.export.pdf.simples');
 Route::get('/profissionals/export/pdf/{id}/individual', 'ProfissionalController@exportpdfindividual')->name('profissionals.export.pdf.individual');
+Route::get('/profissionals/autocomplete', 'ProfissionalController@autocomplete')->name('profissionals.autocomplete');
 # lixeira
 Route::get('/profissionals/trash', 'ProfissionalTrashController@index')->name('profissionals.trash');
 Route::get('/profissionals/trash/{id}', 'ProfissionalTrashController@show')->name('profissionals.trash.show');
@@ -122,4 +125,8 @@ Route::resource('/capacitacaos', 'CapacitacaoController')->only(['store', 'destr
 Route::get('/equipes/export/csv', 'EquipeController@exportcsv')->name('equipes.export.csv');
 Route::get('/equipes/export/pdf', 'EquipeController@exportpdf')->name('equipes.export.pdf');
 Route::get('/equipes/export/pdf/{id}/individual', 'EquipeController@exportpdfindividual')->name('equipes.export.pdf.individual');
+# lixeira
+Route::get('/equipes/trash', 'EquipeTrashController@index')->name('equipes.trash');
+Route::get('/equipes/trash/{id}', 'EquipeTrashController@show')->name('equipes.trash.show');
+Route::post('/equipes/trash/{id}/restore', 'EquipeTrashController@restore')->name('equipes.trash.restore');
 Route::resource('/equipes', 'EquipeController');

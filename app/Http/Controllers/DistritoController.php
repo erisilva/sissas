@@ -171,7 +171,7 @@ class DistritoController extends Controller
 
         Distrito::findOrFail($id)->delete();
 
-        Session::flash('deleted_distrito', 'Distrito excluído com sucesso!');
+        Session::flash('deleted_distrito', 'Distrito excluido!');
 
         return redirect(route('distritos.index'));
     }

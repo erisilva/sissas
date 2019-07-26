@@ -32,6 +32,20 @@ use Illuminate\Support\Facades\Redirect; // para poder usar o redirect
 class ProfissionalTrashController extends Controller
 {
     /**
+     * Construtor.
+     *
+     * precisa estar logado ao sistema
+     * precisa ter a conta ativa (access)
+     *
+     * @return 
+     */
+    public function __construct()
+    {
+        $this->middleware(['middleware' => 'auth']);
+        $this->middleware(['middleware' => 'hasaccess']);
+    }
+    
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

@@ -99,6 +99,26 @@ class Profissional extends Model
         return $this->belongsToMany('App\Capacitacao');
     }
 
+    /**
+     * Cadastro de determinados profissionais diretamente na unidade
+     * exemplo: equipe de limpeza, atendente, vigias, etc
+     *
+     * @var UnidadeProfissional
+     */
+    public function unidadeProfissionals()
+    {
+        return $this->hasMany('App\UnidadeProfissional');
+    }
+
+    /**
+     * Vagas (cargo e profissional) de cada equipe
+     *
+     * @var UnidadeProfissional
+     */
+    public function equipeProfissionals()
+    {
+        return $this->hasMany('App\EquipeProfissional');
+    }
 
     protected $dates = ['deleted_at', 'admissao'];
 }

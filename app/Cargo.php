@@ -14,4 +14,9 @@ class Cargo extends Model
     {
         return $this->hasMany('App\Profissional');
     }
+
+    public function equipeProfissionals()
+    {
+        return $this->hasMany('App\EquipeProfissional');
+    }
 }

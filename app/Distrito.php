@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Distrito extends Model
 {
+
     protected $fillable = [
         'nome', 
     ];

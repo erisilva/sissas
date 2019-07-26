@@ -50,6 +50,7 @@
                           <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="{{ route('distritos.index') }}"><i class="fas fa-map-marked-alt"></i> Distritos</a>
                           <a class="dropdown-item" href="{{ route('unidades.index') }}"><i class="fas fa-hospital"></i> Unidades</a>
+                          <a class="dropdown-item" href="{{ route('equipes.index') }}"><i class="fas fa-users"></i> Equipes e Vagas</a>
                           <div class="dropdown-divider"></div>
                           <a class="dropdown-item" href="{{ route('cargos.index') }}"><i class="fas fa-table"></i> Cargos</a>
                           <a class="dropdown-item" href="{{ route('cargahorarias.index') }}"><i class="fas fa-table"></i> Cargas Horárias</a>

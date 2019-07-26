@@ -1,5 +1,27 @@
 @extends('layouts.app')
 
+@section('css-header')
+<style>
+  .twitter-typeahead, .tt-hint, .tt-input, .tt-menu { width: 100%; }
+  .tt-query, .tt-hint { outline: none;}
+  .tt-query { box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);}
+  .tt-hint {color: #999;}
+  .tt-menu { 
+      width: 100%;
+      margin-top: 12px;
+      padding: 8px 0;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  }
+  .tt-suggestion { padding: 3px 20px; }
+  .tt-suggestion.tt-is-under-cursor { color: #fff; }
+  .tt-suggestion p { margin: 0;}
+</style>
+@endsection
+
 @section('content')
 <div class="container-fluid">
   <nav aria-label="breadcrumb">
@@ -10,7 +32,6 @@
   </nav>
 </div>
 <div class="container">
-  {{-- avisa se uma permissão foi alterada --}}
   @if(Session::has('edited_unidade'))
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>Info!</strong>  {{ session('edited_unidade') }}
@@ -22,7 +43,6 @@
   <form method="POST" action="{{ route('unidades.update', $unidade->id) }}">
     @csrf
     @method('PUT')
-
     <div class="form-row">
       <div class="form-group col-md-8">
         <label for="descricao">Descrição</label>
@@ -88,10 +108,93 @@
         <input type="text" class="form-control" name="porte" id="porte" value="{{ $unidade->porte }}">
       </div>      
     </div>
-
     <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Alterar Dados da Unidade</button>
   </form>
 </div>
+<br>
+<div class="container bg-primary text-white">
+  <p class="text-center">Profissionais</p>
+</div>
+<div class="container">
+  <form method="POST" action="{{ route('unidadeprofissionais.store') }}">
+    @csrf
+    <input type="hidden" id="unidade_id" name="unidade_id" value="{{ $unidade->id }}">
+    <div class="form-group">
+      <label for="profissional_nome">Profissional</label>
+      <input type="text" class="form-control typeahead {{ $errors->has('unidade_id') ? ' is-invalid' : '' }}" name="profissional_nome" id="profissional_nome" value="{{ old('profissional_nome') ?? '' }}" autocomplete="off">       
+      <input type="hidden" id="profissional_id" name="profissional_id" value="{{ old('profissional_id') ?? '' }}">
+      @if ($errors->has('profissional_id'))
+        <div class="invalid-feedback">
+        {{ $errors->first('profissional_id') }}
+        </div>
+      @endif
+    </div>  
+    <div class="form-row">
+      <div class="form-group col-md-9">
+        <label for="cargo_descricao">Cargo</label>
+        <input type="text" class="form-control" name="cargo_descricao" id="cargo_descricao" value="" readonly tabIndex="-1" placeholder="">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="matricula_profissional">Matrícula</label>
+        <input type="text" class="form-control" name="matricula_profissional" id="matricula_profissional" value="" readonly tabIndex="-1" placeholder="">
+      </div>
+    </div>    
+    <div class="form-group">
+      <label for="descricao">Observações</label>
+      <textarea class="form-control" name="descricao" rows="3">{{ old('descricao') ?? '' }}</textarea> 
+    </div>
+    <button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Incluir Profissional nesta Unidade</button>
+  </form>
+</div>
+<div class="container">
+  @if(Session::has('create_unidadeprofissional'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Info!</strong>  {{ session('create_unidadeprofissional') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
+  @if(Session::has('delete_unidadeprofissional'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Info!</strong>  {{ session('delete_unidadeprofissional') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
+  <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Profissional</th>
+                <th scope="col">Cargo</th>
+                <th scope="col">Matrícula</th>
+                <th scope="col">Observações</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($unidadeprofissionais as $unidadeprofissional)
+            <tr>
+                <td>{{ $unidadeprofissional->profissional->nome }}</td>
+                <td>{{ $unidadeprofissional->profissional->cargo->nome }}</td>
+                <td>{{ $unidadeprofissional->profissional->matricula }}</td>
+                <td>{{ $unidadeprofissional->descricao }}</td>
+                <td>
+                  <form method="post" action="{{route('unidadeprofissionais.destroy', $unidadeprofissional->id)}}">
+                    @csrf
+                    @method('DELETE')  
+                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                  </form>
+                </td>
+            </tr>    
+            @endforeach                                                 
+        </tbody>
+    </table>
+  </div> 
+</div>
+<br>
 <div class="container">
   <div class="float-right">
     <a href="{{ route('unidades.index') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>
@@ -100,6 +203,7 @@
 @endsection
 @section('script-footer')
 <script src="{{ asset('js/jquery.inputmask.bundle.min.js') }}"></script>
+<script src="{{ asset('js/typeahead.bundle.min.js') }}"></script>
 <script>
   $(document).ready(function(){
 
@@ -148,6 +252,51 @@
               limpa_formulario_cep();
           }
       });
+
+      var profissionais = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.obj.whitespace("text"),
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          remote: {
+              url: "{{route('profissionals.autocomplete')}}?query=%QUERY",
+              wildcard: '%QUERY'
+          },
+          limit: 10
+      });
+      profissionais.initialize();
+
+      $("#profissional_nome").typeahead({
+          hint: true,
+          highlight: true,
+          minLength: 1
+      },
+      {
+          name: "profissionais",
+          displayKey: "text",
+
+          source: profissionais.ttAdapter(),
+          templates: {
+            empty: [
+              '<div class="empty-message">',
+                '<p class="text-center font-weight-bold text-warning">Não foi encontrado nenhum profissional com o texto digitado.</p>',
+              '</div>'
+            ].join('\n'),
+            suggestion: function(data) {
+                return '<div><div>' + data.text + ' - <strong>Matrícula:</strong> ' + data.matricula + '</div>' + '<div><i>' + data.cargo + '</i></div></div>';
+              }
+          }    
+          }).on("typeahead:selected", function(obj, datum, name) {
+              $(this).data("seletectedId", datum.value);
+              $('#profissional_id').val(datum.value);
+              $('#matricula_profissional').val(datum.matricula);
+              $('#cargo_descricao').val(datum.cargo);
+          }).on('typeahead:autocompleted', function (e, datum) {
+              $(this).data("seletectedId", datum.value);
+              $('#profissional_id').val(datum.value);
+              $('#matricula_profissional').val(datum.matricula);
+              $('#cargo_descricao').val(datum.cargo);
+      });
+
+
   });
 </script>
 

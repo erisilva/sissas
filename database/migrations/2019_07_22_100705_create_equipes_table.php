@@ -20,6 +20,7 @@ class CreateEquipesTable extends Migration
             $table->string('cnes');
             $table->string('ine');
             $table->enum('minima', ['s', 'n']);
+            $table->softDeletes();
             $table->timestamps();
 
             //fk

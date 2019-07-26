@@ -12,17 +12,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
-
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Database\Eloquent\Builder;
 
-use Illuminate\Support\Facades\Redirect; // para poder usar o redirect
-
-use Illuminate\Database\Eloquent\Builder; // para poder usar o whereHas nos filtros
-
-class EquipeController extends Controller
+class EquipeTrashController extends Controller
 {
-    protected $pdf;
-
     /**
      * Construtor.
      *
@@ -31,12 +26,10 @@ class EquipeController extends Controller
      *
      * @return 
      */
-    public function __construct(\App\Reports\EquipeReport $pdf)
+    public function __construct()
     {
         $this->middleware(['middleware' => 'auth']);
         $this->middleware(['middleware' => 'hasaccess']);
-
-        $this->pdf = $pdf;
     }
 
     /**
@@ -46,11 +39,14 @@ class EquipeController extends Controller
      */
     public function index()
     {
-        if (Gate::denies('equipe.index')) {
+        if (Gate::denies('equipe.trash.index')) {
             abort(403, 'Acesso negado.');
         }
 
         $equipes = new Equipe;
+
+        $equipes = $equipes->onlyTrashed();
+
         // filtros
         if (request()->has('descricao')){
             $equipes = $equipes->where('descricao', 'like', '%' . request('descricao') . '%');
@@ -84,7 +80,6 @@ class EquipeController extends Controller
             }
         } 
 
-
         // ordena
         $equipes = $equipes->orderBy('descricao', 'asc');
 
@@ -110,50 +105,7 @@ class EquipeController extends Controller
         // tabelas auxiliares usadas pelo filtro
         $distritos = Distrito::orderBy('nome', 'asc')->get();
 
-        return view('equipes.index', compact('equipes', 'perpages', 'distritos'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        if (Gate::denies('equipe.create')) {
-            abort(403, 'Acesso negado.');
-        }   
-        return view('equipes.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-          'descricao' => 'required',
-          'numero' => 'required',
-          'cnes' => 'required',
-          'cnes' => 'required',
-          'ine' => 'required',
-          'minima' => 'required',
-          'unidade_id' => 'required',
-        ],
-        [
-            'unidade_id.required' => 'Preencha o campo de unidade',
-        ]);
-
-        $equipe_input = $request->all();
-
-        $equipe = Equipe::create($equipe_input); //salva
-
-        Session::flash('create_equipe', 'Equipe cadastrada com sucesso!');
-
-        return Redirect::route('equipes.edit', $equipe->id);
+        return view('equipes.trash.index', compact('equipes', 'perpages', 'distritos'));
     }
 
     /**
@@ -164,30 +116,13 @@ class EquipeController extends Controller
      */
     public function show($id)
     {
-        if (Gate::denies('equipe.show')) {
+        if (Gate::denies('equipe.trash.index')) {
             abort(403, 'Acesso negado.');
         }
 
-        $equipe = Equipe::findOrFail($id);
+        $equipe = Equipe::withTrashed()->findOrFail($id);
 
-        return view('equipes.show', compact('equipe'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        if (Gate::denies('equipe.edit')) {
-            abort(403, 'Acesso negado.');
-        }
-
-        $equipe = Equipe::findOrFail($id);
-
-        return view('equipes.edit', compact('equipe'));
+        return view('equipes.trash.show', compact('equipe'));
     }
 
     /**
@@ -197,46 +132,17 @@ class EquipeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function restore($id)
     {
-        $this->validate($request, [
-          'descricao' => 'required',
-          'numero' => 'required',
-          'cnes' => 'required',
-          'cnes' => 'required',
-          'ine' => 'required',
-          'minima' => 'required',
-          'unidade_id' => 'required',
-        ],
-        [
-            'unidade_id.required' => 'Preencha o campo de unidade',
-        ]);
-
-        $equipe = Equipe::findOrFail($id);
-            
-        $equipe->update($request->all());
-        
-        Session::flash('edited_equipe', 'Equipe alterada com sucesso!');
-
-        return redirect(route('equipes.edit', $id));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        if (Gate::denies('equipe.delete')) {
+        if (Gate::denies('equipe.trash.restore')) {
             abort(403, 'Acesso negado.');
         }
+        
+        $equipe = Equipe::withTrashed()->findOrFail($id)->restore();
 
-        Equipe::findOrFail($id)->delete();
+        Session::flash('restore_equipe', 'Equipe restaurada com sucesso!');
 
-        Session::flash('deleted_equipe', 'Equipe excluída com sucesso!');
-
-        return redirect(route('equipes.index'));
+        return Redirect::route('equipes.index');
     }
 }
+

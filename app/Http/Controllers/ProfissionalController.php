@@ -326,7 +326,7 @@ class ProfissionalController extends Controller
 
         Profissional::findOrFail($id)->delete();
 
-        Session::flash('deleted_profissional', 'Profissional excluído com sucesso!');
+        Session::flash('deleted_profissional', 'Profissional enviado para lixeira!');
 
         return redirect(route('profissionals.index'));
     }
@@ -931,5 +931,34 @@ class ProfissionalController extends Controller
 
         $this->pdf->Output('D', 'Profissional_' . $profissional->nome .  date("Y-m-d H:i:s") . '.pdf', true);
         exit;
-    }                   
+    } 
+
+
+    /**
+     * Função de autocompletar para ser usada pelo typehead
+     *
+     * @param  
+     * @return json
+     */
+    public function autocomplete(Request $request)
+    {
+
+        $profissionais = DB::table('profissionals');
+
+        // join
+        $profissionais = $profissionais->join('cargos', 'cargos.id', '=', 'profissionals.cargo_id');
+
+        // select
+        $profissionais = $profissionais->select('profissionals.nome as text', 'profissionals.id as value', 'cargos.nome as cargo', 'profissionals.matricula as matricula');
+        
+        //where
+        $profissionais = $profissionais->where("profissionals.nome","LIKE","%{$request->input('query')}%");
+
+        //get
+        $profissionais = $profissionais->get();
+
+
+        return response()->json($profissionais, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
+    } 
+
 }

@@ -4,45 +4,13 @@
 <div class="container-fluid">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('equipes.index') }}">Lista de Equipes e Vagas</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('equipes.index') }}">Lista de Equipes e Vagas</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('equipes.trash') }}">Lixeira</a></li>
     </ol>
   </nav>
-  @if(Session::has('deleted_equipe'))
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Info!</strong>  {{ session('deleted_equipe') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  @endif
-  @if(Session::has('create_equipe'))
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Info!</strong>  {{ session('create_equipe') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  @endif
-  @if(Session::has('restore_equipe'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Info!</strong>  {{ session('restore_equipe') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  @endif
   <div class="btn-group py-1" role="group" aria-label="Opções">
-    <a href="{{ route('equipes.create') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-plus-square"></i> Novo Registro</a>
+    <a href="{{ route('equipes.index') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</a>
     <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalFilter"><i class="fas fa-filter"></i> Filtrar</button>
-    <div class="btn-group" role="group">
-      <button id="btnGroupDropOptions" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Opções
-      </button>
-      <div class="dropdown-menu" aria-labelledby="btnGroupDropOptions">
-        <a class="dropdown-item" href="#" id="btnExportarCSV"><i class="fas fa-file-download"></i> Exportar Planilha</a>
-        <a class="dropdown-item" href="#" id="btnExportarPDF"><i class="fas fa-file-download"></i> Exportar PDF</a>
-      </div>
-    </div>
     <a href="{{ route('equipes.trash') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-trash-alt"></i> Lixeira</a>
   </div>
   <div class="table-responsive">
@@ -56,6 +24,7 @@
                 <th scope="col">CNES</th>
                 <th scope="col">INE</th>
                 <th scope="col">Mínima</th>
+                <th scope="col">Excluído em</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -69,11 +38,10 @@
                 <td>{{ $equipe->cnes }}</td>
                 <td>{{ $equipe->ine }}</td>
                 <td>{{ ($equipe->minima == 's') ? 'Sim' : 'Não' }}</td>
+                <td>{{ $equipe->deleted_at->format('d/m/Y') }}</td>
                 <td>
                   <div class="btn-group" role="group">
-                    <a href="{{route('equipes.edit', $equipe->id)}}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-edit"></i></a>
-                    <a href="{{route('equipes.show', $equipe->id)}}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
-                    <a href="{{ route('equipes.export.pdf.individual', $equipe->id) }}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-print"></i></a>
+                    <a href="{{route('equipes.trash.show', array($equipe->id))}}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
                   </div>
                 </td>
             </tr>    
@@ -97,10 +65,7 @@
         </div>
         <div class="modal-body">
           <!-- Filtragem dos dados -->
-
-
-          <form method="GET" action="{{ route('equipes.index') }}">
-
+          <form method="GET" action="{{ route('equipes.trash') }}">
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="descricao">Descrição</label>
@@ -115,7 +80,6 @@
                 <input type="text" class="form-control" id="cnes" name="cnes" value="{{request()->input('cnes')}}">
               </div>
             </div>
-
             <div class="form-row">
               <div class="form-group col-md-4">
                 <label for="unidade">Unidade</label>
@@ -146,10 +110,8 @@
                 </div>                
               </div>
             </div>
-
-
             <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Pesquisar</button>
-            <a href="{{ route('equipes.index') }}" class="btn btn-primary btn-sm" role="button">Limpar</a>
+            <a href="{{ route('equipes.trash') }}" class="btn btn-primary btn-sm" role="button">Limpar</a>
           </form>
           <br>
           <!-- Seleção de número de resultados por página -->
@@ -174,15 +136,7 @@
 $(document).ready(function(){
     $('#perpage').on('change', function() {
         perpage = $(this).find(":selected").val();     
-        window.open("{{ route('equipes.index') }}" + "?perpage=" + perpage,"_self");
-    });
-
-    $('#btnExportarCSV').on('click', function(){
-        window.open("{{ route('equipes.export.csv') }}","_self");
-    });
-
-    $('#btnExportarPDF').on('click', function(){
-        window.open("{{ route('equipes.export.pdf') }}","_self");
+        window.open("{{ route('equipes.trash') }}" + "?perpage=" + perpage,"_self");
     });
 }); 
 </script>

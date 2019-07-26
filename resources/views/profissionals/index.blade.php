@@ -7,7 +7,6 @@
       <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('profissionals.index') }}">Lista de Profissionais</a></li>
     </ol>
   </nav>
-  {{-- avisa se um usuario foi excluido --}}
   @if(Session::has('deleted_profissional'))
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>Info!</strong>  {{ session('deleted_profissional') }}
@@ -16,7 +15,6 @@
     </button>
   </div>
   @endif
-  {{-- avisa quando um usuário foi modificado --}}
   @if(Session::has('create_profissional'))
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>Info!</strong>  {{ session('create_profissional') }}
@@ -25,7 +23,6 @@
     </button>
   </div>
   @endif
-  {{-- avisa quando um usuário foi modificado --}}
   @if(Session::has('restore_profissional'))
   <div class="alert alert-success alert-dismissible fade show" role="alert">
     <strong>Info!</strong>  {{ session('restore_profissional') }}

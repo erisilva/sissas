@@ -7,7 +7,6 @@
       <li class="breadcrumb-item active" aria-current="page"><a href="{{ route('distritos.index') }}">Lista de Distritos</a></li>
     </ol>
   </nav>
-  {{-- avisa se um usuario foi excluido --}}
   @if(Session::has('deleted_distrito'))
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>Info!</strong>  {{ session('deleted_distrito') }}
@@ -16,10 +15,17 @@
     </button>
   </div>
   @endif
-  {{-- avisa quando um usuário foi modificado --}}
   @if(Session::has('create_distrito'))
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <strong>Info!</strong>  {{ session('create_distrito') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
+  @if(Session::has('restore_distrito'))
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Info!</strong>  {{ session('restore_distrito') }}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>

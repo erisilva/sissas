@@ -19,4 +19,9 @@ class Unidade extends Model
     {
         return $this->hasMany('App\Equipe');
     }
+
+    public function unidadeProfissionals()
+    {
+        return $this->hasMany('App\UnidadeProfissional');
+    }
 }

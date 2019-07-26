@@ -5,7 +5,7 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('profissionals.index') }}">Lista de Profissionais</a></li>
-      <li class="breadcrumb-item" aria-current="page"><a href="{{ route('profissionals.trash') }}">Lixeira</a></li>
+      <li class="breadcrumb-item"><a href="{{ route('profissionals.trash') }}">Lixeira</a></li>
       <li class="breadcrumb-item active" aria-current="page">Exibir e Restaurar Registro</li>
     </ol>
   </nav>

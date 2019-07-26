@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Distrito;
 use App\Unidade;
+use App\UnidadeProfissional;
 use App\Perpage;
 
 use Response;
@@ -139,7 +140,9 @@ class UnidadeController extends Controller
 
         $unidade = Unidade::findOrFail($id);
 
-        return view('unidades.show', compact('unidade'));
+        $unidadeprofissionais = UnidadeProfissional::where('unidade_id', '=', $id)->orderBy('id', 'desc')->get();
+
+        return view('unidades.show', compact('unidade', 'unidadeprofissionais'));
     }
 
     /**
@@ -159,7 +162,9 @@ class UnidadeController extends Controller
         // consulta a tabela dos distritos
         $distritos = Distrito::orderBy('nome', 'asc')->get();
 
-        return view('unidades.edit', compact('unidade', 'distritos'));
+        $unidadeprofissionais = UnidadeProfissional::where('unidade_id', '=', $id)->orderBy('id', 'desc')->get();
+
+        return view('unidades.edit', compact('unidade', 'distritos', 'unidadeprofissionais'));
     }
 
     /**
@@ -291,7 +296,7 @@ class UnidadeController extends Controller
         $unidades = $unidades->join('distritos', 'distritos.id', '=', 'unidades.distrito_id');
 
         // select
-        $unidades = $unidades->select('unidades.descricao', 'unidades.porte', 'unidades.tel', 'unidades.cel', 'unidades.email', 'unidades.cep', 'unidades.logradouro', 'unidades.bairro', 'unidades.numero', 'unidades.complemento', 'unidades.cidade', 'unidades.uf', 'distritos.nome as distrito');
+        $unidades = $unidades->select('unidades.descricao', 'unidades.porte', 'unidades.tel', 'unidades.cel', 'unidades.email', 'unidades.cep', 'unidades.logradouro', 'unidades.bairro', 'unidades.numero', 'unidades.complemento', 'unidades.cidade', 'unidades.uf', 'distritos.nome as distrito', 'unidades.id');
 
         //filtros
         if (request()->has('descricao')){
@@ -349,6 +354,38 @@ class UnidadeController extends Controller
             $this->pdf->Cell(45, 6, utf8_decode($unidade->cel), 1, 0,'L');
             $this->pdf->Ln();
 
+
+            // profissionais da unidade
+            $profissionais = DB::table('unidade_profissionals');
+            // joins
+            $profissionais = $profissionais->join('profissionals', 'profissionals.id', '=', 'unidade_profissionals.profissional_id');
+            $profissionais = $profissionais->join('cargos', 'cargos.id', '=', 'profissionals.cargo_id');
+            // select
+            $profissionais = $profissionais->select('profissionals.nome as profissional', 'profissionals.matricula', 'cargos.nome as cargo');
+            // filter
+            $profissionais = $profissionais->where('unidade_profissionals.unidade_id', '=', $unidade->id);
+            // ordena
+            $profissionais = $profissionais->orderBy('unidade_profissionals.id', 'desc');
+            // get
+            $profissionais = $profissionais->get();
+
+            if (count($profissionais)){
+                $this->pdf->Cell(186, 6, utf8_decode('Profissionais'), 'B', 0,'L');
+                $this->pdf->Ln();
+                // diminui a fonte
+                $this->pdf->SetFont('Arial', '', 10);
+                foreach ($profissionais as $profissional) {
+
+                    $this->pdf->Cell(86, 5, utf8_decode($profissional->profissional), 1, 0,'L');
+                    $this->pdf->Cell(70, 5, utf8_decode($profissional->cargo), 1, 0,'L');
+                    $this->pdf->Cell(30, 5, utf8_decode($profissional->matricula), 1, 0,'L');
+
+                    $this->pdf->Ln();
+                }
+            }
+
+            $this->pdf->SetFont('Arial', '', 12);
+
             $this->pdf->Ln(4);
         }
 
@@ -366,10 +403,26 @@ class UnidadeController extends Controller
      */
     public function autocomplete(Request $request)
     {
-        $unidades = 
-         Unidade::select(DB::raw('descricao as text, id as value'))
-                    ->where("descricao","LIKE","%{$request->input('query')}%")
-                    ->get();
+        // $unidades = 
+        //  Unidade::select(DB::raw('descricao as text, id as value'))
+        //             ->where("descricao","LIKE","%{$request->input('query')}%")
+        //             ->get();
+
+        $unidades = DB::table('unidades');
+
+        // join
+        $unidades = $unidades->join('distritos', 'distritos.id', '=', 'unidades.distrito_id');
+
+        // select
+        $unidades = $unidades->select('unidades.descricao as text', 'unidades.id as value', 'distritos.nome as distrito');
+        
+        //where
+        $unidades = $unidades->where("unidades.descricao","LIKE","%{$request->input('query')}%");
+
+        //get
+        $unidades = $unidades->get();
+
+
         return response()->json($unidades, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
     }      
 }
