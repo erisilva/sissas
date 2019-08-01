@@ -130,6 +130,83 @@
     <button type="submit" class="btn btn-primary"><i class="fas fa-edit"></i> Alterar Dados da Equipe</button>
   </form>
 </div>
+
+
+<br>
+<div class="container bg-primary text-white">
+  <p class="text-center">Vagas</p>
+</div>
+<div class="container">
+  <form method="POST" action="{{ route('equipevagas.store') }}">
+    @csrf
+    <input type="hidden" id="equipe_id" name="equipe_id" value="{{ $equipe->id }}">
+    <div class="form-group">
+      <label for="cargo_id">Cargo</label>
+      <select class="form-control {{ $errors->has('cargo_id') ? ' is-invalid' : '' }}" name="cargo_id" id="cargo_id">
+        <option value="" selected="true">Selecione ...</option>        
+        @foreach($cargos as $cargo)
+        <option value="{{$cargo->id}}">{{$cargo->nome . ' CBO:' . $cargo->cbo}}</option>
+        @endforeach
+      </select>
+      @if ($errors->has('cargo_id'))
+      <div class="invalid-feedback">
+      {{ $errors->first('cargo_id') }}
+      </div>
+      @endif
+    </div>
+    <button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> Incluir Vaga nesta Equipe</button>
+  </form>
+</div>
+<br>
+<div class="container">
+  @if(Session::has('create_equipevaga'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Info!</strong>  {{ session('create_equipevaga') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
+  @if(Session::has('delete_equipevaga'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Info!</strong>  {{ session('delete_equipevaga') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
+  <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Cargo</th>
+                <th scope="col">CBO</th>
+                <th scope="col">Profissional</th>
+                <th scope="col">Matrícula</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($equipeprofissionais as $equipeprofissional)
+            <tr>
+                <td>{{ $equipeprofissional->cargo->nome }}</td>
+                <td>{{ $equipeprofissional->cargo->cbo }}</td>
+                <td>{{ isset($equipeprofissional->profissional_id) ?  $equipeprofissional->profissional->nome : 'Não vinculado' }}</td>
+                <td>{{ isset($equipeprofissional->profissional_id) ?  $equipeprofissional->profissional->matricula : '-' }}</td>
+                <td>
+                  <form method="post" action="{{route('equipevagas.destroy', $equipeprofissional->id)}}" onsubmit="return confirm('Você tem certeza que quer remover essa vaga?');">
+                    @csrf
+                    @method('DELETE')  
+                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                  </form>
+                </td>
+            </tr>    
+            @endforeach                                                 
+        </tbody>
+    </table>
+  </div> 
+</div>
+<br>
 <div class="container">
   <div class="float-right">
     <a href="{{ route('equipes.index') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>

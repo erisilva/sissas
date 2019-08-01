@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Equipe;
+use App\EquipeProfissional;
 use App\Perpage;
 use App\Distrito;
+use App\Cargo;
 
 use Response;
 
@@ -187,7 +189,11 @@ class EquipeController extends Controller
 
         $equipe = Equipe::findOrFail($id);
 
-        return view('equipes.edit', compact('equipe'));
+        $cargos = Cargo::orderBy('nome', 'asc')->get();
+
+        $equipeprofissionais = EquipeProfissional::where('equipe_id', '=', $id)->orderBy('id', 'desc')->get();
+
+        return view('equipes.edit', compact('equipe', 'cargos', 'equipeprofissionais'));
     }
 
     /**

@@ -109,15 +109,10 @@ Route::get('/profissionals/trash/{id}', 'ProfissionalTrashController@show')->nam
 Route::post('/profissionals/trash/{id}/restore', 'ProfissionalTrashController@restore')->name('profissionals.trash.restore');
 # resource
 Route::resource('/profissionals', 'ProfissionalController');
-
-
-
 /* Férias dos profissionais */
 Route::resource('/ferias', 'FeriasController')->only(['store', 'destroy',]);
-
 /* Licenças dos profissionais */
 Route::resource('/licencas', 'LicencaController')->only(['store', 'destroy',]);
-
 /* Capacitações dos profissionais */
 Route::resource('/capacitacaos', 'CapacitacaoController')->only(['store', 'destroy',]);
 
@@ -129,4 +124,7 @@ Route::get('/equipes/export/pdf/{id}/individual', 'EquipeController@exportpdfind
 Route::get('/equipes/trash', 'EquipeTrashController@index')->name('equipes.trash');
 Route::get('/equipes/trash/{id}', 'EquipeTrashController@show')->name('equipes.trash.show');
 Route::post('/equipes/trash/{id}/restore', 'EquipeTrashController@restore')->name('equipes.trash.restore');
+# Vagas da Equipe
+Route::resource('/equipevagas', 'EquipeVagasController')->only(['store', 'destroy',]);
+# resource
 Route::resource('/equipes', 'EquipeController');
