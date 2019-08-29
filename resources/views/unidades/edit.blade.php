@@ -121,7 +121,7 @@
     <input type="hidden" id="unidade_id" name="unidade_id" value="{{ $unidade->id }}">
     <div class="form-group">
       <label for="profissional_nome">Profissional</label>
-      <input type="text" class="form-control typeahead {{ $errors->has('unidade_id') ? ' is-invalid' : '' }}" name="profissional_nome" id="profissional_nome" value="{{ old('profissional_nome') ?? '' }}" autocomplete="off">       
+      <input type="text" class="form-control typeahead {{ $errors->has('profissional_id') ? ' is-invalid' : '' }}" name="profissional_nome" id="profissional_nome" value="{{ old('profissional_nome') ?? '' }}" autocomplete="off">       
       <input type="hidden" id="profissional_id" name="profissional_id" value="{{ old('profissional_id') ?? '' }}">
       @if ($errors->has('profissional_id'))
         <div class="invalid-feedback">

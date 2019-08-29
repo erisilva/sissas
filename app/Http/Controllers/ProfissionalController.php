@@ -949,7 +949,7 @@ class ProfissionalController extends Controller
         $profissionais = $profissionais->join('cargos', 'cargos.id', '=', 'profissionals.cargo_id');
 
         // select
-        $profissionais = $profissionais->select('profissionals.nome as text', 'profissionals.id as value', 'cargos.nome as cargo', 'profissionals.matricula as matricula');
+        $profissionais = $profissionais->select('profissionals.nome as text', 'profissionals.id as value', 'cargos.nome as cargo', 'cargos.id as cargo_id', 'profissionals.matricula as matricula');
         
         //where
         $profissionais = $profissionais->where("profissionals.nome","LIKE","%{$request->input('query')}%");

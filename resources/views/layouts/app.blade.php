@@ -36,6 +36,9 @@
                 <ul class="navbar-nav mr-auto">
                     @if (!Auth::guest())
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('equipegestao.index') }}">Equipes</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('profissionals.index') }}">Profissionais</a>
                     </li>
                     <li class="nav-item">

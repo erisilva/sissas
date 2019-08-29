@@ -128,3 +128,8 @@ Route::post('/equipes/trash/{id}/restore', 'EquipeTrashController@restore')->nam
 Route::resource('/equipevagas', 'EquipeVagasController')->only(['store', 'destroy',]);
 # resource
 Route::resource('/equipes', 'EquipeController');
+
+/* Gestão das equipes */
+Route::post('/equipegestao/preenchervaga', 'EquipeGestaoController@preenchervaga')->name('equipegestao.preenchervaga');
+Route::post('/equipegestao/limparvaga', 'EquipeGestaoController@limparvaga')->name('equipegestao.limparvaga');
+Route::resource('/equipegestao', 'EquipeGestaoController')->only(['index', 'show',]);
