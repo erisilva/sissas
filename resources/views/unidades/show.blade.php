@@ -72,6 +72,36 @@
       </div>      
     </div>
   </form>
+    @if (count($unidadeprofissionais))
+  <br>
+  <div class="container bg-primary text-white">
+    <p class="text-center">Profissionais Vinculados a essa Unidade</p>
+  </div>
+  <div class="container">
+    <div class="table-responsive">
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th scope="col">Profissional</th>
+                  <th scope="col">Matrícula</th>
+                  <th scope="col">Cargo</th>
+                  <th scope="col">CBO</th>
+              </tr>
+          </thead>
+          <tbody>
+              @foreach($unidadeprofissionais as $unidadeprofissional)
+              <tr>
+                <td>{{ $unidadeprofissional->profissional->nome }}</td>
+                <td>{{ $unidadeprofissional->profissional->matrícula }}</td>
+                <td>{{ $unidadeprofissional->profissional->cargo->nome }}</td>
+                <td>{{ $unidadeprofissional->profissional->cargo->cbo }}</td>
+              </tr>    
+              @endforeach                                             
+          </tbody>
+      </table>
+    </div>  
+  </div>
+  @endif
   <br>
   <div class="container">
     <form method="post" action="{{route('unidades.destroy', $unidade->id)}}">

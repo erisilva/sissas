@@ -15,7 +15,8 @@
         Opções
       </button>
       <div class="dropdown-menu" aria-labelledby="btnGroupDropOptions">
-        <a class="dropdown-item" href="#" id="btnExportarCSV"><i class="fas fa-file-download"></i> Exportar Planilha</a>
+        <a class="dropdown-item" href="#" id="btnExportarCSV"><i class="fas fa-file-download"></i> Exportar Planilha (Simples)</a>
+        <a class="dropdown-item" href="#" id="btnExportarCSVcompleta"><i class="fas fa-file-download"></i> Exportar Planilha (Completa)</a>
         <a class="dropdown-item" href="#" id="btnExportarPDF"><i class="fas fa-file-download"></i> Exportar PDF</a>
       </div>
     </div>
@@ -47,6 +48,7 @@
                 <td>
                   <div class="btn-group" role="group">
                     <a href="{{route('equipegestao.show', $equipe->id)}}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-eye"></i></a>
+                    <a href="{{ route('equipes.export.pdf.individual', $equipe->id) }}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-print"></i></a>
                   </div>
                 </td>
             </tr>    
@@ -144,7 +146,53 @@ $(document).ready(function(){
         window.open("{{ route('equipegestao.index') }}" + "?perpage=" + perpage,"_self");
     });
 
+    $('#btnExportarCSV').on('click', function(){
+        var filtro_descricao = $('input[name="descricao"]').val();
+        var filtro_numero = $('input[name="numero"]').val();
+        var filtro_cnes = $('input[name="cnes"]').val();
+        var filtro_unidade = $('input[name="unidade"]').val();
+        var filtro_distrito_id = $('select[name="distrito_id"]').val();
+        if (typeof filtro_distrito_id === "undefined") {
+          filtro_distrito_id = "";
+        }
+        var filtro_minima = $('input[name="minima"]:checked').val();
+        if (typeof filtro_minima === "undefined") {
+          filtro_minima = "";
+        }
+        window.open("{{ route('equipegestao.export.csv') }}" + "?descricao=" + filtro_descricao + "&numero=" + filtro_numero + "&cnes=" + filtro_cnes + "&unidade=" + filtro_unidade + "&distrito_id=" + filtro_distrito_id + "&minima=" + filtro_minima ,"_self");
+    });
 
+    $('#btnExportarPDF').on('click', function(){
+        var filtro_descricao = $('input[name="descricao"]').val();
+        var filtro_numero = $('input[name="numero"]').val();
+        var filtro_cnes = $('input[name="cnes"]').val();
+        var filtro_unidade = $('input[name="unidade"]').val();
+        var filtro_distrito_id = $('select[name="distrito_id"]').val();
+        if (typeof filtro_distrito_id === "undefined") {
+          filtro_distrito_id = "";
+        }
+        var filtro_minima = $('input[name="minima"]:checked').val();
+        if (typeof filtro_minima === "undefined") {
+          filtro_minima = "";
+        }
+        window.open("{{ route('equipegestao.export.pdf') }}" + "?descricao=" + filtro_descricao + "&numero=" + filtro_numero + "&cnes=" + filtro_cnes + "&unidade=" + filtro_unidade + "&distrito_id=" + filtro_distrito_id + "&minima=" + filtro_minima ,"_self");
+    });
+
+    $('#btnExportarCSVcompleta').on('click', function(){
+        var filtro_descricao = $('input[name="descricao"]').val();
+        var filtro_numero = $('input[name="numero"]').val();
+        var filtro_cnes = $('input[name="cnes"]').val();
+        var filtro_unidade = $('input[name="unidade"]').val();
+        var filtro_distrito_id = $('select[name="distrito_id"]').val();
+        if (typeof filtro_distrito_id === "undefined") {
+          filtro_distrito_id = "";
+        }
+        var filtro_minima = $('input[name="minima"]:checked').val();
+        if (typeof filtro_minima === "undefined") {
+          filtro_minima = "";
+        }
+        window.open("{{ route('equipegestao.export.csv.completo') }}" + "?descricao=" + filtro_descricao + "&numero=" + filtro_numero + "&cnes=" + filtro_cnes + "&unidade=" + filtro_unidade + "&distrito_id=" + filtro_distrito_id + "&minima=" + filtro_minima ,"_self");
+    });    
 }); 
 </script>
 @endsection

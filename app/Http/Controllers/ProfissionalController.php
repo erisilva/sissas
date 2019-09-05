@@ -358,43 +358,61 @@ class ProfissionalController extends Controller
         $profissionais = $profissionais->join('vinculos', 'vinculos.id', '=', 'profissionals.vinculo_id');
         $profissionais = $profissionais->join('vinculo_tipos', 'vinculo_tipos.id', '=', 'profissionals.vinculo_tipo_id');
         // select
-        $profissionais = $profissionais->select('profissionals.nome', 'profissionals.matricula', 'profissionals.cns', 'profissionals.cpf', 'profissionals.flexibilizacao', DB::raw('DATE_FORMAT(profissionals.admissao, \'%d/%m/%Y\') AS data_admissao'), 'profissionals.observacao', 'profissionals.tel', 'profissionals.cel', 'profissionals.email', 'profissionals.cep', 'profissionals.logradouro', 'profissionals.bairro', 'profissionals.numero', 'profissionals.complemento', 'profissionals.cidade', 'profissionals.uf', 'cargos.nome as cargo', 'carga_horarias.descricao as carga_horaria', 'vinculos.descricao as vinculo', 'vinculo_tipos.descricao as vinculo_tipo');
-
+        $profissionais = $profissionais->select(
+          'profissionals.nome', 
+          'profissionals.matricula', 
+          'profissionals.cns', 
+          'profissionals.cpf', 
+          'profissionals.flexibilizacao', 
+          DB::raw('DATE_FORMAT(profissionals.admissao, \'%d/%m/%Y\') AS data_admissao'), 
+          'profissionals.observacao', 
+          'profissionals.tel', 
+          'profissionals.cel', 
+          'profissionals.email', 
+          'profissionals.cep', 
+          'profissionals.logradouro', 
+          'profissionals.bairro', 
+          'profissionals.numero', 
+          'profissionals.complemento', 
+          'profissionals.cidade', 
+          'profissionals.uf', 
+          'cargos.nome as cargo', 
+          'carga_horarias.descricao as carga_horaria', 
+          'vinculos.descricao as vinculo', 
+          'vinculo_tipos.descricao as vinculo_tipo'
+        );
         //filtros
         if (request()->has('matricula')){
             $profissionais = $profissionais->where('profissionals.matricula', 'like', '%' . request('matricula') . '%');
         }
-
         if (request()->has('nome')){
             $profissionais = $profissionais->where('profissionals.nome', 'like', '%' . request('nome') . '%');
         }
-
         if (request()->has('cargo_id')){
             if (request('cargo_id') != ""){
                 $profissionais = $profissionais->where('cargos.id', '=', request('cargo_id'));
             }
         } 
-
         if (request()->has('vinculo_id')){
             if (request('vinculo_id') != ""){
                 $profissionais = $profissionais->where('vinculos.id', '=', request('vinculo_id'));
             }
         } 
-
         $profissionais = $profissionais->whereNull('profissionals.deleted_at'); 
-        
         // order
         $profissionais = $profissionais->orderBy('nome', 'asc');
-
+        // get
         $list = $profissionais->get()->toArray();
 
         # converte os objetos para uma array
         $list = json_decode(json_encode($list), true);
 
         # add headers for each column in the CSV download
-        array_unshift($list, array_keys($list[0]));
+        if (!empty($list)){
+          array_unshift($list, array_keys($list[0]));
+        }
 
-       $callback = function() use ($list)
+        $callback = function() use ($list)
         {
             $FH = fopen('php://output', 'w');
             fputs($FH, $bom = ( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
@@ -426,35 +444,51 @@ class ProfissionalController extends Controller
         $profissionais = $profissionais->join('vinculos', 'vinculos.id', '=', 'profissionals.vinculo_id');
         $profissionais = $profissionais->join('vinculo_tipos', 'vinculo_tipos.id', '=', 'profissionals.vinculo_tipo_id');
         // select
-        $profissionais = $profissionais->select('profissionals.id', 'profissionals.nome', 'profissionals.matricula', 'profissionals.cns', 'profissionals.cpf', 'profissionals.flexibilizacao', DB::raw('DATE_FORMAT(profissionals.admissao, \'%d/%m/%Y\') AS data_admissao'), 'profissionals.observacao', 'profissionals.tel', 'profissionals.cel', 'profissionals.email', 'profissionals.cep', 'profissionals.logradouro', 'profissionals.bairro', 'profissionals.numero', 'profissionals.complemento', 'profissionals.cidade', 'profissionals.uf', 'cargos.nome as cargo', 'carga_horarias.descricao as carga_horaria', 'vinculos.descricao as vinculo', 'vinculo_tipos.descricao as vinculo_tipo');
-
+        $profissionais = $profissionais->select(
+          'profissionals.id', 
+          'profissionals.nome', 
+          'profissionals.matricula', 
+          'profissionals.cns', 
+          'profissionals.cpf', 
+          'profissionals.flexibilizacao', 
+           DB::raw("DATE_FORMAT(profissionals.admissao, '%d/%m/%Y') AS data_admissao"), 
+          'profissionals.observacao', 
+          'profissionals.tel', 
+          'profissionals.cel', 
+          'profissionals.email', 
+          'profissionals.cep', 
+          'profissionals.logradouro', 
+          'profissionals.bairro', 
+          'profissionals.numero', 
+          'profissionals.complemento', 
+          'profissionals.cidade', 
+          'profissionals.uf', 
+          'cargos.nome as cargo', 
+          'carga_horarias.descricao as carga_horaria', 
+          'vinculos.descricao as vinculo', 
+          'vinculo_tipos.descricao as vinculo_tipo'
+        );
         //filtros
         if (request()->has('matricula')){
             $profissionais = $profissionais->where('profissionals.matricula', 'like', '%' . request('matricula') . '%');
         }
-
         if (request()->has('nome')){
             $profissionais = $profissionais->where('profissionals.nome', 'like', '%' . request('nome') . '%');
         }
-
         if (request()->has('cargo_id')){
             if (request('cargo_id') != ""){
                 $profissionais = $profissionais->where('cargos.id', '=', request('cargo_id'));
             }
         } 
-
         if (request()->has('vinculo_id')){
             if (request('vinculo_id') != ""){
                 $profissionais = $profissionais->where('vinculos.id', '=', request('vinculo_id'));
             }
         }
-
         $profissionais = $profissionais->whereNull('profissionals.deleted_at'); 
-
         // order
         $profissionais = $profissionais->orderBy('nome', 'asc'); 
-
-
+        //get
         $profissionais = $profissionais->get();
 
         $this->pdf->AliasNbPages();   
@@ -534,7 +568,12 @@ class ProfissionalController extends Controller
             // joins
             $ferias = $ferias->join('ferias_tipos', 'ferias_tipos.id', '=', 'ferias.ferias_tipo_id');
             // select
-            $ferias = $ferias->select(DB::raw('DATE_FORMAT(ferias.inicio, \'%d/%m/%Y\') AS datainicio'), DB::raw('DATE_FORMAT(ferias.fim, \'%d/%m/%Y\') AS datafim'), 'ferias_tipos.descricao as tipo', 'ferias.justificativa', 'ferias.observacao' );
+            $ferias = $ferias->select(
+              DB::raw("DATE_FORMAT(ferias.inicio, '%d/%m/%Y') AS datainicio"), 
+              DB::raw("DATE_FORMAT(ferias.fim, '%d/%m/%Y') AS datafim"), 
+              'ferias_tipos.descricao as tipo', 
+              'ferias.justificativa', 
+              'ferias.observacao' );
             // filter
             $ferias = $ferias->where('ferias.profissional_id', '=', $profissional->id);
             // get
@@ -567,7 +606,12 @@ class ProfissionalController extends Controller
             // joins
             $licencas = $licencas->join('licenca_tipos', 'licenca_tipos.id', '=', 'licencas.licenca_tipo_id');
             // select
-            $licencas = $licencas->select(DB::raw('DATE_FORMAT(licencas.inicio, \'%d/%m/%Y\') AS datainicio'), DB::raw('DATE_FORMAT(licencas.fim, \'%d/%m/%Y\') AS datafim'), 'licenca_tipos.descricao as tipo', 'licencas.observacao' );
+            $licencas = $licencas->select(
+              DB::raw("DATE_FORMAT(licencas.inicio, '%d/%m/%Y') AS datainicio"), 
+              DB::raw("DATE_FORMAT(licencas.fim, '%d/%m/%Y') AS datafim"), 
+              'licenca_tipos.descricao as tipo', 
+              'licencas.observacao' 
+            );
             // filter
             $licencas = $licencas->where('licencas.profissional_id', '=', $profissional->id);
             // get
@@ -597,7 +641,13 @@ class ProfissionalController extends Controller
             // joins
             $capacitacaos = $capacitacaos->join('capacitacao_tipos', 'capacitacao_tipos.id', '=', 'capacitacaos.capacitacao_tipo_id');
             // select
-            $capacitacaos = $capacitacaos->select(DB::raw('DATE_FORMAT(capacitacaos.inicio, \'%d/%m/%Y\') AS datainicio'), DB::raw('DATE_FORMAT(capacitacaos.fim, \'%d/%m/%Y\') AS datafim'), 'capacitacao_tipos.descricao as tipo', 'capacitacaos.observacao', 'capacitacaos.cargaHoraria' );
+            $capacitacaos = $capacitacaos->select(
+              DB::raw("DATE_FORMAT(capacitacaos.inicio, '%d/%m/%Y') AS datainicio"), 
+              DB::raw("DATE_FORMAT(capacitacaos.fim, '%d/%m/%Y') AS datafim"), 
+              'capacitacao_tipos.descricao as tipo', 
+              'capacitacaos.observacao', 
+              'capacitacaos.cargaHoraria' 
+            );
             // filter
             $capacitacaos = $capacitacaos->where('capacitacaos.profissional_id', '=', $profissional->id);
             // get
@@ -649,35 +699,51 @@ class ProfissionalController extends Controller
         $profissionais = $profissionais->join('vinculos', 'vinculos.id', '=', 'profissionals.vinculo_id');
         $profissionais = $profissionais->join('vinculo_tipos', 'vinculo_tipos.id', '=', 'profissionals.vinculo_tipo_id');
         // select
-        $profissionais = $profissionais->select('profissionals.id', 'profissionals.nome', 'profissionals.matricula', 'profissionals.cns', 'profissionals.cpf', 'profissionals.flexibilizacao', DB::raw('DATE_FORMAT(profissionals.admissao, \'%d/%m/%Y\') AS data_admissao'), 'profissionals.observacao', 'profissionals.tel', 'profissionals.cel', 'profissionals.email', 'profissionals.cep', 'profissionals.logradouro', 'profissionals.bairro', 'profissionals.numero', 'profissionals.complemento', 'profissionals.cidade', 'profissionals.uf', 'cargos.nome as cargo', 'carga_horarias.descricao as carga_horaria', 'vinculos.descricao as vinculo', 'vinculo_tipos.descricao as vinculo_tipo');
-
+        $profissionais = $profissionais->select(
+          'profissionals.id', 
+          'profissionals.nome', 
+          'profissionals.matricula', 
+          'profissionals.cns', 
+          'profissionals.cpf', 
+          'profissionals.flexibilizacao', 
+          DB::raw("DATE_FORMAT(profissionals.admissao, '%d/%m/%Y') AS data_admissao"), 
+          'profissionals.observacao', 
+          'profissionals.tel', 
+          'profissionals.cel', 
+          'profissionals.email', 
+          'profissionals.cep', 
+          'profissionals.logradouro', 
+          'profissionals.bairro', 
+          'profissionals.numero', 
+          'profissionals.complemento', 
+          'profissionals.cidade', 
+          'profissionals.uf', 
+          'cargos.nome as cargo', 
+          'carga_horarias.descricao as carga_horaria', 
+          'vinculos.descricao as vinculo', 
+          'vinculo_tipos.descricao as vinculo_tipo'
+        );
         //filtros
         if (request()->has('matricula')){
             $profissionais = $profissionais->where('profissionals.matricula', 'like', '%' . request('matricula') . '%');
         }
-
         if (request()->has('nome')){
             $profissionais = $profissionais->where('profissionals.nome', 'like', '%' . request('nome') . '%');
         }
-
         if (request()->has('cargo_id')){
             if (request('cargo_id') != ""){
                 $profissionais = $profissionais->where('cargos.id', '=', request('cargo_id'));
             }
         } 
-
         if (request()->has('vinculo_id')){
             if (request('vinculo_id') != ""){
                 $profissionais = $profissionais->where('vinculos.id', '=', request('vinculo_id'));
             }
         }
-
         $profissionais = $profissionais->whereNull('profissionals.deleted_at'); 
-
         // order
         $profissionais = $profissionais->orderBy('nome', 'asc'); 
-
-
+        // get
         $profissionais = $profissionais->get();
 
         $this->pdf->AliasNbPages();   
@@ -756,7 +822,30 @@ class ProfissionalController extends Controller
         $profissional = $profissional->join('vinculos', 'vinculos.id', '=', 'profissionals.vinculo_id');
         $profissional = $profissional->join('vinculo_tipos', 'vinculo_tipos.id', '=', 'profissionals.vinculo_tipo_id');
         // select
-        $profissional = $profissional->select('profissionals.id', 'profissionals.nome', 'profissionals.matricula', 'profissionals.cns', 'profissionals.cpf', 'profissionals.flexibilizacao', DB::raw('DATE_FORMAT(profissionals.admissao, \'%d/%m/%Y\') AS data_admissao'), 'profissionals.observacao', 'profissionals.tel', 'profissionals.cel', 'profissionals.email', 'profissionals.cep', 'profissionals.logradouro', 'profissionals.bairro', 'profissionals.numero', 'profissionals.complemento', 'profissionals.cidade', 'profissionals.uf', 'cargos.nome as cargo', 'carga_horarias.descricao as carga_horaria', 'vinculos.descricao as vinculo', 'vinculo_tipos.descricao as vinculo_tipo');
+        $profissional = $profissional->select(
+          'profissionals.id', 
+          'profissionals.nome', 
+          'profissionals.matricula', 
+          'profissionals.cns', 
+          'profissionals.cpf', 
+          'profissionals.flexibilizacao', 
+          DB::raw("DATE_FORMAT(profissionals.admissao, '%d/%m/%Y') AS data_admissao"), 
+          'profissionals.observacao', 
+          'profissionals.tel', 
+          'profissionals.cel', 
+          'profissionals.email', 
+          'profissionals.cep', 
+          'profissionals.logradouro', 
+          'profissionals.bairro', 
+          'profissionals.numero', 
+          'profissionals.complemento', 
+          'profissionals.cidade', 
+          'profissionals.uf', 
+          'cargos.nome as cargo', 
+          'carga_horarias.descricao as carga_horaria', 
+          'vinculos.descricao as vinculo', 
+          'vinculo_tipos.descricao as vinculo_tipo'
+        );
 
         //filtros
         $profissional = $profissional->where('profissionals.id', '=', $id);
@@ -840,7 +929,13 @@ class ProfissionalController extends Controller
         // joins
         $ferias = $ferias->join('ferias_tipos', 'ferias_tipos.id', '=', 'ferias.ferias_tipo_id');
         // select
-        $ferias = $ferias->select(DB::raw('DATE_FORMAT(ferias.inicio, \'%d/%m/%Y\') AS datainicio'), DB::raw('DATE_FORMAT(ferias.fim, \'%d/%m/%Y\') AS datafim'), 'ferias_tipos.descricao as tipo', 'ferias.justificativa', 'ferias.observacao' );
+        $ferias = $ferias->select(
+          DB::raw("DATE_FORMAT(ferias.inicio, '%d/%m/%Y') AS datainicio"), 
+          DB::raw("DATE_FORMAT(ferias.fim, '%d/%m/%Y') AS datafim"), 
+          'ferias_tipos.descricao as tipo', 
+          'ferias.justificativa', 
+          'ferias.observacao' 
+        );
         // filter
         $ferias = $ferias->where('ferias.profissional_id', '=', $profissional->id);
         // get
@@ -873,7 +968,12 @@ class ProfissionalController extends Controller
         // joins
         $licencas = $licencas->join('licenca_tipos', 'licenca_tipos.id', '=', 'licencas.licenca_tipo_id');
         // select
-        $licencas = $licencas->select(DB::raw('DATE_FORMAT(licencas.inicio, \'%d/%m/%Y\') AS datainicio'), DB::raw('DATE_FORMAT(licencas.fim, \'%d/%m/%Y\') AS datafim'), 'licenca_tipos.descricao as tipo', 'licencas.observacao' );
+        $licencas = $licencas->select(
+          DB::raw("DATE_FORMAT(licencas.inicio, '%d/%m/%Y') AS datainicio"),
+          DB::raw("DATE_FORMAT(licencas.fim, '%d/%m/%Y') AS datafim"),
+          'licenca_tipos.descricao as tipo', 
+          'licencas.observacao' 
+        );
         // filter
         $licencas = $licencas->where('licencas.profissional_id', '=', $profissional->id);
         // get
@@ -903,7 +1003,13 @@ class ProfissionalController extends Controller
         // joins
         $capacitacaos = $capacitacaos->join('capacitacao_tipos', 'capacitacao_tipos.id', '=', 'capacitacaos.capacitacao_tipo_id');
         // select
-        $capacitacaos = $capacitacaos->select(DB::raw('DATE_FORMAT(capacitacaos.inicio, \'%d/%m/%Y\') AS datainicio'), DB::raw('DATE_FORMAT(capacitacaos.fim, \'%d/%m/%Y\') AS datafim'), 'capacitacao_tipos.descricao as tipo', 'capacitacaos.observacao', 'capacitacaos.cargaHoraria' );
+        $capacitacaos = $capacitacaos->select(
+          DB::raw("DATE_FORMAT(capacitacaos.inicio, '%d/%m/%Y') AS datainicio"),
+          DB::raw("DATE_FORMAT(capacitacaos.fim, '%d/%m/%Y') AS datafim"), 
+          'capacitacao_tipos.descricao as tipo', 
+          'capacitacaos.observacao', 
+          'capacitacaos.cargaHoraria' 
+        );
         // filter
         $capacitacaos = $capacitacaos->where('capacitacaos.profissional_id', '=', $profissional->id);
         // get
@@ -949,7 +1055,13 @@ class ProfissionalController extends Controller
         $profissionais = $profissionais->join('cargos', 'cargos.id', '=', 'profissionals.cargo_id');
 
         // select
-        $profissionais = $profissionais->select('profissionals.nome as text', 'profissionals.id as value', 'cargos.nome as cargo', 'cargos.id as cargo_id', 'profissionals.matricula as matricula');
+        $profissionais = $profissionais->select(
+          'profissionals.nome as text', 
+          'profissionals.id as value', 
+          'cargos.nome as cargo', 
+          'cargos.id as cargo_id', 
+          'profissionals.matricula as matricula'
+        );
         
         //where
         $profissionais = $profissionais->where("profissionals.nome","LIKE","%{$request->input('query')}%");

@@ -470,5 +470,27 @@ class PermissionsTableSeeder extends Seeder
             'name' => 'equipe.trash.restore',
             'description' => 'Restaurar registro da lixeira da equipe',
         ]);
+
+        // Gestão das equipes
+        DB::table('permissions')->insert([
+            'name' => 'gestao.equipe.index',
+            'description' => 'Exibir as equipes para gestão',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'gestao.equipe.show',
+            'description' => 'Exibir uma equipe para gestão',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'gestao.equipe.vincular.vaga',
+            'description' => 'Vincular um profissional a uma vaga da equipe',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'gestao.equipe.desvincular.vaga',
+            'description' => 'Desvincular um profissional a uma vaga da equipe',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'gestao.equipe.export',
+            'description' => 'Exportar dados da gestão de equipes',
+        ]);
     }
 }

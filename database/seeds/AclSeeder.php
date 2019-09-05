@@ -166,6 +166,12 @@ class AclSeeder extends Seeder
 		// para equipes (e vagas) (LIXEIRA)
 		$equipe_trash_index = Permission::where('name', '=', 'equipe.trash.index')->get()->first(); 
 		$equipe_trash_restore = Permission::where('name', '=', 'equipe.trash.restore')->get()->first();
+		// para gestão de equipes
+		$equipegestao_index = Permission::where('name', '=', 'gestao.equipe.index')->get()->first();
+		$equipegestao_show = Permission::where('name', '=', 'gestao.equipe.show')->get()->first();  
+		$equipegestao_export = Permission::where('name', '=', 'gestao.equipe.export')->get()->first();
+		$equipegestao_vincular = Permission::where('name', '=', 'gestao.equipe.vincular.vaga')->get()->first();
+		$equipegestao_desvincular = Permission::where('name', '=', 'gestao.equipe.desvincular.vaga')->get()->first();
 
 
 
@@ -296,6 +302,13 @@ class AclSeeder extends Seeder
 		# Equipes (e vagas) LIXEIRA
 		$administrador_perfil->permissions()->attach($equipe_trash_index);
 		$administrador_perfil->permissions()->attach($equipe_trash_restore);
+		# gestão de equipes
+		$administrador_perfil->permissions()->attach($equipegestao_index);
+		$administrador_perfil->permissions()->attach($equipegestao_show);
+		$administrador_perfil->permissions()->attach($equipegestao_export);
+		$administrador_perfil->permissions()->attach($equipegestao_vincular);
+		$administrador_perfil->permissions()->attach($equipegestao_desvincular);
+
 
 
 
@@ -397,6 +410,15 @@ class AclSeeder extends Seeder
 		# Equipes (e vagas) LIXEIRA
 		$gerente_perfil->permissions()->attach($equipe_trash_index);
 		$gerente_perfil->permissions()->attach($equipe_trash_restore);
+		#gestão de equipes
+		$gerente_perfil->permissions()->attach($equipegestao_index);
+		$gerente_perfil->permissions()->attach($equipegestao_show);
+		$gerente_perfil->permissions()->attach($equipegestao_export);
+		$gerente_perfil->permissions()->attach($equipegestao_vincular);
+		$gerente_perfil->permissions()->attach($equipegestao_desvincular);
+
+
+
 
 
 
@@ -472,7 +494,15 @@ class AclSeeder extends Seeder
 		$operador_perfil->permissions()->attach($equipe_show);
 		$operador_perfil->permissions()->attach($equipe_export);
 		# Equipe (e vagas) LIXEIRA
-		$operador_perfil->permissions()->attach($equipe_trash_index);	
+		$operador_perfil->permissions()->attach($equipe_trash_index);
+		# gestão de equipes
+		$operador_perfil->permissions()->attach($equipegestao_index);
+		$operador_perfil->permissions()->attach($equipegestao_show);
+		$operador_perfil->permissions()->attach($equipegestao_export);
+		$operador_perfil->permissions()->attach($equipegestao_vincular);
+		$operador_perfil->permissions()->attach($equipegestao_desvincular);
+
+
 
 
 
@@ -516,6 +546,11 @@ class AclSeeder extends Seeder
 		# equipes (e vagas)
 		$leitor_perfil->permissions()->attach($equipe_index);
 		$leitor_perfil->permissions()->attach($equipe_show);
+		# gestão de equipes
+		$leitor_perfil->permissions()->attach($equipegestao_index);
+		$leitor_perfil->permissions()->attach($equipegestao_show);
+
+
 
 
 

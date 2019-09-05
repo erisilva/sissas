@@ -4,7 +4,7 @@ namespace App\Reports;
 
 use Codedge\Fpdf\Fpdf\Fpdf;
 
-class EquipeReport extends Fpdf
+class HistoricoReport extends Fpdf
 {
     public function Header()
     {
@@ -13,8 +13,9 @@ class EquipeReport extends Fpdf
         $this->SetDrawColor(0);
         $this->SetFont('Arial','',12);
 
-        $this->Cell(186, 6, utf8_decode('Relatório de Equipes/Vagas'), 1, 1,'C', 1);
+        $this->Cell(186, 6, utf8_decode('Relatório de Histórico dos Profissionais'), 1, 1,'C', 1);
         $this->Ln(2);
+
     }
 
     public function Footer()

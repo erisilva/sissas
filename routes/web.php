@@ -130,6 +130,10 @@ Route::resource('/equipevagas', 'EquipeVagasController')->only(['store', 'destro
 Route::resource('/equipes', 'EquipeController');
 
 /* Gestão das equipes */
+Route::get('/equipegestao/export/csv', 'EquipeGestaoController@exportcsv')->name('equipegestao.export.csv');
+Route::get('/equipegestao/export/csv/completo', 'EquipeGestaoController@exportcsvcompleto')->name('equipegestao.export.csv.completo');
+Route::get('/equipegestao/export/pdf', 'EquipeGestaoController@exportpdf')->name('equipegestao.export.pdf');
+Route::get('/equipegestao/export/pdf/{id}/individual', 'EquipeGestaoController@exportpdfindividual')->name('equipegestao.export.pdf.individual');
 Route::post('/equipegestao/preenchervaga', 'EquipeGestaoController@preenchervaga')->name('equipegestao.preenchervaga');
 Route::post('/equipegestao/limparvaga', 'EquipeGestaoController@limparvaga')->name('equipegestao.limparvaga');
 Route::resource('/equipegestao', 'EquipeGestaoController')->only(['index', 'show',]);

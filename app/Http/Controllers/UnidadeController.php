@@ -258,7 +258,9 @@ class UnidadeController extends Controller
         $list = json_decode(json_encode($list), true);
 
         # add headers for each column in the CSV download
-        array_unshift($list, array_keys($list[0]));
+        if (!empty($list)){
+          array_unshift($list, array_keys($list[0]));
+        }
 
        $callback = function() use ($list)
         {
@@ -315,7 +317,6 @@ class UnidadeController extends Controller
         $unidades = $unidades->get();
 
         foreach ($unidades as $unidade) {
-
             $this->pdf->Cell(96, 6, utf8_decode('Descrição'), 1, 0,'L');
             $this->pdf->Cell(60, 6, utf8_decode('Distrito'), 1, 0,'L');
             $this->pdf->Cell(30, 6, utf8_decode('Porte'), 1, 0,'L');
@@ -354,7 +355,6 @@ class UnidadeController extends Controller
             $this->pdf->Cell(45, 6, utf8_decode($unidade->cel), 1, 0,'L');
             $this->pdf->Ln();
 
-
             // profissionais da unidade
             $profissionais = DB::table('unidade_profissionals');
             // joins
@@ -375,7 +375,6 @@ class UnidadeController extends Controller
                 // diminui a fonte
                 $this->pdf->SetFont('Arial', '', 10);
                 foreach ($profissionais as $profissional) {
-
                     $this->pdf->Cell(86, 5, utf8_decode($profissional->profissional), 1, 0,'L');
                     $this->pdf->Cell(70, 5, utf8_decode($profissional->cargo), 1, 0,'L');
                     $this->pdf->Cell(30, 5, utf8_decode($profissional->matricula), 1, 0,'L');
@@ -391,7 +390,6 @@ class UnidadeController extends Controller
 
         $this->pdf->Output('D', 'Unidades_' .  date("Y-m-d H:i:s") . '.pdf', true);
         exit;
-
     }
 
 
@@ -403,11 +401,6 @@ class UnidadeController extends Controller
      */
     public function autocomplete(Request $request)
     {
-        // $unidades = 
-        //  Unidade::select(DB::raw('descricao as text, id as value'))
-        //             ->where("descricao","LIKE","%{$request->input('query')}%")
-        //             ->get();
-
         $unidades = DB::table('unidades');
 
         // join
@@ -421,7 +414,6 @@ class UnidadeController extends Controller
 
         //get
         $unidades = $unidades->get();
-
 
         return response()->json($unidades, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
     }      

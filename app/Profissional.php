@@ -120,5 +120,15 @@ class Profissional extends Model
         return $this->hasMany('App\EquipeProfissional');
     }
 
+    /**
+     * Histórico dos profissionais
+     *
+     * @var Licencas
+     */
+    public function historicos()
+    {
+        return $this->belongsToMany('App\Historico');
+    }
+
     protected $dates = ['deleted_at', 'admissao'];
 }

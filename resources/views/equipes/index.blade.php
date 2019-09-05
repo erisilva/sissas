@@ -97,10 +97,7 @@
         </div>
         <div class="modal-body">
           <!-- Filtragem dos dados -->
-
-
           <form method="GET" action="{{ route('equipes.index') }}">
-
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="descricao">Descrição</label>
@@ -115,7 +112,6 @@
                 <input type="text" class="form-control" id="cnes" name="cnes" value="{{request()->input('cnes')}}">
               </div>
             </div>
-
             <div class="form-row">
               <div class="form-group col-md-4">
                 <label for="unidade">Unidade</label>
@@ -146,8 +142,6 @@
                 </div>                
               </div>
             </div>
-
-
             <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Pesquisar</button>
             <a href="{{ route('equipes.index') }}" class="btn btn-primary btn-sm" role="button">Limpar</a>
           </form>
@@ -178,11 +172,35 @@ $(document).ready(function(){
     });
 
     $('#btnExportarCSV').on('click', function(){
-        window.open("{{ route('equipes.export.csv') }}","_self");
+        var filtro_descricao = $('input[name="descricao"]').val();
+        var filtro_numero = $('input[name="numero"]').val();
+        var filtro_cnes = $('input[name="cnes"]').val();
+        var filtro_unidade = $('input[name="unidade"]').val();
+        var filtro_distrito_id = $('select[name="distrito_id"]').val();
+        if (typeof filtro_distrito_id === "undefined") {
+          filtro_distrito_id = "";
+        }
+        var filtro_minima = $('input[name="minima"]:checked').val();
+        if (typeof filtro_minima === "undefined") {
+          filtro_minima = "";
+        }
+        window.open("{{ route('equipes.export.csv') }}" + "?descricao=" + filtro_descricao + "&numero=" + filtro_numero + "&cnes=" + filtro_cnes + "&unidade=" + filtro_unidade + "&distrito_id=" + filtro_distrito_id + "&minima=" + filtro_minima ,"_self");
     });
 
     $('#btnExportarPDF').on('click', function(){
-        window.open("{{ route('equipes.export.pdf') }}","_self");
+        var filtro_descricao = $('input[name="descricao"]').val();
+        var filtro_numero = $('input[name="numero"]').val();
+        var filtro_cnes = $('input[name="cnes"]').val();
+        var filtro_unidade = $('input[name="unidade"]').val();
+        var filtro_distrito_id = $('select[name="distrito_id"]').val();
+        if (typeof filtro_distrito_id === "undefined") {
+          filtro_distrito_id = "";
+        }
+        var filtro_minima = $('input[name="minima"]:checked').val();
+        if (typeof filtro_minima === "undefined") {
+          filtro_minima = "";
+        }
+        window.open("{{ route('equipes.export.pdf') }}" + "?descricao=" + filtro_descricao + "&numero=" + filtro_numero + "&cnes=" + filtro_cnes + "&unidade=" + filtro_unidade + "&distrito_id=" + filtro_distrito_id + "&minima=" + filtro_minima ,"_self");
     });
 }); 
 </script>

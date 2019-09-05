@@ -171,7 +171,9 @@ class EquipeController extends Controller
 
         $equipe = Equipe::findOrFail($id);
 
-        return view('equipes.show', compact('equipe'));
+        $equipeprofissionais = EquipeProfissional::where('equipe_id', '=', $id)->orderBy('id', 'desc')->get();
+
+        return view('equipes.show', compact('equipe', 'equipeprofissionais'));
     }
 
     /**
@@ -244,4 +246,333 @@ class EquipeController extends Controller
 
         return redirect(route('equipes.index'));
     }
+
+    /**
+     * Exportação para planilha (csv)
+     *
+     * @param  int  $id
+     * @return Response::stream()
+     */
+    public function exportcsv()
+    {
+        if (Gate::denies('equipe.export')) {
+            abort(403, 'Acesso negado.');
+        }
+
+       $headers = [
+                'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
+            ,   'Content-type'        => 'text/csv'
+            ,   'Content-Disposition' => 'attachment; filename=equipes_' .  date("Y-m-d H:i:s") . '.csv'
+            ,   'Expires'             => '0'
+            ,   'Pragma'              => 'public'
+        ];
+
+        $equipes = DB::table('equipes');
+
+        // join
+        $equipes = $equipes->join('unidades', 'unidades.id', '=', 'equipes.unidade_id');
+
+        $equipes = $equipes->join('distritos', 'distritos.id', '=', 'unidades.distrito_id');
+
+        // select
+        $equipes = $equipes->select(
+          'equipes.descricao', 
+          'equipes.numero', 
+          'equipes.cnes', 
+          'equipes.ine', 
+          'equipes.minima', 
+          'unidades.descricao as unidade', 
+          'distritos.nome as distrito'
+        );
+
+        //filtros
+        if (request()->has('descricao')){
+            $equipes = $equipes->where('equipes.descricao', 'like', '%' . request('descricao') . '%');
+        }
+
+        if (request()->has('numero')){
+            $equipes = $equipes->where('equipes.numero', 'like', '%' . request('numero') . '%');
+        }
+
+        if (request()->has('cnes')){
+            $equipes = $equipes->where('equipes.cnes', 'like', '%' . request('cnes') . '%');
+        }
+
+        if (request()->has('unidade')){
+            $equipes = $equipes->where('unidades.descricao', 'like', '%' . request('unidade') . '%');
+        }
+
+        if (request()->has('distrito_id')){
+            if (request('distrito_id') != ""){
+                $equipes = $equipes->where('unidades.distrito_id', '=', request('distrito_id'));
+            }
+        }
+
+        if (request()->has('minima')){
+            if (request('minima') != ""){
+                $equipes = $equipes->where('equipes.minima', 'like', '%' . request('minima') . '%');
+            }    
+        }
+
+        $equipes = $equipes->orderBy('equipes.descricao', 'asc');
+
+        $list = $equipes->get()->toArray();
+
+        # converte os objetos para uma array
+        $list = json_decode(json_encode($list), true);
+
+        # add headers for each column in the CSV download
+        if (!empty($list)){
+          array_unshift($list, array_keys($list[0]));
+        }
+
+        $callback = function() use ($list)
+        {
+            $FH = fopen('php://output', 'w');
+            fputs($FH, $bom = ( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
+            foreach ($list as $row) {
+                fputcsv($FH, $row, chr(9));
+            }
+            fclose($FH);
+        };
+
+        return Response::stream($callback, 200, $headers);
+    }
+
+    /**
+     * Exportação para pdf
+     *
+     * @param  
+     * @return 
+     */
+    public function exportpdf()
+    {
+        if (Gate::denies('equipe.export')) {
+            abort(403, 'Acesso negado.');
+        }
+
+        $this->pdf->AliasNbPages();   
+        $this->pdf->SetMargins(12, 10, 12);
+        $this->pdf->SetFont('Arial', '', 11);
+        $this->pdf->AddPage();
+
+        $equipes = DB::table('equipes');
+
+        // join
+        $equipes = $equipes->join('unidades', 'unidades.id', '=', 'equipes.unidade_id');
+        $equipes = $equipes->join('distritos', 'distritos.id', '=', 'unidades.distrito_id');
+
+        // select
+        $equipes = $equipes->select(
+          'equipes.id as id', 
+          'equipes.descricao', 
+          'equipes.numero', 
+          'equipes.cnes', 
+          'equipes.ine', 
+          'equipes.minima', 
+          'unidades.descricao as unidade', 
+          'distritos.nome as distrito'
+        );
+
+        //filtros
+        if (request()->has('descricao')){
+            $equipes = $equipes->where('equipes.descricao', 'like', '%' . request('descricao') . '%');
+        }
+
+        if (request()->has('numero')){
+            $equipes = $equipes->where('equipes.numero', 'like', '%' . request('numero') . '%');
+        }
+
+        if (request()->has('cnes')){
+            $equipes = $equipes->where('equipes.cnes', 'like', '%' . request('cnes') . '%');
+        }
+
+        if (request()->has('unidade')){
+            $equipes = $equipes->where('unidades.descricao', 'like', '%' . request('unidade') . '%');
+        }
+
+        if (request()->has('distrito_id')){
+            if (request('distrito_id') != ""){
+                $equipes = $equipes->where('unidades.distrito_id', '=', request('distrito_id'));
+            }
+        }
+
+        if (request()->has('minima')){
+            if (request('minima') != ""){
+                $equipes = $equipes->where('equipes.minima', 'like', '%' . request('minima') . '%');
+            }    
+        }
+        // ordena
+        $equipes = $equipes->orderBy('equipes.descricao', 'asc');
+        // get
+        $equipes = $equipes->get();
+
+        foreach ($equipes as $equipe) {
+          $this->pdf->Cell(126, 6, utf8_decode('Descrição'), 1, 0,'L');
+          $this->pdf->Cell(60, 6, utf8_decode('Número'), 1, 0,'L');
+          $this->pdf->Ln();
+          $this->pdf->Cell(126, 6, utf8_decode($equipe->descricao), 1, 0,'L');
+          $this->pdf->Cell(60, 6, utf8_decode($equipe->numero), 1, 0,'L');
+          $this->pdf->Ln();
+
+          $this->pdf->Cell(62, 6, utf8_decode('CNES'), 1, 0,'L');
+          $this->pdf->Cell(62, 6, utf8_decode('INE'), 1, 0,'L');
+          $this->pdf->Cell(62, 6, utf8_decode('Mínima'), 1, 0,'L');
+          $this->pdf->Ln();
+          $this->pdf->Cell(62, 6, utf8_decode($equipe->cnes), 1, 0,'L');
+          $this->pdf->Cell(62, 6, utf8_decode($equipe->ine), 1, 0,'L');
+          $minima = ($equipe->distrito == 's') ? 'Sim' : 'Não';
+          $this->pdf->Cell(62, 6, utf8_decode($minima), 1, 0,'L');
+          $this->pdf->Ln();
+
+          $this->pdf->Cell(106, 6, utf8_decode('Unidade'), 1, 0,'L');
+          $this->pdf->Cell(80, 6, utf8_decode('Distrito'), 1, 0,'L');
+          $this->pdf->Ln();
+          $this->pdf->Cell(106, 6, utf8_decode($equipe->unidade), 1, 0,'L');
+          $this->pdf->Cell(80, 6, utf8_decode($equipe->distrito), 1, 0,'L');
+          $this->pdf->Ln();
+
+          // vagas da equipe
+          $vagaequipes = DB::table('equipe_profissionals');
+          // joins
+          $vagaequipes = $vagaequipes->join('cargos', 'cargos.id', '=', 'equipe_profissionals.cargo_id');
+          $vagaequipes = $vagaequipes->leftjoin('profissionals', 'profissionals.id', '=', 'equipe_profissionals.profissional_id');          
+          // select
+          $vagaequipes = $vagaequipes->select(
+            'equipe_profissionals.descricao', 
+            'cargos.nome as cargonome', 
+            'cargos.cbo', 
+            DB::raw("coalesce(profissionals.nome, 'Não Vinculado') as nome"), 
+            DB::raw("coalesce(profissionals.matricula, '') as matricula")
+          );
+          // filter
+          $vagaequipes = $vagaequipes->where('equipe_profissionals.equipe_id', '=', $equipe->id);
+          // ordena
+          $vagaequipes = $vagaequipes->orderBy('equipe_profissionals.id', 'desc');
+          // get
+          $vagaequipes = $vagaequipes->get();
+
+          if (count($vagaequipes)){
+                $this->pdf->Cell(186, 6, utf8_decode('Vagas/Profissionais'), 'B', 0,'L');
+                $this->pdf->Ln();
+                // diminui a fonte
+                $this->pdf->SetFont('Arial', '', 10);
+                foreach ($vagaequipes as $vagaequipe) {
+                    $this->pdf->Cell(110, 5, utf8_decode('Cargo: ' . $vagaequipe->cargonome), 1, 0,'L');
+                    $this->pdf->Cell(76, 5, utf8_decode('CBO: ' . $vagaequipe->cbo), 1, 0,'L');
+                    $this->pdf->Ln();
+                    $this->pdf->Cell(110, 5, utf8_decode('Profissional: ' . $vagaequipe->nome), 1, 0,'L');
+                    $this->pdf->Cell(76, 5, utf8_decode('Matrícula: ' . $vagaequipe->matricula), 1, 0,'L');
+                    $this->pdf->Ln();
+                    $this->pdf->Ln(1);
+                }
+            }
+
+          $this->pdf->SetFont('Arial', '', 12);
+
+          $this->pdf->Ln(4);
+        }  
+
+        $this->pdf->Output('D', 'Equipes_' .  date("Y-m-d H:i:s") . '.pdf', true);
+        exit;
+  }
+
+           /**
+     * Exportação para pdf por protocolo
+     *
+     * @param  $id, id do protocolo
+     * @return pdf
+     */
+    public function exportpdfindividual($id)
+    {
+        if (Gate::denies('profissional.export')) {
+            abort(403, 'Acesso negado.');
+        }
+
+        $this->pdf->AliasNbPages();   
+        $this->pdf->SetMargins(12, 10, 12);
+        $this->pdf->SetFont('Arial', '', 11);
+        $this->pdf->AddPage();
+
+        $equipe = DB::table('equipes');
+        // join
+        $equipe = $equipe->join('unidades', 'unidades.id', '=', 'equipes.unidade_id');
+        $equipe = $equipe->join('distritos', 'distritos.id', '=', 'unidades.distrito_id');
+        // select
+        $equipe = $equipe->select('equipes.id as id', 'equipes.descricao', 'equipes.numero', 'equipes.cnes', 'equipes.ine', 'equipes.minima', 'unidades.descricao as unidade', 'distritos.nome as distrito');
+        //filtros
+        $equipe = $equipe->where('equipes.id', '=', $id);
+        // ordena
+        $equipe = $equipe->orderBy('equipes.descricao', 'asc');
+        // get
+        $equipe = $equipe->get()->first();
+
+        $this->pdf->Cell(126, 6, utf8_decode('Descrição'), 1, 0,'L');
+        $this->pdf->Cell(60, 6, utf8_decode('Número'), 1, 0,'L');
+        $this->pdf->Ln();
+        $this->pdf->Cell(126, 6, utf8_decode($equipe->descricao), 1, 0,'L');
+        $this->pdf->Cell(60, 6, utf8_decode($equipe->numero), 1, 0,'L');
+        $this->pdf->Ln();
+
+        $this->pdf->Cell(62, 6, utf8_decode('CNES'), 1, 0,'L');
+        $this->pdf->Cell(62, 6, utf8_decode('INE'), 1, 0,'L');
+        $this->pdf->Cell(62, 6, utf8_decode('Mínima'), 1, 0,'L');
+        $this->pdf->Ln();
+        $this->pdf->Cell(62, 6, utf8_decode($equipe->cnes), 1, 0,'L');
+        $this->pdf->Cell(62, 6, utf8_decode($equipe->ine), 1, 0,'L');
+        $minima = ($equipe->distrito == 's') ? 'Sim' : 'Não';
+        $this->pdf->Cell(62, 6, utf8_decode($minima), 1, 0,'L');
+        $this->pdf->Ln();
+
+        $this->pdf->Cell(106, 6, utf8_decode('Unidade'), 1, 0,'L');
+        $this->pdf->Cell(80, 6, utf8_decode('Distrito'), 1, 0,'L');
+        $this->pdf->Ln();
+        $this->pdf->Cell(106, 6, utf8_decode($equipe->unidade), 1, 0,'L');
+        $this->pdf->Cell(80, 6, utf8_decode($equipe->distrito), 1, 0,'L');
+        $this->pdf->Ln();
+
+        // vagas da equipe
+        $vagaequipes = DB::table('equipe_profissionals');
+        // joins
+        $vagaequipes = $vagaequipes->join('cargos', 'cargos.id', '=', 'equipe_profissionals.cargo_id');
+        $vagaequipes = $vagaequipes->leftjoin('profissionals', 'profissionals.id', '=', 'equipe_profissionals.profissional_id');          
+        // select
+        $vagaequipes = $vagaequipes->select(
+          'equipe_profissionals.descricao', 
+          'cargos.nome as cargonome', 
+          'cargos.cbo', 
+          DB::raw("coalesce(profissionals.nome, 'Não Vinculado') as nome"), 
+          DB::raw("coalesce(profissionals.matricula, '') as matricula")
+        );
+        // filter
+        $vagaequipes = $vagaequipes->where('equipe_profissionals.equipe_id', '=', $equipe->id);
+        // ordena
+        $vagaequipes = $vagaequipes->orderBy('equipe_profissionals.id', 'desc');
+        // get
+        $vagaequipes = $vagaequipes->get();
+
+        if (count($vagaequipes)){
+            $this->pdf->Cell(186, 6, utf8_decode('Vagas/Profissionais'), 'B', 0,'L');
+            $this->pdf->Ln();
+            // diminui a fonte
+            $this->pdf->SetFont('Arial', '', 10);
+            foreach ($vagaequipes as $vagaequipe) {
+                $this->pdf->Cell(110, 5, utf8_decode('Cargo: ' . $vagaequipe->cargonome), 1, 0,'L');
+                $this->pdf->Cell(76, 5, utf8_decode('CBO: ' . $vagaequipe->cbo), 1, 0,'L');
+                $this->pdf->Ln();
+                $this->pdf->Cell(110, 5, utf8_decode('Profissional: ' . $vagaequipe->nome), 1, 0,'L');
+                $this->pdf->Cell(76, 5, utf8_decode('Matrícula: ' . $vagaequipe->matricula), 1, 0,'L');
+                $this->pdf->Ln();
+                $this->pdf->Ln(1);
+            }
+        }
+
+        $this->pdf->SetFont('Arial', '', 12);
+
+        $this->pdf->Ln(4);
+
+        $this->pdf->Output('D', 'Equipes_' .  date("Y-m-d H:i:s") . '.pdf', true);
+        exit;
+  }
+      
 }

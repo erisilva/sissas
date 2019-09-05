@@ -117,4 +117,14 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Capacitacao');
     }
 
+    /**
+     * Histórico dos profissionais
+     *
+     * @var Licencas
+     */
+    public function historicos()
+    {
+        return $this->belongsToMany('App\Historico');
+    }
+
 }
