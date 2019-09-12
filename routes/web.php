@@ -137,3 +137,8 @@ Route::get('/equipegestao/export/pdf/{id}/individual', 'EquipeGestaoController@e
 Route::post('/equipegestao/preenchervaga', 'EquipeGestaoController@preenchervaga')->name('equipegestao.preenchervaga');
 Route::post('/equipegestao/limparvaga', 'EquipeGestaoController@limparvaga')->name('equipegestao.limparvaga');
 Route::resource('/equipegestao', 'EquipeGestaoController')->only(['index', 'show',]);
+
+/* Histórico */
+Route::get('/historicos/export/csv', 'HistoricoController@exportcsv')->name('historicos.export.csv');
+Route::get('/historicos/export/pdf', 'HistoricoController@exportpdf')->name('historicos.export.pdf');
+Route::resource('/historicos', 'HistoricoController')->only(['index']);

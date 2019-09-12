@@ -44,6 +44,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('unidades.index') }}">Unidades</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('historicos.index') }}">Histórico</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarConfig" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Configurações

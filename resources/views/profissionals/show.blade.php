@@ -198,14 +198,92 @@
     </div>  
   </div>
   @endif
+  @if (count($profissional->unidadeProfissionals))
+  <br>
+  <div class="container bg-warning text-dark">
+    <p class="text-center"><strong>Vínculo à Unidades</strong></p>
+  </div>
+  <div class="container">
+    <div class="table-responsive">
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                <th scope="col">Unidade</th>
+                <th scope="col">Distrito</th>
+              </tr>
+          </thead>
+          <tbody>
+              @foreach($profissional->unidadeProfissionals as $unidade_index)
+              <tr>
+                <td>{{ $unidade_index->unidade->descricao }}</td>
+                <td>{{ $unidade_index->unidade->distrito->nome }}</td>
+              </tr>    
+              @endforeach                                             
+          </tbody>
+      </table>
+    </div>  
+  </div>
+  @endif
+  @if (count($profissional->equipeProfissionals))
+  <br>
+  <div class="container bg-warning text-dark">
+    <p class="text-center"><strong>Vínculo à Equipes</strong></p>
+  </div>
+  <div class="container">
+    <div class="table-responsive">
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                <th scope="col">Descrição</th>
+                <th scope="col">Número</th>
+                <th scope="col">Unidade</th>
+                <th scope="col">Distrito</th>
+              </tr>
+          </thead>
+          <tbody>
+              @foreach($profissional->equipeProfissionals as $equipe_index)
+              <tr>
+                <td>{{ $equipe_index->equipe->descricao }}</td>
+                <td>{{ $equipe_index->equipe->numero }}</td>
+                <td>{{ $equipe_index->equipe->unidade->descricao }}</td>
+                <td>{{ $equipe_index->equipe->unidade->distrito->nome }}</td>
+              </tr>    
+              @endforeach                                             
+          </tbody>
+      </table>
+    </div>  
+  </div>
+  @endif
   <br>
   <div class="container">
-    <form method="post" action="{{route('profissionals.destroy', $profissional->id)}}">
-      @csrf
-      @method('DELETE')
-      <a href="{{ route('profissionals.index') }}" class="btn btn-primary" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>
-      <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Enviar para Lixeira</button>
-    </form>
+    <a href="{{ route('profissionals.index') }}" class="btn btn-primary" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalLixeira"><i class="fas fa-trash-alt"></i> Enviar para Lixeira</button>
+  </div>
+  <div class="modal fade" id="modalLixeira" tabindex="-1" role="dialog" aria-labelledby="JanelaProfissional" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle"><i class="fas fa-question-circle"></i> Enviar Profissional para Lixeira</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger" role="alert">
+            <p><strong>Atenção!</strong> Ao se enviar um registro do profissional todo e qualquer vínculo que ele tiver com unidades e/ou equipes serão excluídos também.</p>
+            <h2>Confirma?</h2>
+          </div>
+          <form method="post" action="{{route('profissionals.destroy', $profissional->id)}}">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Enviar para Lixeira</button>
+          </form>
+        </div>     
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-window-close"></i> Cancelar</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

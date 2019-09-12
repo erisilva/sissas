@@ -492,5 +492,16 @@ class PermissionsTableSeeder extends Seeder
             'name' => 'gestao.equipe.export',
             'description' => 'Exportar dados da gestão de equipes',
         ]);
+
+        // Histórico
+        DB::table('permissions')->insert([
+            'name' => 'historico.index',
+            'description' => 'Histórico dos profissionais',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'historico.export',
+            'description' => 'Exportação de dados dos históricos',
+        ]);
+
     }
 }

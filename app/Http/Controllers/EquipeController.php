@@ -240,7 +240,18 @@ class EquipeController extends Controller
             abort(403, 'Acesso negado.');
         }
 
-        Equipe::findOrFail($id)->delete();
+        $equipe = Equipe::findOrFail($id);
+
+        // desvincular todos profissionais
+        $vagas = $equipe->equipeProfissionals;
+        if (count($vagas)){
+          foreach ($vagas as $vaga) {
+            $vaga->profissional_id = null;
+            $vaga->save();  
+          }  
+        }
+
+        $equipe->delete();
 
         Session::flash('deleted_equipe', 'Equipe excluída com sucesso!');
 

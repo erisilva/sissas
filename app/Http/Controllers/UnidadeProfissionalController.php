@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 
+use App\Historico;
+use Auth;
+
 class UnidadeProfissionalController extends Controller
 {
     /**
@@ -44,6 +47,14 @@ class UnidadeProfissionalController extends Controller
 
         UnidadeProfissional::create($input_profissional); //salva
 
+        // guarda o histórico
+        $user = Auth::user();
+        $historico = new Historico;
+        $historico->user_id = $user->id;
+        $historico->profissional_id = $input_profissional['profissional_id'];
+        $historico->historico_tipo_id = 11; //Profissional foi vinculado a uma unidade
+        $historico->save();
+
         Session::flash('create_unidadeprofissional', 'Profissional adicionado a unidade com sucesso!');
 
         return Redirect::route('unidades.edit', $input_profissional['unidade_id']);
@@ -65,7 +76,15 @@ class UnidadeProfissionalController extends Controller
 
         $unidade_id = $profissional->unidade_id;
 
-        $profissional->delete();        
+        // guarda o histórico
+        $user = Auth::user();
+        $historico = new Historico;
+        $historico->user_id = $user->id;
+        $historico->profissional_id = $profissional->profissional_id;
+        $historico->historico_tipo_id = 12; //Profissional foi desvinculado de uma unidade
+        $historico->save();
+
+        $profissional->delete();      
 
         Session::flash('create_unidadeprofissional', 'profissional removido da unidade com sucesso!');
 

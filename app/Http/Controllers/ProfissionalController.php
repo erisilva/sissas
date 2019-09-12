@@ -19,7 +19,11 @@ use App\Licenca;
 use App\Capacitacao;
 use App\CapacitacaoTipo;
 
+use App\Historico;
+
 use Response;
+
+use Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -186,9 +190,15 @@ class ProfissionalController extends Controller
 
         Session::flash('create_profissional', 'Profissional cadastrado com sucesso!');
 
-        return Redirect::route('profissionals.edit', $professional_new->id);
+        // guarda o histórico
+        $user = Auth::user();
+        $historico = new Historico;
+        $historico->user_id = $user->id;
+        $historico->profissional_id = $professional_new->id;
+        $historico->historico_tipo_id = 1; //Profissional registrado no sistema
+        $historico->save();
 
-        //return redirect(route('profissionals.index'));
+        return Redirect::route('profissionals.edit', $professional_new->id);
     }
 
     /**
@@ -309,6 +319,14 @@ class ProfissionalController extends Controller
         
         Session::flash('edited_profissional', 'Profissional alterado com sucesso!');
 
+        // guarda o histórico
+        $user = Auth::user();
+        $historico = new Historico;
+        $historico->user_id = $user->id;
+        $historico->profissional_id = $id;
+        $historico->historico_tipo_id = 2; //Registro do profissional alterado
+        $historico->save();
+
         return redirect(route('profissionals.edit', $id));
     }
 
@@ -324,9 +342,31 @@ class ProfissionalController extends Controller
             abort(403, 'Acesso negado.');
         }
 
-        Profissional::findOrFail($id)->delete();
+        $profissional = Profissional::findOrFail($id);
+
+        // apaga todos relacionamentos com a unidade
+        $profissional->unidadeProfissionals()->delete();
+
+        // apaga todos relacionamentos com equipes
+        $equipes = $profissional->equipeProfissionals;
+        if (count($equipes)){
+          foreach ($equipes as $equipe) {
+            $equipe->profissional_id = null;
+            $equipe->save();  
+          }  
+        }
+        
+        $profissional->delete();
 
         Session::flash('deleted_profissional', 'Profissional enviado para lixeira!');
+
+        // guarda o histórico
+        $user = Auth::user();
+        $historico = new Historico;
+        $historico->user_id = $user->id;
+        $historico->profissional_id = $id;
+        $historico->historico_tipo_id = 3; //Registro do profissional enviado à lixeira
+        $historico->save();
 
         return redirect(route('profissionals.index'));
     }

@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Redirect; // para poder usar o redirect
 
 use Auth; // receber o id do operador logado no sistema
 
+use App\Historico;
+
 class CapacitacaoController extends Controller
 {
     /**
@@ -129,6 +131,14 @@ class CapacitacaoController extends Controller
         // consulta todas licenças do profissional
         $capacitacaos = Capacitacao::where('profissional_id', '=', $profissional->id)->orderBy('id', 'desc')->get();
 
+        // guarda o histórico
+        $user = Auth::user();
+        $historico = new Historico;
+        $historico->user_id = $user->id;
+        $historico->profissional_id = $profissional->id;
+        $historico->historico_tipo_id = 9; //Foi cadastrado uma capacitação para o profissional
+        $historico->save();
+
         Session::flash('create_capacitacao', 'Capacitação inserida com sucesso!');        
 
         return Redirect::route('profissionals.edit', $profissional->id)->with('profissional', 'cargos', 'vinculos', 'vinculotipos', 'cargahorarias', 'ferias', 'feriastipos', 'licencatipos', 'licencas', 'capacitacaotipos', 'capacitacaos');
@@ -143,7 +153,7 @@ class CapacitacaoController extends Controller
      */
     public function destroy($id)
     {
-        if (Gate::denies('licenca.capacitacao.delete')) {
+        if (Gate::denies('profissional.capacitacao.delete')) {
             abort(403, 'Acesso negado.');
         }
 
@@ -182,7 +192,15 @@ class CapacitacaoController extends Controller
         // consulta todas licenças do profissional
         $capacitacaos = Capacitacao::where('profissional_id', '=', $profissional->id)->orderBy('id', 'desc')->get();
 
-        $capacitacao_deletar->delete();        
+        $capacitacao_deletar->delete();
+
+        // guarda o histórico
+        $user = Auth::user();
+        $historico = new Historico;
+        $historico->user_id = $user->id;
+        $historico->profissional_id = $capacitacao_deletar->profissional_id;
+        $historico->historico_tipo_id = 10; //Foi excluído uma capacitação do profissional
+        $historico->save();        
 
         Session::flash('delete_licenca', 'Capacitação excluída com sucesso!');
 

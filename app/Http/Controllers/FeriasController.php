@@ -28,6 +28,7 @@ use Carbon\Carbon; // tratamento de datas
 use Illuminate\Support\Facades\Redirect; // para poder usar o redirect
 
 use Auth; // receber o id do operador logado no sistema
+use App\Historico;
 
 use Illuminate\Support\Facades\DB;
 
@@ -98,8 +99,6 @@ class FeriasController extends Controller
         // salva
         Ferias::create($input_ferias);
 
-
-
         // consulta a tabela dos cargos
         $cargos = Cargo::orderBy('nome', 'asc')->get();
 
@@ -133,11 +132,19 @@ class FeriasController extends Controller
         // consulta todas licenças do profissional
         $capacitacaos = Capacitacao::where('profissional_id', '=', $profissional->id)->orderBy('id', 'desc')->get();
 
+        // guarda o histórico
+        $user = Auth::user();
+        $historico = new Historico;
+        $historico->user_id = $user->id;
+        $historico->profissional_id = $profissional->id;
+        $historico->historico_tipo_id = 5; //Foi cadastrado uma férias para o profissional
+        $historico->save();
 
         Session::flash('create_ferias', 'Período de férias inserido com sucesso!');        
 
         return Redirect::route('profissionals.edit', $profissional->id)->with('profissional', 'cargos', 'vinculos', 'vinculotipos', 'cargahorarias', 'ferias', 'feriastipos', 'licencatipos', 'licencas', 'capacitacaotipos', 'capacitacaos');
-
+        #Nota mental, não é necessário passar todos dados para a view com with, o proprio redirect já faz a chamada a esses dados pelo controlador
+        #do profissional, não vou alterar pra deixar marcado meu erro, mas não é um erro, é só um jeito mais complexo
     }
 
 
@@ -188,7 +195,15 @@ class FeriasController extends Controller
         // consulta todas licenças do profissional
         $capacitacaos = Capacitacao::where('profissional_id', '=', $profissional->id)->orderBy('id', 'desc')->get();
 
-        $ferias_deletar->delete();        
+        $ferias_deletar->delete();
+
+        // guarda o histórico
+        $user = Auth::user();
+        $historico = new Historico;
+        $historico->user_id = $user->id;
+        $historico->profissional_id = $profissional->id;
+        $historico->historico_tipo_id = 6; //Foi excluído uma férias do profissional
+        $historico->save();      
 
         Session::flash('delete_ferias', 'Período de férias excluído com sucesso!');
 

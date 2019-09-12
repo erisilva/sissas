@@ -190,7 +190,6 @@
       </div>
     </div>
   </div>
-
   <div class="modal fade" id="modallimparvaga" tabindex="-1" role="dialog" aria-labelledby="JanelaProfissional" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">

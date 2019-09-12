@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Redirect; // para poder usar o redirect
 use Illuminate\Database\Eloquent\Builder; // para poder usar o whereHas nos filtros
 use Auth;
 
+use App\Historico;
+
 class EquipeGestaoController extends Controller
 {
 
@@ -175,11 +177,19 @@ class EquipeGestaoController extends Controller
           $vaga->profissional_id = $input['profissional_id'];
 
           $vaga->save();
+          // guarda o histórico
+          $user = Auth::user();
+          $historico = new Historico;
+          $historico->user_id = $user->id;
+          $historico->profissional_id = $input['profissional_id'];
+          $historico->historico_tipo_id = 13; //Profissional foi vinculado a uma equipe
+          $historico->save();
 
           Session::flash('equipe_vincula', 'Profissional vinculado a equipe com sucesso!');
         } else {
           Session::flash('equipe_vincula', 'Já existe um profissional vinculado a essa vaga!');
         }
+
         return redirect(route('equipegestao.show', $input['equipe_id']));
     }
 
@@ -209,6 +219,15 @@ class EquipeGestaoController extends Controller
       $vaga = EquipeProfissional::findOrFail($input['equipeprofissional_id_limpar']);
 
       if (isset($vaga->profissional_id)){
+
+        // guarda o histórico
+        $user = Auth::user();
+        $historico = new Historico;
+        $historico->user_id = $user->id;
+        $historico->profissional_id = $vaga->profissional_id;
+        $historico->historico_tipo_id = 14; //Profissional foi desvinculado de uma equipe
+        $historico->save();
+
         $vaga->profissional_id = null;
 
         $vaga->save();
@@ -217,6 +236,8 @@ class EquipeGestaoController extends Controller
       } else {
         Session::flash('equipe_vincula', 'Essa vaga já está desvinculada!');
       }
+
+
       return redirect(route('equipegestao.show', $input['equipe_id_limpar']));      
     }
 

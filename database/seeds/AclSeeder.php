@@ -172,7 +172,9 @@ class AclSeeder extends Seeder
 		$equipegestao_export = Permission::where('name', '=', 'gestao.equipe.export')->get()->first();
 		$equipegestao_vincular = Permission::where('name', '=', 'gestao.equipe.vincular.vaga')->get()->first();
 		$equipegestao_desvincular = Permission::where('name', '=', 'gestao.equipe.desvincular.vaga')->get()->first();
-
+		// para históricos
+		$historico_index = Permission::where('name', '=', 'historico.index')->get()->first();               
+		$historico_export = Permission::where('name', '=', 'historico.export')->get()->first(); 
 
 
 
@@ -308,7 +310,9 @@ class AclSeeder extends Seeder
 		$administrador_perfil->permissions()->attach($equipegestao_export);
 		$administrador_perfil->permissions()->attach($equipegestao_vincular);
 		$administrador_perfil->permissions()->attach($equipegestao_desvincular);
-
+		# historicos
+		$administrador_perfil->permissions()->attach($historico_index);
+		$administrador_perfil->permissions()->attach($historico_export);
 
 
 
@@ -416,6 +420,9 @@ class AclSeeder extends Seeder
 		$gerente_perfil->permissions()->attach($equipegestao_export);
 		$gerente_perfil->permissions()->attach($equipegestao_vincular);
 		$gerente_perfil->permissions()->attach($equipegestao_desvincular);
+		# Historico
+		$gerente_perfil->permissions()->attach($historico_index);
+		$gerente_perfil->permissions()->attach($historico_export);
 
 
 

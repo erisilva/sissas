@@ -86,13 +86,36 @@
   @endif
   <br>
   <div class="container">
-    <form method="post" action="{{route('equipes.destroy', $equipe->id)}}">
-      @csrf
-      @method('DELETE')
-      <a href="{{ route('equipes.index') }}" class="btn btn-primary" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>
-      <a href="{{ route('equipes.export.pdf.individual', $equipe->id) }}" class="btn btn-primary" role="button"><i class="fas fa-print"></i> Exportar para PDF</a>
-      <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Enviar para Lixeira</button>
-    </form>
+    <a href="{{ route('equipes.index') }}" class="btn btn-primary" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>
+    <a href="{{ route('equipes.export.pdf.individual', $equipe->id) }}" class="btn btn-primary" role="button"><i class="fas fa-print"></i> Exportar para PDF</a>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalLixeira"><i class="fas fa-trash-alt"></i> Enviar para Lixeira</button>
+  </div>
+
+  <div class="modal fade" id="modalLixeira" tabindex="-1" role="dialog" aria-labelledby="JanelaProfissional" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle"><i class="fas fa-question-circle"></i> Enviar Equipe para Lixeira</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger" role="alert">
+            <p><strong>Atenção!</strong> Ao se enviar uma equipe para a lixeira todos as vinculações com profissionais serão excluídas, ou seja, as vagas serão desocupadas</p>
+            <h2>Confirma?</h2>
+          </div>
+          <form method="post" action="{{route('equipes.destroy', $equipe->id)}}">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Enviar para Lixeira</button>
+          </form>
+        </div>     
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-window-close"></i> Cancelar</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

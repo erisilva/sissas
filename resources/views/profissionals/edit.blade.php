@@ -292,7 +292,7 @@
       <a class="nav-link" id="capacitacao-tab" data-toggle="tab" href="#capacitacao" role="tab" aria-controls="capacitacao" aria-selected="false">Capacitações</a>
     </li>
   </ul>
-  <div class="tab-content" id="myTabContent">
+  <div class="tab-content bg-secondary text-white" id="myTabContent">
     <div class="tab-pane fade show active" id="ferias" role="tabpanel" aria-labelledby="ferias-tab">     
       <div class="container">
         <br>     
@@ -348,7 +348,7 @@
         <br>
         @if (count($ferias))
         <div class="table-responsive">
-          <table class="table table-striped">
+          <table class="table table-striped bg-secondary text-white">
               <thead>
                   <tr>
                       <th scope="col">Tipo</th>
@@ -431,7 +431,7 @@
         <br>
         @if (count($licencas))
         <div class="table-responsive">
-          <table class="table table-striped">
+          <table class="table table-striped bg-secondary text-white">
               <thead>
                   <tr>
                       <th scope="col">Tipo</th>
@@ -518,7 +518,7 @@
         <br>
         @if (count($capacitacaos))
         <div class="table-responsive">
-          <table class="table table-striped">
+          <table class="table table-striped bg-secondary text-white">
               <thead>
                   <tr>
                       <th scope="col">Tipo</th>
@@ -555,11 +555,71 @@
   </div>
 </div>
 <br>
+
+@if (count($profissional->unidadeProfissionals))
+<br>
+<div class="container bg-warning text-dark">
+  <p class="text-center"><strong>Vínculo à Unidades</strong></p>
+</div>
+<div class="container">
+  <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+              <th scope="col">Unidade</th>
+              <th scope="col">Distrito</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($profissional->unidadeProfissionals as $unidade_index)
+            <tr>
+              <td>{{ $unidade_index->unidade->descricao }}</td>
+              <td>{{ $unidade_index->unidade->distrito->nome }}</td>
+            </tr>    
+            @endforeach                                             
+        </tbody>
+    </table>
+  </div>  
+</div>
+@endif
+@if (count($profissional->equipeProfissionals))
+<br>
+<div class="container bg-warning text-dark">
+  <p class="text-center"><strong>Vínculo à Equipes</strong></p>
+</div>
+<div class="container">
+  <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+              <th scope="col">Descrição</th>
+              <th scope="col">Número</th>
+              <th scope="col">Unidade</th>
+              <th scope="col">Distrito</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($profissional->equipeProfissionals as $equipe_index)
+            <tr>
+              <td>{{ $equipe_index->equipe->descricao }}</td>
+              <td>{{ $equipe_index->equipe->numero }}</td>
+              <td>{{ $equipe_index->equipe->unidade->descricao }}</td>
+              <td>{{ $equipe_index->equipe->unidade->distrito->nome }}</td>
+            </tr>    
+            @endforeach                                             
+        </tbody>
+    </table>
+  </div>  
+</div>
+@endif
+<br>
+
 <div class="container">
   <div class="float-right">
     <a href="{{ route('profissionals.index') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-long-arrow-alt-left"></i> Voltar</i></a>
   </div>
 </div>
+<p></p>
 @endsection
 
 @section('script-footer')
