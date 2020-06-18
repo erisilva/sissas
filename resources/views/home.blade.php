@@ -13,15 +13,15 @@
     <div class="row py-5">
         <div class="col">
             <div class="text-center">
-                <a class="nav-link" href="{{ route('equipegestao.index') }}"><i class="fas fa-users fa-10x text-primary"></i></a>
-                <h2 class="py-2">Equipes</h2>
+                <a class="nav-link" href="{{ route('profissionals.index') }}"><i class="fas fa-user-md fa-10x fa-10x text-primary"></i></a>
+                <h2 class="py-2">Profissionais</h2>
             </div>
         </div>
 
         <div class="col">
             <div class="text-center">
-                <a class="nav-link" href="{{ route('profissionals.index') }}"><i class="fas fa-user-md fa-10x fa-10x text-primary"></i></a>
-                <h2 class="py-2">Profissionais</h2>
+                <a class="nav-link" href="{{ route('equipegestao.index') }}"><i class="fas fa-users fa-10x text-primary"></i></a>
+                <h2 class="py-2">Equipes</h2>
             </div>
         </div>
 

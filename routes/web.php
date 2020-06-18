@@ -110,9 +110,13 @@ Route::post('/profissionals/trash/{id}/restore', 'ProfissionalTrashController@re
 # resource
 Route::resource('/profissionals', 'ProfissionalController');
 /* Férias dos profissionais */
-Route::resource('/ferias', 'FeriasController')->only(['store', 'destroy',]);
+Route::get('/ferias/export/csv', 'FeriasController@exportcsv')->name('ferias.export.csv');
+Route::get('/ferias/export/pdf', 'FeriasController@exportpdf')->name('ferias.export.pdf');
+Route::resource('/ferias', 'FeriasController')->only(['store', 'destroy', 'index']);
 /* Licenças dos profissionais */
-Route::resource('/licencas', 'LicencaController')->only(['store', 'destroy',]);
+Route::get('/licencas/export/csv', 'LicencaController@exportcsv')->name('licencas.export.csv');
+Route::get('/licencas/export/pdf', 'LicencaController@exportpdf')->name('licencas.export.pdf');
+Route::resource('/licencas', 'LicencaController')->only(['store', 'destroy', 'index']);
 /* Capacitações dos profissionais */
 Route::resource('/capacitacaos', 'CapacitacaoController')->only(['store', 'destroy',]);
 

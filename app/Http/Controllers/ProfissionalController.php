@@ -162,7 +162,7 @@ class ProfissionalController extends Controller
         $this->validate($request, [
           'nome' => 'required',
           'matricula' => 'required',
-          'cpf' => 'required',
+          'cpf' => 'required|unique:cpf',
           'cpf' => new Cpf,
           'cargo_id' => 'required',
           'carga_horaria_id' => 'required',
@@ -289,7 +289,7 @@ class ProfissionalController extends Controller
         $this->validate($request, [
           'nome' => 'required',
           'matricula' => 'required',
-          'cpf' => 'required',
+          'cpf' => 'required|unique:cpf',
           'cpf' => new Cpf,
           'cargo_id' => 'required',
           'carga_horaria_id' => 'required',
@@ -314,18 +314,52 @@ class ProfissionalController extends Controller
             $dataFormatadaMysql = Carbon::createFromFormat('d/m/Y', request('admissao'))->format('Y-m-d');           
             $input['admissao'] =  $dataFormatadaMysql;            
         }
-            
-        $profissional->update($input);
-        
-        Session::flash('edited_profissional', 'Profissional alterado com sucesso!');
 
-        // guarda o histórico
         $user = Auth::user();
+
+        // guarda o histórico de alteração do registro como um todo     
         $historico = new Historico;
         $historico->user_id = $user->id;
         $historico->profissional_id = $id;
         $historico->historico_tipo_id = 2; //Registro do profissional alterado
         $historico->save();
+
+        if ($profissional->carga_horaria_id != $input['carga_horaria_id']){
+          // guarda o histórico caso a alteração seja a carga horária
+          $historico = new Historico;
+          $historico->user_id = $user->id;
+          $historico->profissional_id = $id;
+          $historico->historico_tipo_id = 15; //A carga horária no registro do profissional alterado
+          $cargaHorariaTemp = CargaHoraria::findOrFail($input['carga_horaria_id']);
+          $historico->observacao = 'Alterado de ' . $profissional->cargaHoraria->descricao . ' para ' . $cargaHorariaTemp->descricao;
+          $historico->save();
+        }
+
+        if ($profissional->cargo_id != $input['cargo_id']){
+          // guarda o histórico caso a alteração seja o cargo
+          $historico = new Historico;
+          $historico->user_id = $user->id;
+          $historico->profissional_id = $id;
+          $historico->historico_tipo_id = 16; //O cargo no registro do profissional alterado
+          $cargoTemp = Cargo::findOrFail($input['cargo_id']);
+          $historico->observacao = 'Alterado de ' . $profissional->cargo->nome . ' para ' . $cargoTemp->nome;
+          $historico->save();
+        }
+
+        if ($profissional->vinculo_id != $input['vinculo_id']){
+          // guarda o histórico caso a alteração seja o vinculo
+          $historico = new Historico;
+          $historico->user_id = $user->id;
+          $historico->profissional_id = $id;
+          $historico->historico_tipo_id = 17; //O vínculo no registro do profissional alterado
+          $vinculoTemp = Vinculo::findOrFail($input['vinculo_id']);
+          $historico->observacao = 'Alterado de ' . $profissional->vinculo->descricao . ' para ' . $vinculoTemp->descricao;
+          $historico->save();
+        }
+            
+        $profissional->update($input);
+        
+        Session::flash('edited_profissional', 'Profissional alterado com sucesso!');
 
         return redirect(route('profissionals.edit', $id));
     }
@@ -336,13 +370,15 @@ class ProfissionalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         if (Gate::denies('profissional.delete')) {
             abort(403, 'Acesso negado.');
         }
 
         $profissional = Profissional::findOrFail($id);
+
+        $input = $request->all();
 
         // apaga todos relacionamentos com a unidade
         $profissional->unidadeProfissionals()->delete();
@@ -366,6 +402,7 @@ class ProfissionalController extends Controller
         $historico->user_id = $user->id;
         $historico->profissional_id = $id;
         $historico->historico_tipo_id = 3; //Registro do profissional enviado à lixeira
+        $historico->observacao = $input['motivo'];
         $historico->save();
 
         return redirect(route('profissionals.index'));
@@ -385,7 +422,7 @@ class ProfissionalController extends Controller
 
        $headers = [
                 'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
-            ,   'Content-type'        => 'text/csv'
+            ,   'Content-type'        => 'text/csv; charset=UTF-8'
             ,   'Content-Disposition' => 'attachment; filename=Profissionais_' .  date("Y-m-d H:i:s") . '.csv'
             ,   'Expires'             => '0'
             ,   'Pragma'              => 'public'
@@ -457,7 +494,7 @@ class ProfissionalController extends Controller
             $FH = fopen('php://output', 'w');
             fputs($FH, $bom = ( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
             foreach ($list as $row) {
-                fputcsv($FH, $row, chr(9));
+                fputcsv($FH, $row, chr(59));
             }
             fclose($FH);
         };

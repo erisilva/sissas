@@ -73,5 +73,17 @@ class HistoricoTiposTableSeeder extends Seeder
         	'id' => 14,
             'descricao' => 'Profissional foi desvinculado de uma equipe',
         ]);
+        DB::table('historico_tipos')->insert([
+            'id' => 15,
+            'descricao' => 'A carga horária no registro do profissional foi alterado',
+        ]);
+        DB::table('historico_tipos')->insert([
+            'id' => 16,
+            'descricao' => 'O cargo no registro do profissional foi alterado',
+        ]);
+        DB::table('historico_tipos')->insert([
+            'id' => 17,
+            'descricao' => 'O vínculo no registro do profissional foi alterado',
+        ]);
     }
 }

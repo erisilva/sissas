@@ -31,8 +31,12 @@
                 <th scope="col">Hora</th>
                 <th scope="col">Descrição</th>
                 <th scope="col">Profissional</th>
+                <th scope="col">Matrícula</th>
                 <th scope="col">Operador</th>
                 <th scope="col">Observações</th>
+                <th scope="col">Equipe</th>
+                <th scope="col">Unidade</th>
+                <th scope="col">Distrito</th>
             </tr>
         </thead>
         <tbody>
@@ -42,8 +46,12 @@
                 <td><strong>{{$historico->created_at->format('H:i')}}</strong></td>
                 <td>{{$historico->historicoTipo->descricao}}</td>
                 <td>{{$historico->profissional->nome}}</td>
+                <td>{{$historico->profissional->matricula}}</td>
                 <td>{{$historico->user->name}}</td>
                 <td>{{$historico->observacao}}</td>
+                <td>{{$historico->equipe->descricao ?? '-'}}</td>
+                <td>{{$historico->unidade->descricao ?? $historico->equipe->unidade->descricao ?? '-'}}</td>
+                <td>{{$historico->unidade->distrito->nome ?? $historico->equipe->unidade->distrito->nome ?? '-'}}</td>
             </tr>    
             @endforeach                                                 
         </tbody>

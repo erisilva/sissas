@@ -175,6 +175,10 @@ class AclSeeder extends Seeder
 		// para históricos
 		$historico_index = Permission::where('name', '=', 'historico.index')->get()->first();               
 		$historico_export = Permission::where('name', '=', 'historico.export')->get()->first(); 
+		
+
+
+
 
 
 
@@ -313,6 +317,10 @@ class AclSeeder extends Seeder
 		# historicos
 		$administrador_perfil->permissions()->attach($historico_index);
 		$administrador_perfil->permissions()->attach($historico_export);
+		
+
+
+
 
 
 
@@ -423,7 +431,7 @@ class AclSeeder extends Seeder
 		# Historico
 		$gerente_perfil->permissions()->attach($historico_index);
 		$gerente_perfil->permissions()->attach($historico_export);
-
+		
 
 
 
@@ -508,7 +516,7 @@ class AclSeeder extends Seeder
 		$operador_perfil->permissions()->attach($equipegestao_export);
 		$operador_perfil->permissions()->attach($equipegestao_vincular);
 		$operador_perfil->permissions()->attach($equipegestao_desvincular);
-
+		
 
 
 
@@ -556,7 +564,7 @@ class AclSeeder extends Seeder
 		# gestão de equipes
 		$leitor_perfil->permissions()->attach($equipegestao_index);
 		$leitor_perfil->permissions()->attach($equipegestao_show);
-
+		
 
 
 

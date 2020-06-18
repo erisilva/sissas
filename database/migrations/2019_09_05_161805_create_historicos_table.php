@@ -22,6 +22,10 @@ class CreateHistoricosTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->timestamps();
 
+            // chaves fracas
+            $table->integer('unidade_id')->unsigned()->nullable();
+            $table->integer('equipe_id')->unsigned()->nullable();
+
             $table->foreign('historico_tipo_id')->references('id')->on('historico_tipos')->onDelete('cascade');
             $table->foreign('profissional_id')->references('id')->on('profissionals')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

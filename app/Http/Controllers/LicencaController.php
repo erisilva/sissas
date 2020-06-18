@@ -3,33 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Profissional;
-
 use App\Ferias;
 use App\FeriasTipo;
-
 use App\Licenca;
 use App\LicencaTipo;
-
 use App\Capacitacao;
 use App\CapacitacaoTipo;
-
 use App\Cargo;
 use App\Vinculo;
 use App\VinculoTipo;
 use App\CargaHoraria;
-
 use Response;
-
+use App\Perpage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
 use Carbon\Carbon; // tratamento de datas
 use Illuminate\Support\Facades\Redirect; // para poder usar o redirect
-
 use Auth; // receber o id do operador logado no sistema
 use App\Historico;
-
 
 class LicencaController extends Controller
 {
@@ -47,6 +40,35 @@ class LicencaController extends Controller
         $this->middleware(['middleware' => 'auth']);
         $this->middleware(['middleware' => 'hasaccess']);
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        if (Gate::denies('distrito.index')) {
+            abort(403, 'Acesso negado.');
+        }
+
+        $licencas = new Licenca;
+
+        // ordena
+        $licencas = $licencas->orderBy('id', 'desc');
+
+
+        if(request()->has('perpage')) {
+            session(['perPage' => request('perpage')]);
+        }
+
+        $perpages = Perpage::orderBy('valor')->get();
+
+        // paginação
+        $licencas = $licencas->paginate(session('perPage', '5'));
+
+        return view('profissionals.licencas.index', compact('licencas', 'perpages'));
+    }        
 
     /**
      * Store a newly created resource in storage.
@@ -136,6 +158,8 @@ class LicencaController extends Controller
         $historico->user_id = $user->id;
         $historico->profissional_id = $profissional->id;
         $historico->historico_tipo_id = 7; //Foi cadastrado uma licença para o profissional
+        $licencaTipoTemp = LicencaTipo::findOrFail($input_licenca['licenca_tipo_id']);
+        $historico->observacao = $licencaTipoTemp->descricao . ', periodo entre ' . $input_licenca['licenca_inicio'] . ' e ' . $input_licenca['licenca_final'];
         $historico->save();
 
         Session::flash('create_licenca', 'Período de licença inserido com sucesso!');        
@@ -191,15 +215,16 @@ class LicencaController extends Controller
         // consulta todas licenças do profissional
         $capacitacaos = Capacitacao::where('profissional_id', '=', $profissional->id)->orderBy('id', 'desc')->get();
 
-        $licenca_deletar->delete();
-
         // guarda o histórico
         $user = Auth::user();
         $historico = new Historico;
         $historico->user_id = $user->id;
         $historico->profissional_id = $licenca_deletar->profissional_id;
         $historico->historico_tipo_id = 8; //Foi excluído uma licença do profissional
-        $historico->save();    
+        $historico->observacao = $licenca_deletar->licencaTipo->descricao . ' excluida(o). Período entre ' . $licenca_deletar->inicio->format('d/m/Y') . ' e ' . $licenca_deletar->fim->format('d/m/Y');
+        $historico->save();
+
+        $licenca_deletar->delete();
 
         Session::flash('delete_licenca', 'Período de licença excluído com sucesso!');
 

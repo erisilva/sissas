@@ -24,4 +24,9 @@ class Unidade extends Model
     {
         return $this->hasMany('App\UnidadeProfissional');
     }
+
+    public function historicos()
+    {
+        return $this->hasMany('App\Historico');
+    }
 }

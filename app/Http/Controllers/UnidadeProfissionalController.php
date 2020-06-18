@@ -43,6 +43,13 @@ class UnidadeProfissionalController extends Controller
             abort(403, 'Acesso negado.');
         }
 
+        $this->validate($request, [
+          'profissional_id' => 'required',
+        ],
+        [
+            'profissional_id.required' => 'Nenhum funcionário foi selecionado',
+        ]);
+
         $input_profissional = $request->all();
 
         UnidadeProfissional::create($input_profissional); //salva
@@ -51,7 +58,8 @@ class UnidadeProfissionalController extends Controller
         $user = Auth::user();
         $historico = new Historico;
         $historico->user_id = $user->id;
-        $historico->profissional_id = $input_profissional['profissional_id'];
+        $historico->profissional_id = $input_profissional['profissional_id']; 
+        $historico->unidade_id = $input_profissional['unidade_id'];
         $historico->historico_tipo_id = 11; //Profissional foi vinculado a uma unidade
         $historico->save();
 

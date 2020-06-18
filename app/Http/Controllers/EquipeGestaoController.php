@@ -183,6 +183,7 @@ class EquipeGestaoController extends Controller
           $historico->user_id = $user->id;
           $historico->profissional_id = $input['profissional_id'];
           $historico->historico_tipo_id = 13; //Profissional foi vinculado a uma equipe
+          $historico->equipe_id = $input['equipe_id'];
           $historico->save();
 
           Session::flash('equipe_vincula', 'Profissional vinculado a equipe com sucesso!');
@@ -226,6 +227,8 @@ class EquipeGestaoController extends Controller
         $historico->user_id = $user->id;
         $historico->profissional_id = $vaga->profissional_id;
         $historico->historico_tipo_id = 14; //Profissional foi desvinculado de uma equipe
+        $historico->observacao = $input['motivo_limpar'];
+        $historico->equipe_id = $input['equipe_id_limpar'];
         $historico->save();
 
         $vaga->profissional_id = null;
@@ -236,7 +239,6 @@ class EquipeGestaoController extends Controller
       } else {
         Session::flash('equipe_vincula', 'Essa vaga já está desvinculada!');
       }
-
 
       return redirect(route('equipegestao.show', $input['equipe_id_limpar']));      
     }
@@ -256,7 +258,7 @@ class EquipeGestaoController extends Controller
 
        $headers = [
                 'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
-            ,   'Content-type'        => 'text/csv'
+            ,   'Content-type'        => 'text/csv; charset=UTF-8'
             ,   'Content-Disposition' => 'attachment; filename=equipes_' .  date("Y-m-d H:i:s") . '.csv'
             ,   'Expires'             => '0'
             ,   'Pragma'              => 'public'
@@ -322,7 +324,7 @@ class EquipeGestaoController extends Controller
             $FH = fopen('php://output', 'w');
             fputs($FH, $bom = ( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
             foreach ($list as $row) {
-                fputcsv($FH, $row, chr(9));
+                fputcsv($FH, $row, chr(59));
             }
             fclose($FH);
         };
@@ -344,7 +346,7 @@ class EquipeGestaoController extends Controller
 
        $headers = [
                 'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0'
-            ,   'Content-type'        => 'text/csv'
+            ,   'Content-type'        => 'text/csv; charset=UTF-8'
             ,   'Content-Disposition' => 'attachment; filename=equipes_' .  date("Y-m-d H:i:s") . '.csv'
             ,   'Expires'             => '0'
             ,   'Pragma'              => 'public'
@@ -418,7 +420,7 @@ class EquipeGestaoController extends Controller
             $FH = fopen('php://output', 'w');
             fputs($FH, $bom = ( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
             foreach ($list as $row) {
-                fputcsv($FH, $row, chr(9));
+                fputcsv($FH, $row, chr(59));
             }
             fclose($FH);
         };

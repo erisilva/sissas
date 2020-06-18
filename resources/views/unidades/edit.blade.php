@@ -116,6 +116,14 @@
   <p class="text-center">Profissionais</p>
 </div>
 <div class="container">
+  @if($errors->has('profissional_id'))
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Atenção!</strong> Digite o nome do funcionário no campo abaixo!
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  @endif
   <form method="POST" action="{{ route('unidadeprofissionais.store') }}">
     @csrf
     <input type="hidden" id="unidade_id" name="unidade_id" value="{{ $unidade->id }}">
@@ -182,7 +190,7 @@
                 <td>{{ $unidadeprofissional->profissional->matricula }}</td>
                 <td>{{ $unidadeprofissional->descricao }}</td>
                 <td>
-                  <form method="post" action="{{route('unidadeprofissionais.destroy', $unidadeprofissional->id)}}">
+                  <form method="post" action="{{route('unidadeprofissionais.destroy', $unidadeprofissional->id)}}" onsubmit="return confirm('Você tem certeza que quer excluir?');">
                     @csrf
                     @method('DELETE')  
                     <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
@@ -229,7 +237,7 @@
                   $("#uf").val("...");
                   $.ajax({
                       dataType: "json",
-                      url: "https://erisilva.net/cep/?value=" + cep + "&field=cep&method=json",
+                      url: "http://srvsmsphp01.brazilsouth.cloudapp.azure.com:9191/cep/?value=" + cep,
                       type: "GET",
                       success: function(json) {
                           if (json['erro']) {
@@ -239,9 +247,7 @@
                               $("#bairro").val(json[0]['bairro']);
                               $("#cidade").val(json[0]['cidade']);
                               $("#uf").val(json[0]['uf'].toUpperCase());
-                              var tipo = json[0]['tipo'];
-                              var logradouro = json[0]['logradouro'];
-                              $("#logradouro").val(tipo + ' ' + logradouro);
+                              $("#logradouro").val(json[0]['rua']);
                           }
                       }
                   });

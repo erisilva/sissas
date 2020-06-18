@@ -84,7 +84,6 @@ class User extends Authenticatable
           $role = Role::where('name','=',$role)->firstOrFail();
         }
         return (boolean) $this->roles()->find($role->id);
-
     }
 
     /**

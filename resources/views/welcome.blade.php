@@ -6,15 +6,15 @@
     <div class="row py-5">
         <div class="col">
             <div class="text-center">
-                <a class="nav-link" href="{{ route('equipegestao.index') }}"><i class="fas fa-users fa-10x text-primary"></i></a>
-                <h2 class="py-2">Equipes</h2>
+                <a class="nav-link" href="{{ route('profissionals.index') }}"><i class="fas fa-user-md fa-10x fa-10x text-primary"></i></a>
+                <h2 class="py-2">Profissionais</h2>
             </div>
         </div>
 
         <div class="col">
             <div class="text-center">
-                <a class="nav-link" href="{{ route('profissionals.index') }}"><i class="fas fa-user-md fa-10x fa-10x text-primary"></i></a>
-                <h2 class="py-2">Profissionais</h2>
+                <a class="nav-link" href="{{ route('equipegestao.index') }}"><i class="fas fa-users fa-10x text-primary"></i></a>
+                <h2 class="py-2">Equipes</h2>
             </div>
         </div>
 
@@ -63,6 +63,17 @@
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-6 offset-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+
+                                    <label class="form-check-label" for="remember">
+                                        Mantenha-me Conectado
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row mb-0">

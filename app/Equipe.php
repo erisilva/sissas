@@ -23,5 +23,10 @@ class Equipe extends Model
     public function equipeProfissionals()
     {
         return $this->hasMany('App\EquipeProfissional');
-    }   
+    }
+
+    public function historicos()
+    {
+        return $this->hasMany('App\Historico');
+    }
 }

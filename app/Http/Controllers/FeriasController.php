@@ -3,30 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Profissional;
-
 use App\Ferias;
 use App\FeriasTipo;
-
 use App\Licenca;
 use App\LicencaTipo;
-
 use App\Capacitacao;
 use App\CapacitacaoTipo;
-
 use App\Cargo;
 use App\Vinculo;
 use App\VinculoTipo;
 use App\CargaHoraria;
-
 use Response;
-
+use App\Perpage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
 use Carbon\Carbon; // tratamento de datas
 use Illuminate\Support\Facades\Redirect; // para poder usar o redirect
-
 use Auth; // receber o id do operador logado no sistema
 use App\Historico;
 
@@ -48,6 +42,35 @@ class FeriasController extends Controller
         $this->middleware(['middleware' => 'hasaccess']);
 
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        if (Gate::denies('distrito.index')) {
+            abort(403, 'Acesso negado.');
+        }
+
+        $ferias = new Ferias;
+
+        // ordena
+        $ferias = $ferias->orderBy('id', 'desc');
+
+
+        if(request()->has('perpage')) {
+            session(['perPage' => request('perpage')]);
+        }
+
+        $perpages = Perpage::orderBy('valor')->get();
+
+        // paginação
+        $ferias = $ferias->paginate(session('perPage', '5'));
+
+        return view('profissionals.ferias.index', compact('ferias', 'perpages'));
+    }    
 
     /**
      * Store a newly created resource in storage.
@@ -138,6 +161,8 @@ class FeriasController extends Controller
         $historico->user_id = $user->id;
         $historico->profissional_id = $profissional->id;
         $historico->historico_tipo_id = 5; //Foi cadastrado uma férias para o profissional
+        $feriasTipoTemp = FeriasTipo::findOrFail($input_ferias['ferias_tipo_id']);
+        $historico->observacao = $feriasTipoTemp->descricao . ', periodo entre ' . $input_ferias['ferias_inicio'] . ' e ' . $input_ferias['ferias_final'];
         $historico->save();
 
         Session::flash('create_ferias', 'Período de férias inserido com sucesso!');        
@@ -195,16 +220,18 @@ class FeriasController extends Controller
         // consulta todas licenças do profissional
         $capacitacaos = Capacitacao::where('profissional_id', '=', $profissional->id)->orderBy('id', 'desc')->get();
 
-        $ferias_deletar->delete();
-
         // guarda o histórico
         $user = Auth::user();
         $historico = new Historico;
         $historico->user_id = $user->id;
         $historico->profissional_id = $profissional->id;
         $historico->historico_tipo_id = 6; //Foi excluído uma férias do profissional
-        $historico->save();      
+        $historico->observacao = $ferias_deletar->feriasTipo->descricao . ' excluida(o). Período entre ' . $ferias_deletar->inicio->format('d/m/Y') . ' e ' . $ferias_deletar->fim->format('d/m/Y');
+        $historico->save();
 
+        $ferias_deletar->delete();
+
+    
         Session::flash('delete_ferias', 'Período de férias excluído com sucesso!');
 
         return Redirect::route('profissionals.edit', $ferias_deletar->profissional_id)->with('profissional', 'cargos', 'vinculos', 'vinculotipos', 'cargahorarias', 'ferias', 'licencas', 'feriastipos', 'licencatipos', 'capacitacaotipos', 'capacitacaos');

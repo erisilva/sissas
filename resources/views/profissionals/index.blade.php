@@ -31,21 +31,35 @@
     </button>
   </div>
   @endif
-  <div class="btn-group py-1" role="group" aria-label="Opções">
-    <a href="{{ route('profissionals.create') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-plus-square"></i> Novo Registro</a>
-    <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalFilter"><i class="fas fa-filter"></i> Filtrar</button>
-    <div class="btn-group" role="group">
-      <button id="btnGroupDropOptions" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-print"></i> Relatórios
-      </button>
-      <div class="dropdown-menu" aria-labelledby="btnGroupDropOptions">
-        <a class="dropdown-item" href="#" id="btnExportarCSV"><i class="fas fa-file-download"></i> Exportar Planilha</a>
-        <a class="dropdown-item" href="#" id="btnExportarPDF"><i class="fas fa-file-download"></i> Exportar PDF</a>
-        <a class="dropdown-item" href="#" id="btnExportarPDFsimples"><i class="fas fa-file-download"></i> Exportar PDF (Simplificado)</a>
+
+  <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    
+    <div class="btn-group py-1 mr-2" role="group" aria-label="Opções">
+      <a href="{{ route('profissionals.create') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-plus-square"></i> Novo Registro</a>
+      <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#modalFilter"><i class="fas fa-filter"></i> Filtrar</button>
+      <div class="btn-group" role="group">
+        <button id="btnGroupDropOptions" type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-print"></i> Relatórios
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDropOptions">
+          <a class="dropdown-item" href="#" id="btnExportarCSV"><i class="fas fa-file-download"></i> Exportar Planilha</a>
+          <a class="dropdown-item" href="#" id="btnExportarPDF"><i class="fas fa-file-download"></i> Exportar PDF</a>
+          <a class="dropdown-item" href="#" id="btnExportarPDFsimples"><i class="fas fa-file-download"></i> Exportar PDF (Simplificado)</a>
+        </div>
       </div>
     </div>
-    <a href="{{ route('profissionals.trash') }}" class="btn btn-secondary btn-sm" role="button"><i class="fas fa-trash-alt"></i> Lixeira</a>
-  </div>
+    
+    <div class="btn-group py-1 mr-2" role="group" aria-label="Licenças e Férias">
+      <a href="{{ route('ferias.index') }}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-plane-departure"></i> Férias</a>
+      <a href="{{ route('licencas.index') }}" class="btn btn-primary btn-sm" role="button"><i class="fas fa-file-medical"></i> Licenças</a>
+    </div>
+
+    <div class="btn-group py-1 mr-2" role="group" aria-label="Lixeira">
+      <a href="{{ route('profissionals.trash') }}" class="btn btn-warning btn-sm" role="button"><i class="fas fa-trash-alt"></i> Lixeira</a>
+    </div>
+
+  </div>  
+
   <div class="table-responsive">
     <table class="table table-striped">
         <thead>

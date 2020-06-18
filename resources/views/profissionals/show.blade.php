@@ -276,6 +276,10 @@
           <form method="post" action="{{route('profissionals.destroy', $profissional->id)}}">
             @csrf
             @method('DELETE')
+            <div class="form-group">
+              <label for="motivo">Motivo</label>  
+              <input type="text" class="form-control" name="motivo" id="motivo" value="">
+            </div>
             <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Enviar para Lixeira</button>
           </form>
         </div>     
