@@ -69,7 +69,10 @@ class FeriasController extends Controller
         // paginação
         $ferias = $ferias->paginate(session('perPage', '5'));
 
-        return view('profissionals.ferias.index', compact('ferias', 'perpages'));
+        // consulta a tabela dos de tipo de férias
+        $feriastipos = FeriasTipo::orderBy('descricao', 'asc')->get();
+
+        return view('profissionals.ferias.index', compact('ferias', 'perpages', 'feriastipos'));
     }    
 
     /**

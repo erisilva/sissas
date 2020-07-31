@@ -388,7 +388,7 @@ class ProfissionalController extends Controller
         if (count($equipes)){
           foreach ($equipes as $equipe) {
             $equipe->profissional_id = null;
-            $equipe->save();  
+            $equipe->save();
           }  
         }
         

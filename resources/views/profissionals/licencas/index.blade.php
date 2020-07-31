@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css-header')
+<link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+@endsection
+
 @section('content')
 <div class="container-fluid">
   <nav aria-label="breadcrumb">
@@ -64,6 +68,33 @@
         </div>
         <div class="modal-body">
           <!-- Filtragem dos dados -->
+          <form method="GET" action="{{ route('licencas.index') }}">
+            <div class="form-group">
+              <label for="profissional">Profissional</label>
+                <input type="text" class="form-control" id="profissional" name="profissional" value="{{request()->input('profissional')}}">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label for="dtainicio">Data inicial</label>
+                <input type="text" class="form-control" id="dtainicio" name="dtainicio" value="{{request()->input('dtainicio')}}" autocomplete="off">
+              </div>
+              <div class="form-group col-6">
+                <label for="dtafinal">Data final</label>
+                <input type="text" class="form-control" id="dtafinal" name="dtafinal" value="{{request()->input('dtafinal')}}" autocomplete="off">
+              </div>  
+            </div>
+            <div class="form-group">
+              <label for="licencatipo_id">Tipos de Licença</label>
+              <select class="form-control" name="licencatipo_id" id="licencatipo_id">
+                <option value="">Mostrar todos</option>
+                @foreach($licencatipos as $licencatipo)
+                <option value="{{$licencatipo->id}}" {{ ($licencatipo->id == request()->input('licencatipo_id')) ? ' selected' : '' }} >{{$licencatipo->descricao}}</option>
+                @endforeach
+              </select>
+            </div>   
+            <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Pesquisar</button>
+            <a href="{{ route('licencas.index') }}" class="btn btn-primary btn-sm" role="button">Limpar</a>
+          </form>
           <!-- Seleção de número de resultados por página -->
           <div class="form-group">
             <select class="form-control" name="perpage" id="perpage">
@@ -82,6 +113,8 @@
 </div>
 @endsection
 @section('script-footer')
+<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('locales/bootstrap-datepicker.pt-BR.min.js') }}"></script>
 <script>
 $(document).ready(function(){
     $('#perpage').on('change', function() {
@@ -97,6 +130,24 @@ $(document).ready(function(){
     $('#btnExportarPDF').on('click', function(){
         window.open("{{ route('licencas.export.pdf') }}","_self");
     });
+
+  $('#dtainicio').datepicker({
+    format: "dd/mm/yyyy",
+    todayBtn: "linked",
+    clearBtn: true,
+    language: "pt-BR",
+    autoclose: true,
+    todayHighlight: true
+  });
+
+  $('#dtafinal').datepicker({
+    format: "dd/mm/yyyy",
+    todayBtn: "linked",
+    clearBtn: true,
+    language: "pt-BR",
+    autoclose: true,
+    todayHighlight: true
+  });
 }); 
 </script>
 @endsection

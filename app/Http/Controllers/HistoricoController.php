@@ -48,12 +48,6 @@ class HistoricoController extends Controller
         $historicos = new Historico;
 
         //filtros
-        if (request()->has('operador')){ // nome do operador que fez o cadastro
-            $historicos = $historicos->whereHas('user', function ($query) {
-                                                $query->where('name', 'like', '%' . request('operador') . '%');
-                                            });
-        }
-
         if (request()->has('dtainicio')){
              if (request('dtainicio') != ""){
                 $dataFormatadaMysql = Carbon::createFromFormat('d/m/Y', request('dtainicio'))->format('Y-m-d 00:00:00');           
@@ -74,8 +68,8 @@ class HistoricoController extends Controller
                                             });
         }
 
-        if (request()->has('historico_tipo_id') && !empty(request('historico_tipo_id')) ){    
-            $historicos = $historicos->where('historico_tipo_id', '=', request('historico_tipo_id'));
+        if (request()->has('hist_filtro') && !empty(request('hist_filtro')) ){    
+            $historicos = $historicos->whereIn('historico_tipo_id', request('hist_filtro'));
         }
 
         // ordena
@@ -93,11 +87,10 @@ class HistoricoController extends Controller
 
         // paginação
         $historicos = $historicos->paginate(session('perPage', '5'))->appends([
-            'operador' => request('operador'),
             'profissional' => request('profissional'),
-            'historico_tipo_id' => request('historico_tipo_id'),
             'dtainicio' => request('dtainicio'),
             'dtafinal' => request('dtafinal'),          
+            'hist_filtro' => request('hist_filtro'),          
             ]);
 
         // tipos de histórico
@@ -159,9 +152,7 @@ class HistoricoController extends Controller
         if (request()->has('profissional')){
             $historicos = $historicos->where('profissionals.nome', 'like', '%' . request('profissional') . '%');
         }
-        if (request()->has('profissional_tipo_id') && !empty(request('profissional_tipo_id'))){
-            $historicos = $historicos->where('historicos.profissional_tipo_id', '=', request('profissional_tipo_id'));
-        }
+
         // order
         $historicos = $historicos->orderBy('historicos.created_at', 'desc');
         // get

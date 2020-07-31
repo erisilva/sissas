@@ -54,6 +54,26 @@ class LicencaController extends Controller
 
         $licencas = new Licenca;
 
+        //filtros
+        if (request()->has('dtainicio')){
+            if (request('dtainicio') != ""){
+                $dataInicioFormatadaMysql = Carbon::createFromFormat('d/m/Y', request('dtainicio'))->format('Y-m-d');
+
+                    if (request()->has('dtafinal')){
+                        if (request('dtafinal') != ""){
+                        $dataFimFormatadaMysql = Carbon::createFromFormat('d/m/Y', request('dtafinal'))->format('Y-m-d');         
+                        //$licencas = $licencas->where('fim', '>=', $dataFormatadaMysql);                
+                        } else {
+
+                            
+
+                        }
+                    }    
+            }
+        }
+
+
+
         // ordena
         $licencas = $licencas->orderBy('id', 'desc');
 
@@ -67,7 +87,10 @@ class LicencaController extends Controller
         // paginação
         $licencas = $licencas->paginate(session('perPage', '5'));
 
-        return view('profissionals.licencas.index', compact('licencas', 'perpages'));
+        // consulta a tabela dos de tipo de licenças
+        $licencatipos = LicencaTipo::orderBy('descricao', 'asc')->get();
+
+        return view('profissionals.licencas.index', compact('licencas', 'perpages', 'licencatipos'));
     }        
 
     /**
