@@ -1,148 +1,73 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\ProfileController;
+
+use Illuminate\Support\Facades\Auth;
+
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\LogController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
 |
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    #if the user is logged return index view, if not logged return login view
+    if (Auth::check()) {
+        return view('index');
+    } else {
+        return view('auth.login');
+    }
 });
 
-Route::group(['prefix' => 'admin','namespace' => 'Auth'],function(){
-    // Authentication Routes...
-    Route::get('login', 'LoginController@showLoginForm')->name('login');
-    Route::post('login', 'LoginController@login');
-    Route::post('logout', 'LoginController@logout')->name('logout');
-});
+# add 'register' => false to Auth::routes() to disable registration
+Auth::routes(['verify' => true]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile')->middleware('auth', 'verified');
+Route::post('/profile/update/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update')->middleware('auth', 'verified');
+Route::post('/profile/update/theme', [ProfileController::class, 'updateTheme'])->name('profile.theme.update')->middleware('auth', 'verified');
 
-Route::prefix('admin')->namespace('Admin')->group(function () {
-	/*  Operadores */
-	// nota mental :: as rotas extras devem ser declaradas antes de se declarar as rotas resources
-    Route::get('/users/password', 'ChangePasswordController@showPasswordUpdateForm')->name('users.password');
-	Route::put('/users/password/update', 'ChangePasswordController@passwordUpdate')->name('users.passwordupdate');
-    Route::get('/users/export/csv', 'UserController@exportcsv')->name('users.export.csv');
-	Route::get('/users/export/pdf', 'UserController@exportpdf')->name('users.export.pdf');
-    Route::resource('/users', 'UserController');
+# Permission::class
 
-	/* Permissões */
-    Route::get('/permissions/export/csv', 'PermissionController@exportcsv')->name('permissions.export.csv');
-	Route::get('/permissions/export/pdf', 'PermissionController@exportpdf')->name('permissions.export.pdf');
-    Route::resource('/permissions', 'PermissionController');
+Route::get('/permissions/export/csv', [PermissionController::class, 'exportcsv'])->name('permissions.export.csv')->middleware('auth', 'verified');
 
-    /* Perfis */
-    Route::get('/roles/export/csv', 'RoleController@exportcsv')->name('roles.export.csv');
-    Route::get('/roles/export/pdf', 'RoleController@exportpdf')->name('roles.export.pdf');
-    Route::resource('/roles', 'RoleController');
-});
+Route::get('/permissions/export/xls', [PermissionController::class, 'exportxls'])->name('permissions.export.xls')->middleware('auth', 'verified'); // Export XLS
 
-/* Distritos */
-Route::get('/distritos/export/csv', 'DistritoController@exportcsv')->name('distritos.export.csv');
-Route::get('/distritos/export/pdf', 'DistritoController@exportpdf')->name('distritos.export.pdf');
-Route::resource('/distritos', 'DistritoController');
+Route::get('/permissions/export/pdf', [PermissionController::class, 'exportpdf'])->name('permissions.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-/* Unidades */
-Route::get('/unidades/export/csv', 'UnidadeController@exportcsv')->name('unidades.export.csv');
-Route::get('/unidades/export/pdf', 'UnidadeController@exportpdf')->name('unidades.export.pdf');
-Route::get('/unidades/autocomplete', 'UnidadeController@autocomplete')->name('unidades.autocomplete');
-Route::resource('/unidades', 'UnidadeController');
-# Profissionais por Unidade
-Route::resource('/unidadeprofissionais', 'UnidadeProfissionalController')->only(['store', 'destroy',]);
+Route::resource('/permissions', PermissionController::class)->middleware('auth', 'verified'); // Resource Route, crud
 
-/* Cargos */
-Route::get('/cargos/export/csv', 'CargoController@exportcsv')->name('cargos.export.csv');
-Route::get('/cargos/export/pdf', 'CargoController@exportpdf')->name('cargos.export.pdf');
-Route::resource('/cargos', 'CargoController');
+# Role::class
 
-/* Carga Horária */
-Route::get('/cargahorarias/export/csv', 'CargaHorariaController@exportcsv')->name('cargahorarias.export.csv');
-Route::get('/cargahorarias/export/pdf', 'CargaHorariaController@exportpdf')->name('cargahorarias.export.pdf');
-Route::resource('/cargahorarias', 'CargaHorariaController');
+Route::get('/roles/export/csv', [RoleController::class, 'exportcsv'])->name('roles.export.csv')->middleware('auth', 'verified'); // Export CSV
 
-/* Vínculos */
-Route::get('/vinculos/export/csv', 'VinculoController@exportcsv')->name('vinculos.export.csv');
-Route::get('/vinculos/export/pdf', 'VinculoController@exportpdf')->name('vinculos.export.pdf');
-Route::resource('/vinculos', 'VinculoController');
+Route::get('/roles/export/xls', [RoleController::class, 'exportxls'])->name('roles.export.xls')->middleware('auth', 'verified'); // Export XLS
 
-/* Orgão Emissor */
-Route::get('/orgaoemissores/export/csv', 'OrgaoEmissorController@exportcsv')->name('orgaoemissores.export.csv');
-Route::get('/orgaoemissores/export/pdf', 'OrgaoEmissorController@exportpdf')->name('orgaoemissores.export.pdf');
-Route::resource('/orgaoemissores', 'OrgaoEmissorController');
+Route::get('/roles/export/pdf', [RoleController::class, 'exportpdf'])->name('roles.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-/* Tipos de Vínculos */
-Route::get('/vinculotipos/export/csv', 'VinculoTipoController@exportcsv')->name('vinculotipos.export.csv');
-Route::get('/vinculotipos/export/pdf', 'VinculoTipoController@exportpdf')->name('vinculotipos.export.pdf');
-Route::resource('/vinculotipos', 'VinculoTipoController');
+Route::resource('/roles', RoleController::class)->middleware('auth', 'verified'); // Resource Route, crud
 
-/* Tipos de Licenças */
-Route::get('/licencatipos/export/csv', 'LicencaTipoController@exportcsv')->name('licencatipos.export.csv');
-Route::get('/licencatipos/export/pdf', 'LicencaTipoController@exportpdf')->name('licencatipos.export.pdf');
-Route::resource('/licencatipos', 'LicencaTipoController');
+# User::class
 
-/* Tipos de Férias */
-Route::get('/feriastipos/export/csv', 'FeriasTipoController@exportcsv')->name('feriastipos.export.csv');
-Route::get('/feriastipos/export/pdf', 'FeriasTipoController@exportpdf')->name('feriastipos.export.pdf');
-Route::resource('/feriastipos', 'FeriasTipoController');
+Route::get('/users/export/csv', [UserController::class, 'exportcsv'])->name('users.export.csv')->middleware('auth', 'verified'); // Export CSV
 
-/* Tipos de Capacitações */
-Route::get('/capacitacaotipos/export/csv', 'CapacitacaoTipoController@exportcsv')->name('capacitacaotipos.export.csv');
-Route::get('/capacitacaotipos/export/pdf', 'CapacitacaoTipoController@exportpdf')->name('capacitacaotipos.export.pdf');
-Route::resource('/capacitacaotipos', 'CapacitacaoTipoController');
+Route::get('/users/export/xls', [UserController::class, 'exportxls'])->name('users.export.xls')->middleware('auth', 'verified'); // Export XLS
 
-/* Profissionais */
-Route::get('/profissionals/export/csv', 'ProfissionalController@exportcsv')->name('profissionals.export.csv');
-Route::get('/profissionals/export/pdf', 'ProfissionalController@exportpdf')->name('profissionals.export.pdf');
-Route::get('/profissionals/export/pdf/simples', 'ProfissionalController@exportpdfsimples')->name('profissionals.export.pdf.simples');
-Route::get('/profissionals/export/pdf/{id}/individual', 'ProfissionalController@exportpdfindividual')->name('profissionals.export.pdf.individual');
-Route::get('/profissionals/autocomplete', 'ProfissionalController@autocomplete')->name('profissionals.autocomplete');
-# lixeira
-Route::get('/profissionals/trash', 'ProfissionalTrashController@index')->name('profissionals.trash');
-Route::get('/profissionals/trash/{id}', 'ProfissionalTrashController@show')->name('profissionals.trash.show');
-Route::post('/profissionals/trash/{id}/restore', 'ProfissionalTrashController@restore')->name('profissionals.trash.restore');
-# resource
-Route::resource('/profissionals', 'ProfissionalController');
-/* Férias dos profissionais */
-Route::get('/ferias/export/csv', 'FeriasController@exportcsv')->name('ferias.export.csv');
-Route::get('/ferias/export/pdf', 'FeriasController@exportpdf')->name('ferias.export.pdf');
-Route::resource('/ferias', 'FeriasController')->only(['store', 'destroy', 'index']);
-/* Licenças dos profissionais */
-Route::get('/licencas/export/csv', 'LicencaController@exportcsv')->name('licencas.export.csv');
-Route::get('/licencas/export/pdf', 'LicencaController@exportpdf')->name('licencas.export.pdf');
-Route::resource('/licencas', 'LicencaController')->only(['store', 'destroy', 'index']);
-/* Capacitações dos profissionais */
-Route::resource('/capacitacaos', 'CapacitacaoController')->only(['store', 'destroy',]);
+Route::get('/users/export/pdf', [UserController::class, 'exportpdf'])->name('users.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-/* Equipes/Vagas */
-Route::get('/equipes/export/csv', 'EquipeController@exportcsv')->name('equipes.export.csv');
-Route::get('/equipes/export/pdf', 'EquipeController@exportpdf')->name('equipes.export.pdf');
-Route::get('/equipes/export/pdf/{id}/individual', 'EquipeController@exportpdfindividual')->name('equipes.export.pdf.individual');
-# lixeira
-Route::get('/equipes/trash', 'EquipeTrashController@index')->name('equipes.trash');
-Route::get('/equipes/trash/{id}', 'EquipeTrashController@show')->name('equipes.trash.show');
-Route::post('/equipes/trash/{id}/restore', 'EquipeTrashController@restore')->name('equipes.trash.restore');
-# Vagas da Equipe
-Route::resource('/equipevagas', 'EquipeVagasController')->only(['store', 'destroy',]);
-# resource
-Route::resource('/equipes', 'EquipeController');
+Route::resource('/users', UserController::class)->middleware('auth', 'verified'); // Resource Route, crud
 
-/* Gestão das equipes */
-Route::get('/equipegestao/export/csv', 'EquipeGestaoController@exportcsv')->name('equipegestao.export.csv');
-Route::get('/equipegestao/export/csv/completo', 'EquipeGestaoController@exportcsvcompleto')->name('equipegestao.export.csv.completo');
-Route::get('/equipegestao/export/pdf', 'EquipeGestaoController@exportpdf')->name('equipegestao.export.pdf');
-Route::get('/equipegestao/export/pdf/{id}/individual', 'EquipeGestaoController@exportpdfindividual')->name('equipegestao.export.pdf.individual');
-Route::post('/equipegestao/preenchervaga', 'EquipeGestaoController@preenchervaga')->name('equipegestao.preenchervaga');
-Route::post('/equipegestao/limparvaga', 'EquipeGestaoController@limparvaga')->name('equipegestao.limparvaga');
-Route::resource('/equipegestao', 'EquipeGestaoController')->only(['index', 'show',]);
+# Log::class
 
-/* Histórico */
-Route::get('/historicos/export/csv', 'HistoricoController@exportcsv')->name('historicos.export.csv');
-Route::get('/historicos/export/pdf', 'HistoricoController@exportpdf')->name('historicos.export.pdf');
-Route::resource('/historicos', 'HistoricoController')->only(['index']);
+Route::resource('/logs', LogController::class)->middleware('auth', 'verified')->only('show', 'index'); // Resource Route, crud

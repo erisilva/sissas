@@ -3,25 +3,22 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class HasAccess
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
-        /* continua se o usuário logado não estiver bloqueado */
-        if(Auth::user()->hasAccess()) {
-            return $next($request);    
+        if (! $request->user()->hasAccess()) {
+            return response(__('Unauthorized.'), 401);
         }
 
-        /*  aborta e chama a view error.403 */
-        abort(403, 'Operador com acesso bloqueado.');
+        return $next($request);
     }
 }

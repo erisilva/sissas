@@ -1,45 +1,47 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Não encontrado.</title>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+  <head>
+    <meta charset="UTF-8">
 
-        <style>
-            html, body {
-                height: 100%;
-            }
+    <meta name="robots" content="noindex, nofollow">
 
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                color: #B0BEC5;
-                display: table;
-                font-weight: 100;
-                font-family: 'Arial';
-            }
 
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
+    <title>{{ config('app.name', 'Laravel') }} - {{ __("Oops! That page can't be found.") }} - 404</title>
 
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
+    
+    <style>
+        .container {
+        margin: auto;
+        max-width: 600px;
+        text-align: center;
+        }
 
-            .title {
-                font-size: 72px;
-                margin-bottom: 40px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="content">
-                <div class="title">404 - Não encontrado.</div>
-            </div>
-        </div>
-    </body>
+        h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        }
+
+        a {
+        color: #000;
+        text-decoration: none;
+        font-weight: bold;
+        border: 2px solid #000;
+        padding: 10px 20px;
+        display: inline-block;
+        margin-top: 20px;
+        }
+
+        a:hover {
+        background-color: #000;
+        color: #fff;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>{{ __("Oops! That page can't be found.") }}</h1>
+      <p>{{ __("Sorry, the page you are looking for cannot be found. It may have been removed, had its name changed, or is temporarily unavailable.") }}</p>
+      <a href="{{ url('/') }}">{{ __('Go back to homepage') }}</a>
+    </div>
+  </body>
 </html>

@@ -23,9 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // estou iniciando a sessão que defini a quantidade de linhas
-        // exibidas por páginas aqui, ainda em teste
-        session(['perPage' => 5]);
         return view('home');
     }
 }

@@ -1,96 +1,142 @@
-<p align="center"><img src="http://www.contagem.mg.gov.br/novoportal/wp-content/themes/pmc/images/logo-prefeitura-contagem.png"></p>
+# sissas - Aplicativo Web para Gerenciamento de Equipes de Saúde
 
-## Sobre
+Em desenvolvimento
 
-SisSAS, Sistema da Superintendência de Assitência a Saúde, foi desenvolvido para fazer a gestão das equipes e profissionais de saúde da SMS (Secretaria Municipal de Saúde) de Contagem-MG.
+## Visão Geral
 
-O SisSAS foi constuído com a framework [Laravel](https://laravel.com/), na versão 5.7 e usa como front-end [Bootstrap 4.3](https://getbootstrap.com/).
+Bem-vindo à página do GitHub para o meu aplicativo web desenvolvido (em desenvolvimento) em Laravel 10 e Bootstrap 5.2! Este projeto é dedicado ao gerenciamento de equipes de saúde com profissionais da área. As equipes estão organizadas por unidades e distritos, e o aplicativo oferece recursos abrangentes para melhorar o controle e a eficiência.
 
-Faz uso também das seguintes bibliotecas:
+## Recursos
 
-- [laravel-fpdf](https://github.com/codedge/laravel-fpdf)
-- [typeahead](https://github.com/corejavascript/typeahead.js)
+- Rastreamento de Transferências: O aplicativo permite rastrear as transferências de profissionais entre as equipes, fornecendo um registro completo das movimentações.
+- Controle de Férias e Licenças: Com esse recurso, é possível acompanhar as férias e licenças médicas dos profissionais de saúde, garantindo uma gestão eficiente.
+- Controle de Vagas: O aplicativo controla o número e as vagas disponíveis em cada equipe, permitindo ao administrador equilibrar as equipes de saúde de forma eficaz.
+- Organização por Unidades e Distritos: As equipes são arranjadas em unidades e distritos, proporcionando uma estrutura clara e organizada.
+- Integração do Laravel 10 e Bootstrap 5.2: O aplicativo aproveita as capacidades do Laravel 10 e a estilização moderna do Bootstrap 5.2 para oferecer uma experiência de usuário atraente e responsiva.
+
+## Frameworks e Bibliotecas
+
+- [Laravel 10.x](https://laravel.com/docs/10.x)
+- [Bootstrap 5.2](https://getbootstrap.com/docs/5.2/getting-started/introduction/)
+
+## Prerequisites
+
+The requirements to run this system can be found at the link: [documentação oficial do laravel](https://laravel.com/docs/10.x):
+
+- Laravel 10.x requires a minimum PHP version of 8.1
+- Enable extension=gd extension in php.ini (for captcha)
+- Enable extension=zip extension in php.ini (for captcha)
+
+## Dependencies
+
+- [Captcha for Laravel](https://github.com/mewebstudio/captcha), Note: Enable extension=gd extension in php.ini
+- [Laravel DomPdf](https://github.com/barryvdh/laravel-dompdf)
+- [laravel excel export lib](https://laravel-excel.com/)
 - [bootstrap-datepicker](https://github.com/uxsolutions/bootstrap-datepicker)
-- [ImputMask](https://github.com/RobinHerbots/Inputmask.git)
+- [Inputmask](https://github.com/RobinHerbots/Inputmask)
 
-## Requisitos
+## Installation
 
-Os requisitos para executar esse sistema podem ser encontrado na [documentação oficial do laravel](https://laravel.com/docs/5.7):
+### Clone the repository
 
-- PHP >= 7.1.3
-- OpenSSL PHP Extension
-- PDO PHP Extension
-- Mbstring PHP Extension
-- Tokenizer PHP Extension
-- XML PHP Extension
-- Ctype PHP Extension
-- JSON PHP Extension
-- BCMath PHP Extension
+```
+git clone https://github.com/erisilva/acl80.git
+```
 
-## Instalação
+Use composer to install project dependencies:
+
+```
+composer update
+```
+
+### Create the database
+
+This configuration shown below uses MySQL as the database. This configuration is for a development environment, therefore not recommended for production.
+
+```
+CREATE DATABASE database_name_here CHARACTER SET utf8 COLLATE utf8_general_ci;
+```
+
+### Configure the environment
+
+Create the settings .env file:
+
+```
+php -r "copy('.env.example', '.env');"
+```
+
+Edit the .env file in the root folder of the project with the database configuration data. More info in [documentação oficial do laravel](https://laravel.com/docs/10.x/configuration#environment-configuration):
+    
+```
+DB_CONNECTION=mysql
+DB_HOST=
+DB_PORT=
+DB_DATABASE=database_name_here
+DB_USERNAME=your_username_here
+DB_PASSWORD=yout_password_here
+```
+
+### Generate the application key
+
+```
+php artisan key:generate
+```
+### Configure the storage if necessary
+
+```
+php artisan storage:link
+```
+
+### Migration
 
 Executar a migração das tabelas com o comando seed:
 
+```
 php artisan migrate --seed
+```
 
-Serão criados 4 usuários de acesso ao sistema, cada um com um perfíl de acesso diferente.
 
-Login: adm@mail.com senha:123456, acesso total.
-Login: gerente@mail.com senha:123456, acesso restrito.
-Login: operador@mail.com senha:123456, acesso restrito, não pode excluir registros.
-Login: leitor@mail.com senha: 123456, somente consulta.
+## Usage
 
-## Funcionalidades
+To run the system, use the command:
 
-- Profisisonais de Saúde
-- Controle de Licenças Médicas, Afastamentos e Férias dos Profissionais
-- Cadastro das capacitações (cursos) dos profissionais de saúde
-- Distritos
-- Unidades e os profissionais que fazem parte da unidade
-- Equipes
-- Controle da quantidade de vagas/cargo de cada equipe
-- Gestão das equipes
-- Histórico dos profissionais
+```
+php artisan serve
+```
+Access the application in your web browser by visiting http://localhost:8000 or the appropriate URL provided by the php artisan serve command.
 
-## Prefeitura Municipal de Contagem
+### Users
 
-[www.contagem.mg.gov.br](http://www.contagem.mg.gov.br/novoportal/)
+Login: adm@mail.com 
+Login: gerente@mail.com 
+Login: operador@mail.com
+Login: leitor@mail.com
+
+Note: The password for all users is 123456. By default, the migration generates users with names in Brazilian Portuguese.
+
+## Contact
+
+- E-mail: erivelton.silva@proton.me
+- Discord: gixeph#0658
 
 ## Contribuições
 
-Caso queira contribuir com melhorias para esse sistema basta enviar um e-mail para erivelton.silva@contagem.mg.gov.br.
+Se você deseja contribuir para este projeto, fique à vontade para enviar suas sugestões, relatar problemas e enviar solicitações de pull. Para isso, faça um fork do repositório, faça suas alterações e envie uma solicitação de pull descrevendo suas modificações.
+
+## Future Enhancements
+
+Aqui estão algumas áreas potenciais para o desenvolvimento e aprimoramento deste aplicativo web no futuro:
+
+- Implementação de recursos avançados de relatórios e estatísticas para auxiliar na tomada de decisões gerenciais.
+- Adição de recursos de notificação para informar sobre transferências de profissionais, férias, etc.
+- Aprimoramento da interface do usuário com recursos de arrastar e soltar para facilitar o gerenciamento de equipes e vagas.
+- Integração com outros sistemas e APIs relacionados à área da saúde para otimizar a gestão e os processos.
 
 ## Licenças
 
-O sistema de protocolos é código aberto licenciado sob a [licença MIT](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details, except for the libraries used.
 
-## Notas de desenvolvimento
+## Acknowledgments
 
-- Profissionais: filtrar por equipe (unidade e distrito?), apresentando somente os profissionais anexados a essas equipes, a utilidade é ter controle mais geral de onde está o funcionário dentro do sistema, o problema é que o funcionário pode estar em n posições dentro das equipes e unidades, não existe uma ligação 1-1 para esse caso
-- Profissionais->Férias, Profissionais->Licenças finalizar a tela adicionando os respectivos filtros por data inicial e data final
-- Adicionar ao histórico a unidade/equipe que o profissional entrou ou saiu, e permitir fazer um filtro
-- Adicionar ao historico quando a carga horária do profissional for alterada
-
-
-mais complicado:
-
-- Os relatórios csv dessa versão estão abrindo com vários problemas no microlixo excel, mas abrem sem erro no openoffice. Alterar saída para xml e tentar a sorte com esse excel
-- Atualizar o sistema para versão 7 do laravel, muito tempo, mas precisarei disso cedo ou tarde
-
-
-Solicitações reunião 21/05/202
-
-- Controle do cadastro de funcionários, bloquear repetição de cadastro através do excel. colocar cpf como campo único
-
-- Ao enviar para a lixeira o cadastro do funionário deve-se ter a opção de se escolher um motivo: aposentadoria, falecimento, exoneração ou outro e especifique o motivo. Usarei o campo de notas do histórico para guardar essa informação ok, colocado campo aberto pra escrever o motivo que quiser, não coloquei outra tabela para isso
-
-- Histórico dos profissionais:
-- guardar a unidade ou equipe que o funcionário foi anexado [1]
-- guardar a unidade ou equipe que o funcionário foi removido [2]
-- [1] e [2] definem o processo de transferência, quando um funcionário é movimentado dentro das equipes ou unidades, esse processo deve ser de fácil consulta no sistema através de relatórios
-- Guardar no histórico quando a carga horária for alterada ok
-- Guardar no histórico quando o cargo for alterada ok
-- Guardar no histórico quando o vínculo horária for alterada ok
-- Guardar no histórico quando o profissional for cadastrado (acho que já tem) ok
-- Melhorar os filtros da tela de consulta dos profissionais e relatórios de saída
-
+- [Laravel](https://laravel.com/)
+- [Bootswatch](https://bootswatch.com/)

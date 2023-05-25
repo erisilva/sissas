@@ -1,45 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html  lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-        <title>Be right back.</title>
+        <meta charset="UTF-8">
+
+        <meta name="robots" content="noindex, nofollow">
+
+        <title>{{ config('app.name', 'Laravel') }} - {{ __("Be right back.") }} - 404</title>
 
         <style>
-            html, body {
-                height: 100%;
-            }
-
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                color: #B0BEC5;
-                display: table;
-                font-weight: 100;
-                font-family: 'Arial';
-            }
-
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
-
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
-
-            .title {
-                font-size: 72px;
-                margin-bottom: 40px;
-            }
+		body {
+			background-color: #f2f2f2;
+			font-family: Arial, sans-serif;
+			font-size: 16px;
+			color: #333;
+			text-align: center;
+			padding-top: 100px;
+		}
+		h1 {
+			font-size: 48px;
+			margin-bottom: 30px;
+		}
+		p {
+			font-size: 24px;
+			margin-bottom: 50px;
+		}
         </style>
     </head>
     <body>
-        <div class="container">
-            <div class="content">
-                <div class="title">Be right back.</div>
-            </div>
-        </div>
+
+        <h1>{{ __("Be right back.") }}</h1>
+	    <p>{{ __('We are currently undergoing maintenance and will be back shortly.')}}</p>
+        <p>{{ __('Thank you for your patience.') }}</p>
+
+
     </body>
 </html>
