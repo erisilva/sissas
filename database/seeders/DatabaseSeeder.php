@@ -32,6 +32,34 @@ class DatabaseSeeder extends Seeder
         $this->call(AclSeeder::class);
 
         $this->call(DistritoSeeder::class);
+
+        $this->call(UnidadeSeeder::class);
+
+        $this->call(DistritoUserSeeder::class);
+
+        $this->call(CargoSeeder::class);
+
+        $this->call(CargaHorariaSeeder::class);
+
+        $this->call(FeriasTipoSeeder::class);
+
+        $this->call(LicencaTipoSeeder::class);
+
+        $this->call(CapacitacaoTipoSeeder::class);
+
+        $this->call(OrgaoEmissorSeeder::class);
+
+        $this->call(VinculoTipoSeeder::class);
+
+        $this->call(VinculoSeeder::class);
+
+        $this->call(ProfissionalSeeder::class);
+
+        $this->call(FeriasSeeder::class);
+
+        $this->call(LicencaSeeder::class);
+
+        $this->call(CapacitacaoSeeder::class);
         
         // \App\Models\User::factory(50)->create();
 

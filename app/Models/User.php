@@ -9,8 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
-
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -76,6 +76,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Theme::class);
     }
 
+    public function distritos() : BelongsToMany
+    {
+        return $this->belongsToMany(Distrito::class);
+    }
+
     /**
      * Users roles relationship
      *
@@ -91,10 +96,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function hasRoles($roles) : bool
     {
-
         $userRoles = $this->roles;
         return $roles->intersect($userRoles)->count();
-
     }
     
     /**
@@ -149,6 +152,33 @@ class User extends Authenticatable implements MustVerifyEmail
         if (trim(session()->get('user_email')) !== '') {
             $query->where('email', 'like', '%' . session()->get('user_email') . '%');
         }
+    }
+
+    /**
+     * Férias do profissional
+     *
+     */
+    public function ferias() : HasMany
+    {
+        return $this->hasMany(Ferias::class);
+    }
+
+    /**
+     * Licenças do profissional
+     *
+     */
+    public function licencas() : HasMany
+    {
+        return $this->hasMany(Licenca::class);
+    }
+
+        /**
+     * Capacitações do profissional
+     *
+     */
+    public function capacitacoes() : HasMany
+    {
+        return $this->hasMany(Capacitacao::class);
     }
 
 }
