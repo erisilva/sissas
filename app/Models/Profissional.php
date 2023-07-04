@@ -88,7 +88,7 @@ class Profissional extends Model
         return $this->hasMany(Licenca::class);
     }
 
-        /**
+    /**
      * capacitações do profissional
      *
      * @var Capacitacao
@@ -96,6 +96,26 @@ class Profissional extends Model
     public function capacitacaos() : HasMany
     {
         return $this->HasMany(Capacitacao::class);
+    }
+
+    /**
+     * Equipes do profissional
+     *
+     * @var EquipeProfissional
+     */
+    public function equipeProfissionals()
+    {
+        return $this->hasMany(EquipeProfissional::class);
+    }
+
+    /**
+     * Históricos do profissional
+     *
+     * @var Historico
+     */
+    public function historicos()
+    {
+        return $this->hasMany(Historico::class);
     }
 
 }

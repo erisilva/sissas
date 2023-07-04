@@ -60,6 +60,12 @@ class DatabaseSeeder extends Seeder
         $this->call(LicencaSeeder::class);
 
         $this->call(CapacitacaoSeeder::class);
+
+        $this->call(EquipeSeeder::class);
+
+        $this->call(EquipeProfissionalSeeder::class);
+
+        $this->call(HistoricoTipoSeeder::class);
         
         // \App\Models\User::factory(50)->create();
 

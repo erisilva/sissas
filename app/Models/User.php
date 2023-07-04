@@ -181,4 +181,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Capacitacao::class);
     }
 
+    /**
+     * Históricos do profissional
+     *
+     */
+    public function historicos() : HasMany
+    {
+        return $this->hasMany(Historico::class);
+    }
+
 }

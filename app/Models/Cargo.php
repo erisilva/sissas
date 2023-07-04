@@ -18,4 +18,9 @@ class Cargo extends Model
     {
         return $this->hasMany(Profissional::class);
     }
+
+    public function equipeProfissionals()
+    {
+        return $this->hasMany(EquipeProfissional::class);
+    }
 }

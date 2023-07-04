@@ -5,13 +5,15 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ProfissionalSeeder extends Seeder
+class EquipeProfissionalSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        \App\Models\Profissional::factory()->count(80)->create();
+        \App\Models\EquipeProfissional::factory()
+            ->count(34)
+            ->create();
     }
 }

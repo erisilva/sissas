@@ -17,10 +17,28 @@ class Unidade extends Model
     /**
      * Get the distrito that owns the Unidade
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function distrito() : BelongsTo
     {
         return $this->belongsTo(Distrito::class);
+    }
+
+    /**
+     * Get all of the equipes for the Unidade
+     *
+     */
+    public function equipes()
+    {
+        return $this->hasMany(Equipe::class);
+    }
+
+    /**
+     * Históricos do profissional
+     *
+     * @var Historico
+     */
+    public function historicos()
+    {
+        return $this->hasMany(Historico::class);
     }
 }
