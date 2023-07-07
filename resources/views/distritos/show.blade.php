@@ -1,19 +1,14 @@
 @extends('layouts.app')
 
-@section('title', __('Users') . ' - ' . __('Roles') . ' - ' . __('Show'))
+@section('title', 'Distritos - ' . __('Show'))
 
 @section('content')
 <div class="container-fluid">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="{{ route('users.index') }}">
-          {{ __('Users') }}
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('roles.index') }}">
-          {{ __('Roles') }}
+        <a href="{{ route('distritos.index') }}">
+          Distritos
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
@@ -23,26 +18,23 @@
   </nav>
 </div>
 
-<x-card title="{{ __('Role') }}">
+<x-card title="Distrito">
   <ul class="list-group list-group-flush">
     <li class="list-group-item">
-      {{ __('Name') . ' : ' . $role->name }}
-    </li>
-    <li class="list-group-item">
-      {{ __('Description') . ' : ' . $role->description }}
+      {{ __('Name') . ' : ' . $distrito->nome }}
     </li>
   </ul>
 </x-card>
 
-@can('role-delete')
+@can('distrito.delete')
 <x-btn-trash />
 @endcan
 
-<x-btn-back route="roles.index" />
+<x-btn-back route="distritos.index" />
 
-@can('role-delete')
+@can('distrito.delete')
 <x-modal-trash class="modal-sm">
-  <form method="post" action="{{route('roles.destroy', $role->id)}}">
+  <form method="post" action="{{route('distritos.destroy', $distrito->id)}}">
     @csrf
     @method('DELETE')
     <button type="submit" class="btn btn-danger">

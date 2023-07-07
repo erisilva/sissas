@@ -220,6 +220,7 @@ return [
         'content' => 'conteúdo',
         'body' => 'conteúdo',
         'excerpt' => 'resumo',
+        'distrito_id' => 'distrito',
     ],
 
 ];

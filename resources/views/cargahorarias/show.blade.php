@@ -1,19 +1,14 @@
 @extends('layouts.app')
 
-@section('title', __('Users') . ' - ' . __('Roles') . ' - ' . __('Show'))
+@section('title', 'Carga Horárias' . __('Show'))
 
 @section('content')
 <div class="container-fluid">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="{{ route('users.index') }}">
-          {{ __('Users') }}
-        </a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="{{ route('roles.index') }}">
-          {{ __('Roles') }}
+        <a href="{{ route('cargahorarias.index') }}">
+          Carga Horárias
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
@@ -23,26 +18,23 @@
   </nav>
 </div>
 
-<x-card title="{{ __('Role') }}">
+<x-card title="Carga Horárias">
   <ul class="list-group list-group-flush">
     <li class="list-group-item">
-      {{ __('Name') . ' : ' . $role->name }}
-    </li>
-    <li class="list-group-item">
-      {{ __('Description') . ' : ' . $role->description }}
+      {{ __('Name') . ' : ' . $cargahoraria->nome }}
     </li>
   </ul>
 </x-card>
 
-@can('role-delete')
+@can('cargahoraria.delete')
 <x-btn-trash />
 @endcan
 
-<x-btn-back route="roles.index" />
+<x-btn-back route="cargahorarias.index" />
 
-@can('role-delete')
+@can('cargahoraria.delete')
 <x-modal-trash class="modal-sm">
-  <form method="post" action="{{route('roles.destroy', $role->id)}}">
+  <form method="post" action="{{route('cargahorarias.destroy', $cargahoraria->id)}}">
     @csrf
     @method('DELETE')
     <button type="submit" class="btn btn-danger">

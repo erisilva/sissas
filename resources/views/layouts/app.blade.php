@@ -28,7 +28,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <i class="bi bi-heart-pulse"></i> {{ config('app.name', 'Laravel') }}
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,16 +44,41 @@
                                {{ __('Config') }} 
                             </a>
                             <ul class="dropdown-menu">
+                                @can('user-index')
                                 <li>
                                     <a class="dropdown-item" href="{{ route('users.index') }}">
                                         <x-icon icon='people' /> {{ __('Users') }}
                                     </a>
                                 </li>
+                                @endcan
+                                @can('log-index')
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logs.index') }}">
                                         <x-icon icon='list' /> {{ __('Logs') }}
                                     </a>
                                 </li>
+                                @endcan
+                                @can('distrito.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('distritos.index') }}">
+                                        <x-icon icon='table' /> Distritos
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('unidade.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('unidades.index') }}">
+                                        <x-icon icon='table' /> Unidades
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('cargo.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('cargos.index') }}">
+                                        <x-icon icon='table' /> Cargos dos Profissionais
+                                    </a>
+                                </li>
+                                @endcan
                                 <li>
                                     <a class="dropdown-item" href="#">
                                         Another action
@@ -61,6 +86,11 @@
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('about') }}">
+                                        <x-icon icon='info-square' /> {{ __('About') }}
+                                    </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="#">

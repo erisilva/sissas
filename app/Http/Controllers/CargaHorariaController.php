@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\CargaHoraria;
+use App\Models\Perpage;
+
 use Illuminate\Http\Request;
 
 class CargaHorariaController extends Controller
@@ -12,7 +14,16 @@ class CargaHorariaController extends Controller
      */
     public function index()
     {
-        //
+        $this->authorize('cargahoraria.index');
+
+        if (request()->has('perpage')) {
+            session(['perPage' => request('perpage')]);
+        }
+
+        return view('cargahoraria.index', [
+            'cargahorarias' => CargaHoraria::orderBy('nome', 'asc')->paginate(session('perPage', '5')),
+            'perpages' => Perpage::orderBy('valor')->get()
+        ]);
     }
 
     /**

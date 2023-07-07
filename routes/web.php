@@ -6,10 +6,16 @@ use App\Http\Controllers\ProfileController;
 
 use Illuminate\Support\Facades\Auth;
 
+# Controllers
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\DistritoController;
+use App\Http\Controllers\UnidadeController;
+use App\Http\Controllers\CargoController;
+use App\Http\Controllers\CargaHorariaController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +27,11 @@ use App\Http\Controllers\LogController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+# about page
+Route::get('/about', function () {
+    return view('about.about');
+})->name('about')->middleware('auth', 'verified');
 
 Route::get('/', function () {
     #if the user is logged return index view, if not logged return login view
@@ -71,3 +82,43 @@ Route::resource('/users', UserController::class)->middleware('auth', 'verified')
 # Log::class
 
 Route::resource('/logs', LogController::class)->middleware('auth', 'verified')->only('show', 'index'); // Resource Route, crud
+
+# Distrito::class
+
+Route::get('/distritos/export/csv', [DistritoController::class, 'exportcsv'])->name('distritos.export.csv')->middleware('auth', 'verified');
+
+Route::get('/distritos/export/xls', [DistritoController::class, 'exportxls'])->name('distritos.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/distritos/export/pdf', [DistritoController::class, 'exportpdf'])->name('distritos.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/distritos', DistritoController::class)->middleware('auth', 'verified');
+
+# Unidade::class
+
+Route::get('/unidades/export/csv', [UnidadeController::class, 'exportcsv'])->name('unidades.export.csv')->middleware('auth', 'verified');
+
+Route::get('/unidades/export/xls', [UnidadeController::class, 'exportxls'])->name('unidades.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/unidades/export/pdf', [UnidadeController::class, 'exportpdf'])->name('unidades.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/unidades', UnidadeController::class)->middleware('auth', 'verified');
+
+# Cargo::class
+
+Route::get('/cargos/export/csv', [CargoController::class, 'exportcsv'])->name('cargos.export.csv')->middleware('auth', 'verified');
+
+Route::get('/cargos/export/xls', [CargoController::class, 'exportxls'])->name('cargos.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/cargos/export/pdf', [CargoController::class, 'exportpdf'])->name('cargos.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/cargos', CargoController::class)->middleware('auth', 'verified');
+
+# CargaHoraria::class
+
+Route::get('/cargahorarias/export/csv', [CargaHorariaController::class, 'exportcsv'])->name('cargahorarias.export.csv')->middleware('auth', 'verified');
+
+Route::get('/cargahorarias/export/xls', [CargaHorariaController::class, 'exportxls'])->name('cargahorarias.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/cargahorarias/export/pdf', [CargaHorariaController::class, 'exportpdf'])->name('cargahorarias.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/cargahorarias', CargaHorariaController::class)->middleware('auth', 'verified');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Perpage;
+use App\Models\Distrito;
 
 use Illuminate\Http\Request;
 
@@ -45,7 +46,8 @@ class UserController extends Controller
         $this->authorize('user-create');
 
         return view('users.create', [
-            'roles' => Role::orderBy('description','asc')->get() 
+            'roles' => Role::orderBy('name','asc')->get() ,
+            'distritos' => Distrito::orderBy('nome','asc')->get() ,
         ]);
     }
 
@@ -64,28 +66,36 @@ class UserController extends Controller
     
           DB::beginTransaction();
     
-          try{
+          try {
     
-              $user = $request->all();
-              $user['active'] = 'y'; //set as active
-              $user['password'] = Hash::make($user['password']);
-              $user['email_verified_at'] = now();
+                $user = $request->all();
+                $user['active'] = 'y'; //set as active
+                $user['password'] = Hash::make($user['password']);
+                $user['email_verified_at'] = now();
+
+                $newUser = User::create($user); 
+
+                if(isset($user['roles']) && count($user['roles'])){
+                    foreach ($user['roles'] as $value) {
+                        $newUser->roles()->attach($value);
+                    }
+                }
+
+                // salva os distritos que o operador pode gerenciar (equipes)
+                if(isset($user['distritos']) && count($user['distritos'])){
+                    foreach ($user['distritos'] as $value) {
+                        $newUser->distritos()->attach($value);
+                    }
+
+                }
     
-              $newUser = User::create($user); 
-    
-              if(isset($user['roles']) && count($user['roles'])){
-                  foreach ($user['roles'] as $key => $value) {
-                      $newUser->roles()->attach($value);
-                  }
-              }
-    
-              DB::commit();
-    
-              return redirect(route('users.index'))->with('message',__('User created successfully!'));
+                DB::commit();
+
+                return redirect(route('users.index'))->with('message',__('User created successfully!'));
     
           }catch(\Exception $e){
-              DB::rollback();
-              return redirect()->route('users.index')->with('message', __('Error saving record!') . $e->getMessage());
+                DB::rollback();
+                return redirect()->route('users.index')->with('message', __('Error saving record!') . $e->getMessage());
           }
 
     }
@@ -111,7 +121,8 @@ class UserController extends Controller
 
         return view('users.edit', [
             'user' => $user,
-            'roles' => Role::orderBy('description','asc')->get() 
+            'roles' => Role::orderBy('name','asc')->get(),
+            'distritos' => Distrito::orderBy('nome','asc')->get() ,
         ]);
     }
 
@@ -151,8 +162,23 @@ class UserController extends Controller
 
             // add roles to this user
             if(isset($input['roles']) && count($input['roles'])){
-                foreach ($input['roles'] as $key => $value) {
+                foreach ($input['roles'] as $value) {
                     $user->roles()->attach($value);
+                }
+            }
+
+            // remove todos os distritos
+            $distritos = $user->distritos;
+            if(count($distritos)){
+                foreach ($distritos as $value) {
+                $user->distritos()->detach($value->id);
+                }
+            }
+
+            // vincula os novos distritos ao operador
+            if(isset($input['distritos']) && count($input['distritos'])){
+                foreach ($input['distritos'] as $value) {
+                $user->distritos()->attach($value);
                 }
             }
     

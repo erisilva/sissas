@@ -84,6 +84,42 @@
         </div>
       </div>
       @endforeach
+
+      <div class="col-12">
+        <p class="text-center bg-primary text-white">
+          Distritos
+        </p>  
+      </div>
+
+      @foreach($distritos as $distrito)
+        @php
+          $checked = '';
+          if(old('distritos') ?? false){
+            foreach (old('distritos') as $key => $id) {
+              if($id == $distrito->id){
+                $checked = "checked";
+              }
+            }
+          }else{
+            if($user ?? false){
+              foreach ($user->distritos as $key => $roleList) {
+                if($roleList->id == $distrito->id){
+                  $checked = "checked";
+                }
+              }
+            }
+          }
+        @endphp
+      <div class="col-md-4">
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" name="distritos[]" value="{{$distrito->id}}" {{$checked}}>
+            <label class="form-check-label" for="distritos">{{$distrito->nome}}</label>
+        </div>
+      </div>
+      @endforeach
+
+
+
       <div class="col-12">
         <button type="submit" class="btn btn-primary">
           <x-icon icon='pencil-square' />{{ __('Edit') }}
