@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Cargos dos Profissionais  - ' . __('Show'))
+@section('title', 'Cargos  - ' . __('Show'))
 
 @section('content')
 <div class="container-fluid">
@@ -8,7 +8,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="{{ route('cargos.index') }}">
-          cargos
+          Cargos
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
@@ -18,7 +18,7 @@
   </nav>
 </div>
 
-<x-card title="cargo">
+<x-card title="Cargos">
   <ul class="list-group list-group-flush">
     <li class="list-group-item">
       {{ __('Name') . ' : ' . $cargo->nome }}

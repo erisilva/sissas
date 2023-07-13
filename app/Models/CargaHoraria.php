@@ -11,7 +11,7 @@ class CargaHoraria extends Model
     use HasFactory;
 
     protected $fillable = [
-        'mome'
+        'nome'
     ];
 
     public function profissionals() : hasMany

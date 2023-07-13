@@ -67,7 +67,10 @@ class DistritoController extends Controller
     {
         $this->authorize('distrito.show');
 
-        return view('distritos.show', compact('distrito'));
+        return view('distritos.show', [
+            'distrito' => $distrito
+            ]
+        );
     }
 
     /**

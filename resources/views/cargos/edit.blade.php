@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Cargos dos Profissionais  - ' . __('Edit'))
+@section('title', 'Cargos - ' . __('Edit'))
 
 @section('content')
 <div class="container-fluid">
@@ -8,7 +8,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="{{ route('cargos.index') }}">
-          Cargos dos Profissionais
+          Cargos
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">

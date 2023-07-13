@@ -91,7 +91,11 @@ class CargoController extends Controller
     {
         $this->authorize('cargo.edit');
   
-        $cargo->update($request->validate(['nome' => 'required|max:255']));
+        $cargo->update($request->validate([
+            'nome' => 'required|max:255',
+            'cbo' => 'required|max:80',
+            ])
+        );
 
         return redirect(route('cargos.index'))->with('message', 'Cargo do Profissional alterado com sucesso!');
     }

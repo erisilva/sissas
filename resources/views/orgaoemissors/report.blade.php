@@ -54,7 +54,7 @@
 </head>
     <body>
         <header>
-             Carga Horárias
+            Orgão Emissor
         </header>
 
         <footer>
@@ -69,7 +69,7 @@
               <tbody>
                 @foreach($dataset as $row)
                 <tr>
-                  <td>{{ $row->nome }}</td>
+                  <td>{{$row->nome}}</td>
                 </tr>
                 @endforeach
               </tbody>

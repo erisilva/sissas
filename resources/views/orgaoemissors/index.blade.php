@@ -1,13 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Carga Horárias')
+@section('title', 'Orgão Emissor')
 
 @section('content')
 <div class="container-fluid">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item active" aria-current="page">
-        <a href="{{ route('cargahorarias.index') }}">Carga Horárias</a>
+        <a href="{{ route('orgaoemissors.index') }}">
+          Orgão Emissor
+        </a>
       </li>
     </ol>
   </nav>
@@ -16,23 +18,23 @@
 
   <x-btn-group label='MenuPrincipal' class="py-1">
 
-    @can('distrito.create')
-    <a class="btn btn-primary" href="{{ route('cargahorarias.create') }}" role="button"><x-icon icon='file-earmark'/> {{ __('New') }}</a>
+    @can('orgaoemissor.create')
+    <a class="btn btn-primary" href="{{ route('orgaoemissors.create') }}" role="button"><x-icon icon='file-earmark'/> {{ __('New') }}</a>
     @endcan
      
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalFilter"><x-icon icon='funnel'/> {{ __('Filters') }}</button>
 
-    @can('distrito.export')
+    @can('orgaoemissor.export')
     <x-dropdown-menu title='Reports' icon='printer'>
 
       <li>
-        <a class="dropdown-item" href="{{route('cargahorarias.export.xls')}}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS' }}</a>
+        <a class="dropdown-item" href="{{route('orgaoemissors.export.xls')}}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS' }}</a>
       </li>
       <li>
-        <a class="dropdown-item" href="{{route('cargahorarias.export.csv')}}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV' }}</a>
+        <a class="dropdown-item" href="{{route('orgaoemissors.export.csv')}}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV' }}</a>
       </li>
       <li>
-        <a class="dropdown-item" href="{{route('cargahorarias.export.pdf')}}"><x-icon icon='file-pdf-fill' /> {{ __('Export') . ' PDF' }}</a>
+        <a class="dropdown-item" href="{{route('orgaoemissors.export.pdf')}}"><x-icon icon='file-pdf-fill' /> {{ __('Export') . ' PDF' }}</a>
       </li>
     
     </x-dropdown-menu>
@@ -49,20 +51,20 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($cargahorarias as $cargahoraria)
+            @foreach($orgaoemissors as $orgaoemissor)
             <tr>
                 <td class="text-nowrap">
-                  {{$cargahoraria->nome}}
+                  {{$orgaoemissor->nome}}
                 </td>
                 <td>
                   <x-btn-group label='Opções'>
 
-                    @can('cargahoraria.edit')
-                    <a href="{{route('cargahorarias.edit', $cargahoraria)}}" class="btn btn-primary btn-sm" role="button"><x-icon icon='pencil-square'/></a>
+                    @can('orgaoemissor.edit')
+                    <a href="{{route('orgaoemissors.edit', $orgaoemissor->id)}}" class="btn btn-primary btn-sm" role="button"><x-icon icon='pencil-square'/></a>
                     @endcan
 
-                    @can('cargahoraria.show')
-                    <a href="{{route('cargahorarias.show', $cargahoraria)}}" class="btn btn-info btn-sm" role="button"><x-icon icon='eye'/></a>
+                    @can('orgaoemissor.delete')
+                    <a href="{{route('orgaoemissors.show', $orgaoemissor->id)}}" class="btn btn-info btn-sm" role="button"><x-icon icon='eye'/></a>
                     @endcan
 
                   </x-btn-group>
@@ -73,7 +75,7 @@
     </table>
   </div>
   
-  <x-pagination :query="$cargahorarias" />
+  <x-pagination :query="$orgaoemissors" />
 
 </div>
 
@@ -86,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var perpage = document.getElementById('perpage');
     perpage.addEventListener('change', function() {
         perpage = this.options[this.selectedIndex].value;
-        window.open("{{ route('cargahorarias.index') }}" + "?perpage=" + perpage,"_self");
+        window.open("{{ route('orgaoemissors.index') }}" + "?perpage=" + perpage,"_self");
     });
 });
 </script>

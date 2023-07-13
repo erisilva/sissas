@@ -11,7 +11,7 @@ class OrgaoEmissor extends Model
     use HasFactory;
 
     protected $fillable = [
-        'descricao',
+        'nome',
     ];
 
     public function profissionals() : hasMany

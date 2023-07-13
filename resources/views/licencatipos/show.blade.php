@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Carga Horárias' . __('Show'))
+@section('title', 'Tipos de Licenças - ' . __('Show'))
 
 @section('content')
 <div class="container-fluid">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="{{ route('cargahorarias.index') }}">
-          Carga Horárias
+        <a href="{{ route('licencatipos.index') }}">
+          Tipos de Licenças
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
@@ -18,23 +18,23 @@
   </nav>
 </div>
 
-<x-card title="Carga Horárias">
+<x-card title="Tipos de Licenças">
   <ul class="list-group list-group-flush">
     <li class="list-group-item">
-      {{ __('Name') . ' : ' . $cargahoraria->nome }}
+      {{ __('Name') . ' : ' . $licencatipo->nome }}
     </li>
   </ul>
 </x-card>
 
-@can('cargahoraria.delete')
+@can('licencatipo.delete')
 <x-btn-trash />
 @endcan
 
-<x-btn-back route="cargahorarias.index" />
+<x-btn-back route="licencatipos.index" />
 
-@can('cargahoraria.delete')
+@can('licencatipo.delete')
 <x-modal-trash class="modal-sm">
-  <form method="post" action="{{route('cargahorarias.destroy', $cargahoraria)}}">
+  <form method="post" action="{{route('licencatipos.destroy', $licencatipo->id)}}">
     @csrf
     @method('DELETE')
     <button type="submit" class="btn btn-danger">

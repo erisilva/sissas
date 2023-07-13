@@ -75,7 +75,49 @@
                                 @can('cargo.index')
                                 <li>
                                     <a class="dropdown-item" href="{{ route('cargos.index') }}">
-                                        <x-icon icon='table' /> Cargos dos Profissionais
+                                        <x-icon icon='table' /> Cargos
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('cargahoraria.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('cargahorarias.index') }}">
+                                        <x-icon icon='table' /> Carga Horária
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('vinculo.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('vinculos.index') }}">
+                                        <x-icon icon='table' /> Vínculos
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('licencatipo.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('licencatipos.index') }}">
+                                        <x-icon icon='table' /> Tipos de Licença
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('feriastipo.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('feriastipos.index') }}">
+                                        <x-icon icon='table' /> Tipos de Férias
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('capacitacaotipo.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('capacitacaotipos.index') }}">
+                                        <x-icon icon='table' /> Tipos de Capacitação
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('vinculotipo.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('vinculotipos.index') }}">
+                                        <x-icon icon='table' /> Tipos de Vínculo
                                     </a>
                                 </li>
                                 @endcan

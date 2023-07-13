@@ -15,6 +15,12 @@ use App\Http\Controllers\DistritoController;
 use App\Http\Controllers\UnidadeController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\CargaHorariaController;
+use App\Http\Controllers\VinculoController;
+use App\Http\Controllers\LicencaTipoController;
+use App\Http\Controllers\FeriasTipoController;
+use App\Http\Controllers\CapacitacaoTipoController;
+use App\Http\Controllers\OrgaoEmissorController;
+use App\Http\Controllers\VinculoTipoController;
 
 
 /*
@@ -122,3 +128,63 @@ Route::get('/cargahorarias/export/xls', [CargaHorariaController::class, 'exportx
 Route::get('/cargahorarias/export/pdf', [CargaHorariaController::class, 'exportpdf'])->name('cargahorarias.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
 Route::resource('/cargahorarias', CargaHorariaController::class)->middleware('auth', 'verified');
+
+# Vinculo::class
+
+Route::get('/vinculos/export/csv', [VinculoController::class, 'exportcsv'])->name('vinculos.export.csv')->middleware('auth', 'verified');
+
+Route::get('/vinculos/export/xls', [VinculoController::class, 'exportxls'])->name('vinculos.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/vinculos/export/pdf', [VinculoController::class, 'exportpdf'])->name('vinculos.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/vinculos', VinculoController::class)->middleware('auth', 'verified');
+
+# LicencaTipo::class
+
+Route::get('/licencatipos/export/csv', [LicencaTipoController::class, 'exportcsv'])->name('licencatipos.export.csv')->middleware('auth', 'verified');
+
+Route::get('/licencatipos/export/xls', [LicencaTipoController::class, 'exportxls'])->name('licencatipos.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/licencatipos/export/pdf', [LicencaTipoController::class, 'exportpdf'])->name('licencatipos.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/licencatipos', LicencaTipoController::class)->middleware('auth', 'verified');
+
+# FeriasTipo::class
+
+Route::get('/feriastipos/export/csv', [FeriasTipoController::class, 'exportcsv'])->name('feriastipos.export.csv')->middleware('auth', 'verified');
+
+Route::get('/feriastipos/export/xls', [FeriasTipoController::class, 'exportxls'])->name('feriastipos.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/feriastipos/export/pdf', [FeriasTipoController::class, 'exportpdf'])->name('feriastipos.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/feriastipos', FeriasTipoController::class)->middleware('auth', 'verified');
+
+# CapacitacaoTipo::class
+
+Route::get('/capacitacaotipos/export/csv', [CapacitacaoTipoController::class, 'exportcsv'])->name('capacitacaotipos.export.csv')->middleware('auth', 'verified');
+
+Route::get('/capacitacaotipos/export/xls', [CapacitacaoTipoController::class, 'exportxls'])->name('capacitacaotipos.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/capacitacaotipos/export/pdf', [CapacitacaoTipoController::class, 'exportpdf'])->name('capacitacaotipos.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/capacitacaotipos', CapacitacaoTipoController::class)->middleware('auth', 'verified');
+
+# OrgaoEmissor::class
+
+Route::get('/orgaoemissors/export/csv', [OrgaoEmissorController::class, 'exportcsv'])->name('orgaoemissors.export.csv')->middleware('auth', 'verified');
+
+Route::get('/orgaoemissors/export/xls', [OrgaoEmissorController::class, 'exportxls'])->name('orgaoemissors.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/orgaoemissors/export/pdf', [OrgaoEmissorController::class, 'exportpdf'])->name('orgaoemissors.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/orgaoemissors', OrgaoEmissorController::class)->middleware('auth', 'verified');
+
+# VinculoTipo::class
+
+Route::get('/vinculotipos/export/csv', [VinculoTipoController::class, 'exportcsv'])->name('vinculotipos.export.csv')->middleware('auth', 'verified');
+
+Route::get('/vinculotipos/export/xls', [VinculoTipoController::class, 'exportxls'])->name('vinculotipos.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/vinculotipos/export/pdf', [VinculoTipoController::class, 'exportpdf'])->name('vinculotipos.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/vinculotipos', VinculoTipoController::class)->middleware('auth', 'verified');
