@@ -9,6 +9,8 @@
 
     <meta name="robots" content="noindex, nofollow">
 
+    <link rel="shortcut icon" href="{{ asset('favicon.ico')}}" type="image/x-icon">
+
     <title>{{ config('app.name', 'Laravel') }} - @yield('title')</title>
 
     <!-- Styles -->
@@ -39,6 +41,9 @@
                     <!-- Left Side Of Navbar -->
                     @auth
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('profissionals.index') }}">Profissionais</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                {{ __('Config') }} 

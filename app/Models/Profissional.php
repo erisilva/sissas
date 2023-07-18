@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Illuminate\Support\Arr;
+
 class Profissional extends Model
 {
     use HasFactory, SoftDeletes;
@@ -16,7 +18,64 @@ class Profissional extends Model
         'nome', 'matricula', 'cns', 'cpf', 'flexibilizacao', 'admissao', 'observacao', 'tel', 'cel', 'email', 'cep', 'logradouro', 'bairro', 'numero', 'complemento', 'cidade', 'uf', 'cargo_id', 'carga_horaria_id', 'vinculo_id', 'vinculo_tipo_id', 'orgao_emissor_id', 'registroClasse', 'ufOrgaoEmissor'
     ];
 
-    protected $dates = ['deleted_at', 'admissao']; 
+    protected $dates = ['deleted_at', 'admissao'];
+
+        /**
+     * Filter
+     *
+     */
+    public function scopeFilter($query, array $filters) : void
+    {
+        // start session values if not yet initialized
+        if (!session()->exists('profissional_nome')){
+            session(['profissional_nome' => '']);
+        }
+        if (!session()->exists('profissional_cargo_id')){
+            session(['profissional_cargo_id' => '']);
+        }
+        if (!session()->exists('profissional_vinculo_id')){
+            session(['profissional_vinculo_id' => '']);
+        }
+        if (!session()->exists('profissional_matricula')){
+            session(['profissional_matricula' => '']);
+        }
+        
+        
+
+        // update session values if the request has a value
+        if (Arr::exists($filters, 'nome')) {
+            session(['unidade_nome' => $filters['nome'] ?? '']);
+        }
+
+        if (Arr::exists($filters, 'cargo_id')) {
+            session(['profissional_cargo_id' => $filters['cargo_id'] ?? '']);
+        }
+        
+        if (Arr::exists($filters, 'vinculo_id')) {
+            session(['profissional_vinculo_id' => $filters['vinculo_id'] ?? '']);
+        }
+        
+        if (Arr::exists($filters, 'matricula')) {
+            session(['profissional_matricula' => $filters['matricula'] ?? '']);
+        }
+        
+        // query if session filters are not empty
+        if (trim(session()->get('profissional_nome')) !== '') {
+            $query->where('nome', 'like', '%' . session()->get('profissional_nome') . '%');
+        }
+
+        if (trim(session()->get('profissional_cargo_id')) !== '') {
+            $query->where('cargo_id', session()->get('profissional_cargo_id'));
+        }
+
+        if (trim(session()->get('profissional_vinculo_id')) !== '') {
+            $query->where('vinculo_id', session()->get('profissional_vinculo_id'));
+        }
+
+        if (trim(session()->get('profissional_matricula')) !== '') {
+            $query->where('matricula', 'like', '%' . session()->get('profissional_matricula') . '%');
+        }
+    }
 
     /**
      * Cargo do profissional

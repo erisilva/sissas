@@ -221,6 +221,13 @@ return [
         'body' => 'conteúdo',
         'excerpt' => 'resumo',
         'distrito_id' => 'distrito',
+        'vinculo_id' => 'vinculo',
+        'cargo_id' => 'cargo',
+        'vinculo_tipo_id' => 'tipo de vínculo',
+        'carga_horaria_id' => 'carga horária',
+        'orgao_emissor_id' => 'órgão emissor',
+        'matricula' => 'matrícula',
+        'admissao' => 'admissão',
     ],
 
 ];
