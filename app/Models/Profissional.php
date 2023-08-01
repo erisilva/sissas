@@ -15,10 +15,13 @@ class Profissional extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'nome', 'matricula', 'cns', 'cpf', 'flexibilizacao', 'admissao', 'observacao', 'tel', 'cel', 'email', 'cep', 'logradouro', 'bairro', 'numero', 'complemento', 'cidade', 'uf', 'cargo_id', 'carga_horaria_id', 'vinculo_id', 'vinculo_tipo_id', 'orgao_emissor_id', 'registroClasse', 'ufOrgaoEmissor'
+        'nome', 'matricula', 'cns', 'cpf', 'flexibilizacao', 'admissao', 'observacao', 'tel', 'cel', 'email', 'cep', 'logradouro', 'bairro', 'numero', 'complemento', 'cidade', 'uf', 'cargo_id', 'carga_horaria_id', 'vinculo_id', 'vinculo_tipo_id', 'orgao_emissor_id', 'registroClasse', 'ufOrgaoEmissor', 'tipo'
     ];
 
-    protected $dates = ['deleted_at', 'admissao'];
+    protected $casts = [
+        'deleted_at' => 'datetime',
+        'admissao' => 'datetime',
+      ];
 
         /**
      * Filter

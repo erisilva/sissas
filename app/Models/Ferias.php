@@ -17,7 +17,10 @@ class Ferias extends Model
         'inicio', 'fim', 'justificativa', 'observacao', 'ferias_tipo_id', 'profissional_id', 'user_id'
     ];
 
-    protected $dates = ['inicio', 'fim'];
+    protected $casts = [
+        'inicio' => 'datetime',
+        'fim' => 'datetime',
+      ];
 
     public function profissional() : BelongsTo
     {
@@ -32,6 +35,15 @@ class Ferias extends Model
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Filter
+     *
+     */
+    public function scopeFilter($query, array $filters) : void
+    {
+
     }
        
 }

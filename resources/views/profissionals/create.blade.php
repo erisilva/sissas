@@ -59,7 +59,6 @@
         @enderror   
       </div>
 
-
       <div class="col-md-6">
         <label for="email" class="form-label">E-mail</label>
         <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') ?? '' }}">
@@ -176,10 +175,9 @@
         @endif
       </div>
 
-
       {{-- VinculoTipo --}}
       <div class="col-md-4">        
-        <label for="vinculo_tipo_id" class="form-label">Vínculo Tipo <strong  class="text-danger">(*)</strong></label>
+        <label for="vinculo_tipo_id" class="form-label">Tipo de Vínculo <strong  class="text-danger">(*)</strong></label>
         <select class="form-select" id="vinculo_tipo_id" name="vinculo_tipo_id">
           <option value="" selected>Clique ...</option> 
           @foreach($vinculotipos as $vinculotipo)
@@ -212,8 +210,7 @@
         </div>
         @endif
       </div>
-
-
+  
       <div class="col-md-6">
         <p>Flexibilização</p>
         <div class="form-check form-check-inline">
@@ -277,12 +274,9 @@
         <textarea class="form-control" name="observacao" rows="3">{{ old('observacao') ?? '' }}</textarea>    
       </div>
 
-
       <div class="col-12">
         <button type="submit" class="btn btn-primary"><x-icon icon='plus-circle' /> {{ __('Save') }}</button>  
       </div>
-
-
     </div>     
   </form>
 </div>

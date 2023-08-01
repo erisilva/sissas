@@ -73,6 +73,7 @@ class DatabaseSeeder extends Seeder
 
         // \App\Models\Role::factory(50)->create();
 
+        $this->call(Update2023Seeder::class);
         
     }
 }

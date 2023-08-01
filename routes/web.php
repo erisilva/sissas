@@ -22,6 +22,7 @@ use App\Http\Controllers\CapacitacaoTipoController;
 use App\Http\Controllers\OrgaoEmissorController;
 use App\Http\Controllers\VinculoTipoController;
 use App\Http\Controllers\ProfissionalController;
+use App\Http\Controllers\FeriasController;
 
 
 /*
@@ -199,3 +200,13 @@ Route::get('/profissionals/export/xls', [ProfissionalController::class, 'exportx
 Route::get('/profissionals/export/pdf', [ProfissionalController::class, 'exportpdf'])->name('profissionals.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
 Route::resource('/profissionals', ProfissionalController::class)->middleware('auth', 'verified');
+
+# Ferias::class
+
+Route::get('/ferias/export/csv', [FeriasController::class, 'exportcsv'])->name('ferias.export.csv')->middleware('auth', 'verified');
+
+Route::get('/ferias/export/xls', [FeriasController::class, 'exportxls'])->name('ferias.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/ferias/export/pdf', [FeriasController::class, 'exportpdf'])->name('ferias.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/ferias', FeriasController::class)->middleware('auth', 'verified');

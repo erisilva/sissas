@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('cnes')->nullable();
             $table->string('ine')->nullable();
             $table->enum('minima', ['s', 'n'])->default('n');
+            $table->enum('tipo', ['s', 'a'])->default('s');
             $table->foreignId('unidade_id')->constrained()->restrictOnDelete()->cascadeOnUpdate(); 
             $table->timestamps();
         });
