@@ -99,8 +99,8 @@
           <input type="text" class="form-control" id="nome" name="nome" value="{{ session()->get('profissonal_nome') }}">
         </div>
         <div class="col-md-6">
-          <label for="matriculo" class="form-label">Matrícula</label>
-        <input type="text" class="form-control" id="matriculo" name="matricula" value="{{ session()->get('profissional_matricula') }}">
+          <label for="matricula" class="form-label">Matrícula</label>
+        <input type="text" class="form-control" id="matricula" name="matricula" value="{{ session()->get('profissional_matricula') }}">
         </div>
         <div class="col-md-6">
           <label for="cargo_id">Cargo</strong></label>

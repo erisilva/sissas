@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css-header')
+<link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+@endsection
+
 @section('title', 'Férias' )
 
 @section('content')
@@ -77,7 +81,7 @@
 
                   <a href="{{route('ferias.edit', $ferias_index->id)}}" class="btn btn-primary btn-sm" role="button"><x-icon icon='pencil-square'/></a>
 
-                  <a href="{{route('ferias.show', $ferias_index->id)}}" class="btn btn-info btn-sm" role="button"><x-icon icon='eye'/></a>
+                  <a href="{{route('ferias.show', $ferias_index)}}" class="btn btn-info btn-sm" role="button"><x-icon icon='eye'/></a>
 
                 </x-btn-group>
               </td>
@@ -92,32 +96,94 @@
 </div>
 
 <x-modal-filter :perpages="$perpages" icon='funnel' title='Filtros'>
+  <div class="container">
+    <form method="GET" action="{{ route('ferias.index') }}">
+      <div class="row g-3">
+        
+        <div class="col-12">
+          <label for="profissional" class="form-label">Profissional</label>
+          <input type="text" class="form-control" id="profissional" name="profissional" value="{{ session()->get('ferias_profissional') }}">
+        </div>
 
-  <form method="GET" action="{{ route('ferias.index') }}">
-    
-    <div class="mb-3">
-      <label for="nome" class="form-label">{{ __('Name') }}</label>
-      <input type="text" class="form-control" id="nome" name="nome" value="{{ session()->get('unidade_nome') }}">
-    </div>
-    
-    <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
-    
-    {{-- Reset the Filter --}}
-    <a href="{{ route('ferias.index', ['nome' => '', 'distrito_id' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
 
-  </form>
+        <div class="col-md-6">
+          <label for="data_inicio" class="form-label">Data inicial</label>
+          <input type="text" class="form-control" id="data_inicio" name="data_inicio" value="{{ session()->get('ferias_data_inicio') }}" autocomplete="off">
+        </div>
+
+        <div class="col-md-6">
+          <label for="data_fim" class="form-label">Data final</label>
+          <input type="text" class="form-control" id="data_fim" name="data_fim" value="{{ session()->get('ferias_data_fim') }}" autocomplete="off">
+        </div>
+
+        <div class="col-12">
+          <div class="alert alert-success" role="alert">
+            Para filtrar por data é obrigatório prrencher a data inicial e a data final.
+          </div>
+        </div>  
+
+        <div class="col-md-12">
+          <label for="ferias_tipo_id" class="form-label">Tipo</label>
+          <select class="form-select" id="ferias_tipo_id" name="ferias_tipo_id">
+            <option value="">Selecione...</option>
+            @foreach($feriastipos as $feriastipo)
+            <option value="{{ $feriastipo->id }}" @selected(session()->get('ferias_ferias_tipo_id') == $feriastipo->id) >{{ $feriastipo->nome }}</option>
+            @endforeach
+          </select>
+        </div>
+
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
+      
+          {{-- Reset the Filter --}}
+          <a href="{{ route('ferias.index', ['profissional' => '', 'data_inicio' => '', 'data_fim' => '', 'ferias_tipo_id' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
+        </div>
+      
+      </div>  
+    </form>
+  </div>  
 
 </x-modal-filter>  
 
 @endsection
+
 @section('script-footer')
+<script src="{{ asset('js/jquery-3.6.4.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('locales/bootstrap-datepicker.pt-BR.min.js') }}"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var perpage = document.getElementById('perpage');
-    perpage.addEventListener('change', function() {
-        perpage = this.options[this.selectedIndex].value;
+$(document).ready(function(){
+    $('#perpage').on('change', function() {
+        perpage = $(this).find(":selected").val(); 
+        
         window.open("{{ route('ferias.index') }}" + "?perpage=" + perpage,"_self");
     });
-});
+
+    $('#btnExportarCSV').on('click', function(){
+        window.open("{{ route('ferias.export.csv') }}","_self");
+    });
+
+    $('#btnExportarPDF').on('click', function(){
+        window.open("{{ route('ferias.export.pdf') }}","_self");
+    });
+
+  $('#data_fim').datepicker({
+    format: "dd/mm/yyyy",
+    todayBtn: "linked",
+    clearBtn: true,
+    language: "pt-BR",
+    autoclose: true,
+    todayHighlight: true
+  });
+
+  $('#data_inicio').datepicker({
+    format: "dd/mm/yyyy",
+    todayBtn: "linked",
+    clearBtn: true,
+    language: "pt-BR",
+    autoclose: true,
+    todayHighlight: true
+  });
+}); 
 </script>
 @endsection

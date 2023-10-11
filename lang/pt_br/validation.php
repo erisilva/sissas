@@ -228,6 +228,10 @@ return [
         'orgao_emissor_id' => 'órgão emissor',
         'matricula' => 'matrícula',
         'admissao' => 'admissão',
+        'feriastipo_id' => 'tipo de férias',
+        'inicio' => 'Data Inicial',
+        'fim' => 'Data Final',
+        'profissional_id' => 'Profissional',
     ],
 
 ];

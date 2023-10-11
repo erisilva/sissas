@@ -1,13 +1,36 @@
 @extends('layouts.app')
 
-@section('title', 'Unidades - ' . __('New'))
+@section('css-header')
+<link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+<style>
+  .twitter-typeahead, .tt-hint, .tt-input, .tt-menu { width: 100%; }
+  .tt-query, .tt-hint { outline: none;}
+  .tt-query { box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);}
+  .tt-hint {color: #999;}
+  .tt-menu { 
+      width: 100%;
+      margin-top: 12px;
+      padding: 8px 0;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  }
+  .tt-suggestion { padding: 3px 20px; }
+  .tt-suggestion.tt-is-under-cursor { color: #fff; }
+  .tt-suggestion p { margin: 0;}
+</style>
+@endsection
+
+@section('title', 'Férias - ' . __('New'))
 
 @section('content')
 <div class="container-fluid">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="{{ route('unidades.index') }}">Unidade</a>
+        <a href="{{ route('ferias.index') }}">Férias</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
       {{ __('New') }}
@@ -17,122 +40,69 @@
 </div>
 
 <div class="container">
-  <form method="POST" action="{{ route('unidades.store') }}">
+  <form method="POST" action="{{ route('ferias.store') }}">
     @csrf
     <div class="row g-3">
 
-      <div class="col-md-8">
-        <label for="nome" class="form-label">{{ __('Name') }} <strong  class="text-danger">(*)</strong></label>
-        <input type="text" class="form-control @error('nome') is-invalid @enderror" name="nome" value="{{ old('nome') ?? '' }}">
-        @error('nome')
-          <div class="invalid-feedback">{{ $message }}</div>
+      <div class="col-md-6">
+        <label for="profissional_nome" class="form-label">Profissional <strong  class="text-danger">(*)</strong></label>
+        <input type="text" class="form-control @error('profissional_id') is-invalid @enderror" name="profissional_nome" id="profissional_nome" value="{{ old('profissional_nome') ?? '' }}"  autocomplete="off">
+        @error('profissional_id')
+          <div class="text-danger"><small>{{ $message }}</small></div>
         @enderror      
       </div>
+
+      <div class="col-md-4">
+        <label for="cargo_descricao" class="form-label">Cargo <strong  class="text-danger">(*)</strong></label>
+        <input type="text" class="form-control" name="cargo_descricao" id="cargo_descricao" value="{{ old('cargo_descricao') ?? '' }}" readonly tabIndex="-1" placeholder="">
+      </div>
+
+      <div class="col-md-2">
+        <label for="matricula_profissional" class="form-label">Matrícula <strong  class="text-danger">(*)</strong></label>
+        <input type="text" class="form-control" name="matricula_profissional" id="matricula_profissional" value="{{ old('matricula_profissional') ?? '' }}" readonly tabIndex="-1" placeholder="">
+      </div>
       
-      <div class="col-md-4">        
-        <label for="distrito_id" class="form-label">Distrito <strong  class="text-danger">(*)</strong></label>
-        <select class="form-select" id="distrito_id" name="distrito_id">
+      <input type="hidden" id="profissional_id" name="profissional_id" value="{{ old('profissional_id') ?? '' }}">
+
+      <input type="hidden" id="cargo_profissional_id" name="cargo_profissional_id" value="{{ old('cargo_profissional_id') ?? '' }}">
+      
+      <div class="col-md-6">        
+        <label for="feriastipo_id" class="form-label">Tipo de Férias <strong  class="text-danger">(*)</strong></label>
+        <select class="form-select" id="feriastipo_id" name="feriastipo_id">
           <option value="" selected>Clique ...</option> 
-          @foreach($distritos as $distrito)
-          <option value="{{ $distrito->id }}" @selected(old('distrito_id') == $distrito->id)>
-            {{$distrito->nome}}
+          @foreach($feriastipos as $feriastipo)
+          <option value="{{ $feriastipo->id }}" @selected(old('feriastipo_id') == $feriastipo->id)>
+            {{$feriastipo->nome}}
           </option>
           @endforeach
         </select>
-        @if ($errors->has('distrito_id'))
-        <div class="text-danger">
-        {{ $errors->first('distrito_id') }}
-        </div>
-        @endif
-      </div>
-
-      <div class="col-md-6">
-        <label for="email" class="form-label">E-mail</label>
-        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') ?? '' }}">
-        @error('email')
-          <div class="invalid-feedback">{{ $message }}</div>
-        @enderror      
+        @error('feriastipo_id')
+          <div class="text-danger"><small>{{ $message }}</small></div>
+        @enderror
       </div>
 
       <div class="col-md-3">
-        <label for="tel" class="form-label">TEL</label>
-        <input type="text" class="form-control @error('tel') is-invalid @enderror" name="tel" id="tel" value="{{ old('tel') ?? '' }}">
-        @error('tel')
+        <label for="inicio" class="form-label">Data inicial <strong  class="text-danger">(*)</strong></label>
+        <input type="text" class="form-control  @error('inicio') is-invalid @enderror" id="inicio" name="inicio" value="{{ session()->get('inicio') }}" autocomplete="off">
+        @error('inicio')
           <div class="invalid-feedback">{{ $message }}</div>
-        @enderror      
+        @enderror   
       </div>
 
       <div class="col-md-3">
-        <label for="cel" class="form-label">CEL</label>
-        <input type="text" class="form-control @error('cel') is-invalid @enderror" name="cel" id="cel" value="{{ old('cel') ?? '' }}">
-        @error('cel')
+        <label for="fim" class="form-label">Data final <strong  class="text-danger">(*)</strong></label>
+        <input type="text" class="form-control  @error('fim') is-invalid @enderror" id="fim" name="fim" value="{{ session()->get('fim') }}" autocomplete="off">
+        @error('fim')
           <div class="invalid-feedback">{{ $message }}</div>
-        @enderror      
+        @enderror   
       </div>
 
-      <div class="col-md-2">
-        <label for="cep" class="form-label">CEP</label>
-        <input type="text" class="form-control @error('cep') is-invalid @enderror" name="cep" id="cep" value="{{ old('cep') ?? '' }}">
-        @error('cep')
-          <div class="invalid-feedback">{{ $message }}</div>
-        @enderror      
+      <div class="col-12">
+        <label for="justificativa" class="form-label">Justificativa</label>
+        <input type="text" class="form-control" name="justificativa" value="{{ old('justificativa') ?? '' }}">     
       </div>
 
-      <div class="col-md-5">
-        <label for="logradouro" class="form-label">Logradouro</label>
-        <input type="text" class="form-control @error('logradouro') is-invalid @enderror" name="logradouro" id="logradouro" value="{{ old('logradouro') ?? '' }}">
-        @error('logradouro')
-          <div class="invalid-feedback">{{ $message }}</div>
-        @enderror      
-      </div>
 
-      <div class="col-md-2">
-        <label for="numero" class="form-label">Nº</label>
-        <input type="text" class="form-control @error('numero') is-invalid @enderror" name="numero" value="{{ old('numero') ?? '' }}">
-        @error('numero')
-          <div class="invalid-feedback">{{ $message }}</div>
-        @enderror      
-      </div>
-
-      <div class="col-md-3">
-        <label for="complemento" class="form-label">Complemento</label>
-        <input type="text" class="form-control @error('complemento') is-invalid @enderror" name="complemento" value="{{ old('complemento') ?? '' }}">
-        @error('complemento')
-          <div class="invalid-feedback">{{ $message }}</div>
-        @enderror      
-      </div>
-
-      <div class="col-md-4">
-        <label for="bairro" class="form-label">Bairro</label>
-        <input type="text" class="form-control @error('bairro') is-invalid @enderror" name="bairro" id="bairro" value="{{ old('bairro') ?? '' }}">
-        @error('bairro')
-          <div class="invalid-feedback">{{ $message }}</div>
-        @enderror      
-      </div>
-
-      <div class="col-md-4">
-        <label for="cidade" class="form-label">Cidade</label>
-        <input type="text" class="form-control @error('cidade') is-invalid @enderror" name="cidade" id="cidade" value="{{ old('cidade') ?? '' }}">
-        @error('cidade')
-          <div class="invalid-feedback">{{ $message }}</div>
-        @enderror      
-      </div>
-
-      <div class="col-md-2">
-        <label for="uf" class="form-label">UF</label>
-        <input type="text" class="form-control @error('uf') is-invalid @enderror" name="uf" id="uf" value="{{ old('uf') ?? '' }}">
-        @error('uf')
-          <div class="invalid-feedback">{{ $message }}</div>
-        @enderror      
-      </div>
-
-      <div class="col-md-2">
-        <label for="porte" class="form-label">Porte</label>
-        <input type="text" class="form-control @error('porte') is-invalid @enderror" name="porte" value="{{ old('porte') ?? '' }}">
-        @error('porte')
-          <div class="invalid-feedback">{{ $message }}</div>
-        @enderror      
-      </div>
 
 
       <div class="col12">
@@ -144,77 +114,80 @@
   </form>
 </div>
 
-<x-btn-back route="unidades.index" />
+<x-btn-back route="ferias.index" />
 @endsection
 
 @section('script-footer')
 <script src="{{ asset('js/jquery-3.6.4.min.js') }}"></script>
-<script src="{{ asset('js/jquery.inputmask.min.js') }}"></script>
-
+<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('locales/bootstrap-datepicker.pt-BR.min.js') }}"></script>
+<script src="{{ asset('js/typeahead.bundle.min.js') }}"></script>
 <script>
   $(document).ready(function(){
+    $('#fim').datepicker({
+    format: "dd/mm/yyyy",
+    todayBtn: "linked",
+    clearBtn: true,
+    language: "pt-BR",
+    autoclose: true,
+    todayHighlight: true
+    });
 
-      $("#cel").inputmask({"mask": "(99) 99999-9999"});
-      $("#tel").inputmask({"mask": "(99) 9999-9999"});
-      $("#cep").inputmask({"mask": "99.999-999"});
+    $('#inicio').datepicker({
+      format: "dd/mm/yyyy",
+      todayBtn: "linked",
+      clearBtn: true,
+      language: "pt-BR",
+      autoclose: true,
+      todayHighlight: true
+    });
 
+    var profissionais = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.obj.whitespace("text"),
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          remote: {
+              url: "{{route('profissionals.autocomplete')}}?query=%QUERY",
+              wildcard: '%QUERY'
+          },
+          limit: 10
+      });
+      profissionais.initialize();
 
-      function limpa_formulário_cep() {
-                // Limpa valores do formulário de cep.
-                $("#rua").val("");
-                $("#bairro").val("");
-                $("#cidade").val("");
-                $("#uf").val("");
-                $("#ibge").val("");
-            }
-            
-            //Quando o campo cep perde o foco.
-            $("#cep").blur(function() {
+      $("#profissional_nome").typeahead({
+          hint: true,
+          highlight: true,
+          minLength: 1
+      },
+      {
+          name: "profissionais",
+          displayKey: "text",
+          limit: 10,
 
-            //Nova variável "cep" somente com dígitos.
-            var cep = $(this).val().replace(/\D/g, '');
+          source: profissionais.ttAdapter(),
+          templates: {
+            empty: [
+              '<div class="empty-message">',
+                '<p class="text-center font-weight-bold text-warning">Não foi encontrado nenhum profissional com o texto digitado.</p>',
+              '</div>'
+            ].join('\n'),
+            suggestion: function(data) {
+                return '<div><div class="text-bg-primary"> ' + data.text + ' - <strong>Matrícula:</strong> ' + data.matricula + '</div>' + '<div class="text-bg-light mx-1">Cargo: <i>' + data.cargo + '</i></div></div>';
+              }
+          }    
+          }).on("typeahead:selected", function(obj, datum, name) {
+              $(this).data("seletectedId", datum.value);
+              $('#profissional_id').val(datum.value);
+              $('#matricula_profissional').val(datum.matricula);
+              $('#cargo_descricao').val(datum.cargo);
+              $('#cargo_profissional_id').val(datum.cargo_id);
+          }).on('typeahead:autocompleted', function (e, datum) {
+              $(this).data("seletectedId", datum.value);
+              $('#profissional_id').val(datum.value);
+              $('#matricula_profissional').val(datum.matricula);
+              $('#cargo_descricao').val(datum.cargo);
+              $('#cargo_profissional_id').val(datum.cargo_id);
+      });
 
-            //Verifica se campo cep possui valor informado.
-            if (cep != "") {
-
-                //Expressão regular para validar o CEP.
-                var validacep = /^[0-9]{8}$/;
-
-                //Valida o formato do CEP.
-                if(validacep.test(cep)) {
-
-                    //Preenche os campos com "..." enquanto consulta webservice.
-                    $("#logradouro").val("...");
-                    $("#bairro").val("...");
-                    $("#cidade").val("...");
-                    $("#uf").val("...");
-
-                    //Consulta o webservice viacep.com.br/
-                    $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
-
-                        if (!("erro" in dados)) {
-                            //Atualiza os campos com os valores da consulta.
-                            $("#logradouro").val(dados.logradouro);
-                            $("#bairro").val(dados.bairro);
-                            $("#cidade").val(dados.localidade);
-                            $("#uf").val(dados.uf);
-                        } //end if.
-                        else {
-                            //CEP pesquisado não foi encontrado.
-                            limpa_formulário_cep();
-                        }
-                    });
-                } //end if.
-                else {
-                    //cep é inválido.
-                    limpa_formulário_cep();
-                }
-            } //end if.
-            else {
-                //cep sem valor, limpa formulário.
-                limpa_formulário_cep();
-            }
-        });
   });
 </script>
 

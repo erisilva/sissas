@@ -13,7 +13,7 @@ class FeriasSeeder extends Seeder
     public function run(): void
     {
         \App\Models\Ferias::factory()
-            ->count(100)
+            ->count(300)
             ->create();
     }
 }

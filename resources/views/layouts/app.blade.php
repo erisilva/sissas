@@ -46,9 +46,33 @@
                     <!-- Left Side Of Navbar -->
                     @auth
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ route('profissionals.index') }}">Profissionais</a>
-                        </li>
+                        
+                        
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                               Profissionais
+                            </a>
+                            <ul class="dropdown-menu">
+                                @can('profissional.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('profissionals.index') }}">
+                                        <x-icon icon='people' /> Profissionais
+                                    </a>
+                                </li>
+                                @endcan   
+                                @can('ferias.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('ferias.index') }}">
+                                        <x-icon icon='airplane' /> Férias dos Profissionais
+                                    </a>
+                                </li>
+                                @endcan
+                            </ul>
+
+
+                        </li>    
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                {{ __('Config') }} 

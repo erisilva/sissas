@@ -24,7 +24,7 @@ class PermissionController extends Controller
      */
     public function index() : View
     {
-        $this->authorize('ferias.index');
+        $this->authorize('permission-index');
 
         if(request()->has('perpage')) {
             session(['perPage' => request('perpage')]);

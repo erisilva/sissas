@@ -201,4 +201,37 @@ class ProfissionalController extends Controller
 
         return Excel::download(new ProfissionalsExport(request(['nome', 'cargo_id', 'vinculo_id', 'matricula'])),  'Profissionais_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
+
+        /**
+     * Função de autocompletar para ser usada pelo typehead
+     *
+     * @param  
+     * @return json
+     */
+    public function autocomplete(Request $request)
+    {
+
+        $profissionais = DB::table('profissionals');
+
+        // join
+        $profissionais = $profissionais->join('cargos', 'cargos.id', '=', 'profissionals.cargo_id');
+
+        // select
+        $profissionais = $profissionais->select(
+          'profissionals.nome as text', 
+          'profissionals.id as value', 
+          'cargos.nome as cargo', 
+          'cargos.id as cargo_id', 
+          'profissionals.matricula as matricula'
+        );
+        
+        //where
+        $profissionais = $profissionais->where("profissionals.nome","LIKE","%{$request->input('query')}%");
+        $profissionais = $profissionais->whereNull('deleted_at');
+
+        //get
+        $profissionais = $profissionais->get();
+
+        return response()->json($profissionais, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
+    }
 }

@@ -25,14 +25,14 @@ class FeriasController extends Controller
      */
     public function index() : View
     {
-        $this->authorize('profissional.ferias.index');
+        $this->authorize('ferias.index');
 
         if(request()->has('perpage')) {
             session(['perPage' => request('perpage')]);
         }
 
         return view('ferias.index', [
-            'ferias' => Ferias::orderBy('id', 'asc')->filter(request(['data_inicio','data_fim', 'profissional', 'ferias_tipo_id']))
+            'ferias' => Ferias::orderBy('inicio', 'desc')->filter(request(['data_inicio','data_fim', 'profissional', 'ferias_tipo_id']))
                                                     ->paginate(session('perPage', '5'))
                                                     ->appends(request(['data_inicio','data_fim', 'profissional', 'ferias_tipo_id'])),
             'perpages' => Perpage::orderBy('valor')->get(),
@@ -47,7 +47,9 @@ class FeriasController extends Controller
     {
         $this->authorize('ferias.create');
 
-        return view('ferias.create');
+        return view('ferias.create', [
+            'feriastipos' => FeriasTipo::orderBy('nome')->get(),
+        ]);
     }
 
     /**
@@ -57,46 +59,51 @@ class FeriasController extends Controller
     {
         $this->authorize('ferias.create');
 
-        $ferias = $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'required|max:255',
+        $request->validate([
+            'profissional_id' => 'required|integer|exists:profissionals,id',
+            'feriastipo_id' => 'required|integer|exists:ferias_tipos,id',
+            'inicio' => 'required|date_format:d/m/Y',
+            'fim' => 'required|date_format:d/m/Y',
           ]);
+
+        $ferias = [
+            'profissional_id' => $request->profissional_id,
+            'ferias_tipo_id' => $request->feriastipo_id,
+            'inicio' => date('Y-m-d', strtotime(str_replace('/', '-', $request->inicio))),
+            'fim' => date('Y-m-d', strtotime(str_replace('/', '-', $request->fim))),
+            'justificativa' => $request->justificativa,
+            'user_id' => auth()->id(),
+        ];  
   
-        $new_permission = Ferias::create($ferias);
+        Ferias::create($ferias);
 
-        // LOG
-        Log::create([
-            'model_id' => $new_permission->id,
-            'model' => 'Ferias',
-            'action' => 'store',
-            'changes' => json_encode($new_permission),
-            'user_id' => auth()->id(),            
-        ]);
-
-        return redirect(route('ferias.index'))->with('message', __('Ferias created successfully!'));
+        return redirect(route('ferias.index'))->with('message', 'Férias cadastradas com sucesso!');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function show(Ferias $ferias) : View
+    public function show($id) : View
     {
-        $this->authorize('ferias-show');
+        $this->authorize('ferias.show');
+
+        $ferias = Ferias::findorfail($id);
 
         return view('ferias.show', [
-          'ferias' => $ferias
+            'ferias' => $ferias
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Ferias $ferias) : View
+    public function edit($id) : View
     {
-        $this->authorize('ferias-edit');
+        $this->authorize('ferias.edit');
 
         return view('ferias.edit', [
-          'ferias' => $ferias
+            'ferias' => Ferias::findorfail($id),
+            'feriastipos' => FeriasTipo::orderBy('nome')->get(),
         ]);
     }
 
@@ -131,16 +138,8 @@ class FeriasController extends Controller
      */
     public function destroy(Ferias $ferias) : RedirectResponse
     {
-        $this->authorize('ferias-delete');
+        $this->authorize('ferias.delete');
 
-        // LOG
-        Log::create([
-            'model_id' => $ferias->id,
-            'model' => 'Ferias',
-            'action' => 'destroy',
-            'changes' => json_encode($ferias),
-            'user_id' => auth()->id(),            
-        ]);
 
         $ferias->roles()->detach();
 

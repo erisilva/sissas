@@ -13,7 +13,7 @@ class EquipeProfissionalSeeder extends Seeder
     public function run(): void
     {
         \App\Models\EquipeProfissional::factory()
-            ->count(34)
+            ->count(1000)
             ->create();
     }
 }

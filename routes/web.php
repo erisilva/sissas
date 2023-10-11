@@ -199,6 +199,8 @@ Route::get('/profissionals/export/xls', [ProfissionalController::class, 'exportx
 
 Route::get('/profissionals/export/pdf', [ProfissionalController::class, 'exportpdf'])->name('profissionals.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
+Route::get('/profissionals/autocomplete', [ProfissionalController::class, 'autocomplete'])->name('profissionals.autocomplete')->middleware('auth', 'verified');
+
 Route::resource('/profissionals', ProfissionalController::class)->middleware('auth', 'verified');
 
 # Ferias::class

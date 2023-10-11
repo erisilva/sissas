@@ -70,6 +70,133 @@ class AclSeeder extends Seeder
                 $log_index = Permission::where('name', '=', 'log-index')->get()->first();
                 $log_show = Permission::where('name', '=', 'log-show')->get()->first();
                 $log_export = Permission::where('name', '=', 'log-export')->get()->first();
+
+                // para permissões
+                $permission_index = Permission::where('name', '=', 'permission-index')->get()->first(); 
+                $permission_create = Permission::where('name', '=', 'permission-create')->get()->first();
+                $permission_edit = Permission::where('name', '=', 'permission-edit')->get()->first();  
+                $permission_delete = Permission::where('name', '=', 'permission-delete')->get()->first();
+                $permission_show = Permission::where('name', '=', 'permission-show')->get()->first();  
+                $permission_export = Permission::where('name', '=', 'permission-export')->get()->first();
+                // para distritos
+                $distrito_index = Permission::where('name', '=', 'distrito.index')->get()->first(); 
+                $distrito_create = Permission::where('name', '=', 'distrito.create')->get()->first();
+                $distrito_edit = Permission::where('name', '=', 'distrito.edit')->get()->first();  
+                $distrito_delete = Permission::where('name', '=', 'distrito.delete')->get()->first();
+                $distrito_show = Permission::where('name', '=', 'distrito.show')->get()->first();  
+                $distrito_export = Permission::where('name', '=', 'distrito.export')->get()->first();
+                // para unidades
+                $unidade_index = Permission::where('name', '=', 'unidade.index')->get()->first(); 
+                $unidade_create = Permission::where('name', '=', 'unidade.create')->get()->first();
+                $unidade_edit = Permission::where('name', '=', 'unidade.edit')->get()->first();  
+                $unidade_delete = Permission::where('name', '=', 'unidade.delete')->get()->first();
+                $unidade_show = Permission::where('name', '=', 'unidade.show')->get()->first();  
+                $unidade_export = Permission::where('name', '=', 'unidade.export')->get()->first();
+                # para unidades e profissionais
+                $unidade_profissional_create = Permission::where('name', '=', 'unidade.profissional.create')->get()->first();
+                $unidade_profissional_delete = Permission::where('name', '=', 'unidade.profissional.delete')->get()->first();
+                // para cargos
+                $cargo_index = Permission::where('name', '=', 'cargo.index')->get()->first(); 
+                $cargo_create = Permission::where('name', '=', 'cargo.create')->get()->first();
+                $cargo_edit = Permission::where('name', '=', 'cargo.edit')->get()->first();  
+                $cargo_delete = Permission::where('name', '=', 'cargo.delete')->get()->first();
+                $cargo_show = Permission::where('name', '=', 'cargo.show')->get()->first();  
+                $cargo_export = Permission::where('name', '=', 'cargo.export')->get()->first();
+                // para cargas horárias
+                $cargahoraria_index = Permission::where('name', '=', 'cargahoraria.index')->get()->first(); 
+                $cargahoraria_create = Permission::where('name', '=', 'cargahoraria.create')->get()->first();
+                $cargahoraria_edit = Permission::where('name', '=', 'cargahoraria.edit')->get()->first();  
+                $cargahoraria_delete = Permission::where('name', '=', 'cargahoraria.delete')->get()->first();
+                $cargahoraria_show = Permission::where('name', '=', 'cargahoraria.show')->get()->first();  
+                $cargahoraria_export = Permission::where('name', '=', 'cargahoraria.export')->get()->first();
+                // para vínculos
+                $vinculo_index = Permission::where('name', '=', 'vinculo.index')->get()->first(); 
+                $vinculo_create = Permission::where('name', '=', 'vinculo.create')->get()->first();
+                $vinculo_edit = Permission::where('name', '=', 'vinculo.edit')->get()->first();  
+                $vinculo_delete = Permission::where('name', '=', 'vinculo.delete')->get()->first();
+                $vinculo_show = Permission::where('name', '=', 'vinculo.show')->get()->first();  
+                $vinculo_export = Permission::where('name', '=', 'vinculo.export')->get()->first();
+                // para tipos de vínculos
+                $vinculotipo_index = Permission::where('name', '=', 'vinculotipo.index')->get()->first(); 
+                $vinculotipo_create = Permission::where('name', '=', 'vinculotipo.create')->get()->first();
+                $vinculotipo_edit = Permission::where('name', '=', 'vinculotipo.edit')->get()->first();  
+                $vinculotipo_delete = Permission::where('name', '=', 'vinculotipo.delete')->get()->first();
+                $vinculotipo_show = Permission::where('name', '=', 'vinculotipo.show')->get()->first();  
+                $vinculotipo_export = Permission::where('name', '=', 'vinculotipo.export')->get()->first();
+                // para tipos de licenças
+                $licencatipo_index = Permission::where('name', '=', 'licencatipo.index')->get()->first(); 
+                $licencatipo_create = Permission::where('name', '=', 'licencatipo.create')->get()->first();
+                $licencatipo_edit = Permission::where('name', '=', 'licencatipo.edit')->get()->first();  
+                $licencatipo_delete = Permission::where('name', '=', 'licencatipo.delete')->get()->first();
+                $licencatipo_show = Permission::where('name', '=', 'licencatipo.show')->get()->first();  
+                $licencatipo_export = Permission::where('name', '=', 'licencatipo.export')->get()->first();
+                // para tipos de férias
+                $feriastipo_index = Permission::where('name', '=', 'feriastipo.index')->get()->first(); 
+                $feriastipo_create = Permission::where('name', '=', 'feriastipo.create')->get()->first();
+                $feriastipo_edit = Permission::where('name', '=', 'feriastipo.edit')->get()->first();  
+                $feriastipo_delete = Permission::where('name', '=', 'feriastipo.delete')->get()->first();
+                $feriastipo_show = Permission::where('name', '=', 'feriastipo.show')->get()->first();  
+                $feriastipo_export = Permission::where('name', '=', 'feriastipo.export')->get()->first();
+                // para tipos de capacitações
+                $capacitacaotipo_index = Permission::where('name', '=', 'capacitacaotipo.index')->get()->first(); 
+                $capacitacaotipo_create = Permission::where('name', '=', 'capacitacaotipo.create')->get()->first();
+                $capacitacaotipo_edit = Permission::where('name', '=', 'capacitacaotipo.edit')->get()->first();  
+                $capacitacaotipo_delete = Permission::where('name', '=', 'capacitacaotipo.delete')->get()->first();
+                $capacitacaotipo_show = Permission::where('name', '=', 'capacitacaotipo.show')->get()->first();  
+                $capacitacaotipo_export = Permission::where('name', '=', 'capacitacaotipo.export')->get()->first();
+                // para profissionais
+                $profissional_index = Permission::where('name', '=', 'profissional.index')->get()->first(); 
+                $profissional_create = Permission::where('name', '=', 'profissional.create')->get()->first();
+                $profissional_edit = Permission::where('name', '=', 'profissional.edit')->get()->first();  
+                $profissional_delete = Permission::where('name', '=', 'profissional.delete')->get()->first();
+                $profissional_show = Permission::where('name', '=', 'profissional.show')->get()->first();  
+                $profissional_export = Permission::where('name', '=', 'profissional.export')->get()->first();
+                // para profissionais (LIXEIRA)
+                $profissional_trash_index = Permission::where('name', '=', 'profissional.trash.index')->get()->first(); 
+                $profissional_trash_restore = Permission::where('name', '=', 'profissional.trash.restore')->get()->first();
+                // para profissionais->férias
+                $profissional_ferias_index = Permission::where('name', '=', 'ferias.index')->get()->first();
+                $profissional_ferias_create = Permission::where('name', '=', 'ferias.create')->get()->first();
+                $profissional_ferias_edit = Permission::where('name', '=', 'ferias.edit')->get()->first(); 
+                $profissional_ferias_delete = Permission::where('name', '=', 'ferias.delete')->get()->first();
+                $profissional_ferias_show = Permission::where('name', '=', 'ferias.show')->get()->first();
+                $profissional_ferias_export = Permission::where('name', '=', 'ferias.export')->get()->first();
+                // para profissionais->licenças
+                $profissional_licenca_index = Permission::where('name', '=', 'licenca.index')->get()->first();
+                $profissional_licenca_create = Permission::where('name', '=', 'licenca.create')->get()->first();
+                $profissional_licenca_edit = Permission::where('name', '=', 'licenca.edit')->get()->first(); 
+                $profissional_licenca_delete = Permission::where('name', '=', 'licenca.delete')->get()->first();
+                $profissional_licenca_show = Permission::where('name', '=', 'licenca.show')->get()->first();
+                $profissional_licenca_export = Permission::where('name', '=', 'licenca.export')->get()->first();
+                // para profissionais->capacitações
+                $profissional_capacitacao_create = Permission::where('name', '=', 'profissional.capacitacao.create')->get()->first();  
+                $profissional_capacitacao_delete = Permission::where('name', '=', 'profissional.capacitacao.delete')->get()->first();
+                // para orgão emissores
+                $orgaoemissor_index = Permission::where('name', '=', 'orgaoemissor.index')->get()->first(); 
+                $orgaoemissor_create = Permission::where('name', '=', 'orgaoemissor.create')->get()->first();
+                $orgaoemissor_edit = Permission::where('name', '=', 'orgaoemissor.edit')->get()->first();  
+                $orgaoemissor_delete = Permission::where('name', '=', 'orgaoemissor.delete')->get()->first();
+                $orgaoemissor_show = Permission::where('name', '=', 'orgaoemissor.show')->get()->first();  
+                $orgaoemissor_export = Permission::where('name', '=', 'orgaoemissor.export')->get()->first();
+                // para equipes (e vagas)
+                $equipe_index = Permission::where('name', '=', 'equipe.index')->get()->first(); 
+                $equipe_create = Permission::where('name', '=', 'equipe.create')->get()->first();
+                $equipe_edit = Permission::where('name', '=', 'equipe.edit')->get()->first();  
+                $equipe_delete = Permission::where('name', '=', 'equipe.delete')->get()->first();
+                $equipe_show = Permission::where('name', '=', 'equipe.show')->get()->first();  
+                $equipe_export = Permission::where('name', '=', 'equipe.export')->get()->first();
+                // para equipes (e vagas) (LIXEIRA)
+                $equipe_trash_index = Permission::where('name', '=', 'equipe.trash.index')->get()->first(); 
+                $equipe_trash_restore = Permission::where('name', '=', 'equipe.trash.restore')->get()->first();
+                // para gestão de equipes
+                $equipegestao_index = Permission::where('name', '=', 'gestao.equipe.index')->get()->first();
+                $equipegestao_show = Permission::where('name', '=', 'gestao.equipe.show')->get()->first();  
+                $equipegestao_export = Permission::where('name', '=', 'gestao.equipe.export')->get()->first();
+                $equipegestao_vincular = Permission::where('name', '=', 'gestao.equipe.vincular.vaga')->get()->first();
+                $equipegestao_desvincular = Permission::where('name', '=', 'gestao.equipe.desvincular.vaga')->get()->first();
+                // para históricos
+                $historico_index = Permission::where('name', '=', 'historico.index')->get()->first();               
+                $historico_export = Permission::where('name', '=', 'historico.export')->get()->first();
         
         
                 // salva os relacionamentos entre perfil e suas permissões
@@ -97,6 +224,126 @@ class AclSeeder extends Seeder
                 $administrador_perfil->permissions()->attach($log_index);
                 $administrador_perfil->permissions()->attach($log_show);
                 $administrador_perfil->permissions()->attach($log_export);
+                //
+                # distritos
+                $administrador_perfil->permissions()->attach($distrito_index);
+                $administrador_perfil->permissions()->attach($distrito_create);
+                $administrador_perfil->permissions()->attach($distrito_edit);
+                $administrador_perfil->permissions()->attach($distrito_delete);
+                $administrador_perfil->permissions()->attach($distrito_show);
+                $administrador_perfil->permissions()->attach($distrito_export);
+                # unidades
+                $administrador_perfil->permissions()->attach($unidade_index);
+                $administrador_perfil->permissions()->attach($unidade_create);
+                $administrador_perfil->permissions()->attach($unidade_edit);
+                $administrador_perfil->permissions()->attach($unidade_delete);
+                $administrador_perfil->permissions()->attach($unidade_show);
+                $administrador_perfil->permissions()->attach($unidade_export);
+                #unidades e profissionais
+                $administrador_perfil->permissions()->attach($unidade_profissional_create);
+                $administrador_perfil->permissions()->attach($unidade_profissional_delete);
+                # cargos
+                $administrador_perfil->permissions()->attach($cargo_index);
+                $administrador_perfil->permissions()->attach($cargo_create);
+                $administrador_perfil->permissions()->attach($cargo_edit);
+                $administrador_perfil->permissions()->attach($cargo_delete);
+                $administrador_perfil->permissions()->attach($cargo_show);
+                $administrador_perfil->permissions()->attach($cargo_export);
+                # cargas horárias
+                $administrador_perfil->permissions()->attach($cargahoraria_index);
+                $administrador_perfil->permissions()->attach($cargahoraria_create);
+                $administrador_perfil->permissions()->attach($cargahoraria_edit);
+                $administrador_perfil->permissions()->attach($cargahoraria_delete);
+                $administrador_perfil->permissions()->attach($cargahoraria_show);
+                $administrador_perfil->permissions()->attach($cargahoraria_export);
+                # vínculos
+                $administrador_perfil->permissions()->attach($vinculo_index);
+                $administrador_perfil->permissions()->attach($vinculo_create);
+                $administrador_perfil->permissions()->attach($vinculo_edit);
+                $administrador_perfil->permissions()->attach($vinculo_delete);
+                $administrador_perfil->permissions()->attach($vinculo_show);
+                $administrador_perfil->permissions()->attach($vinculo_export);
+                # tipos vínculos
+                $administrador_perfil->permissions()->attach($vinculotipo_index);
+                $administrador_perfil->permissions()->attach($vinculotipo_create);
+                $administrador_perfil->permissions()->attach($vinculotipo_edit);
+                $administrador_perfil->permissions()->attach($vinculotipo_delete);
+                $administrador_perfil->permissions()->attach($vinculotipo_show);
+                $administrador_perfil->permissions()->attach($vinculotipo_export);
+                # tipos licenças
+                $administrador_perfil->permissions()->attach($licencatipo_index);
+                $administrador_perfil->permissions()->attach($licencatipo_create);
+                $administrador_perfil->permissions()->attach($licencatipo_edit);
+                $administrador_perfil->permissions()->attach($licencatipo_delete);
+                $administrador_perfil->permissions()->attach($licencatipo_show);
+                $administrador_perfil->permissions()->attach($licencatipo_export);
+                # tipos férias
+                $administrador_perfil->permissions()->attach($feriastipo_index);
+                $administrador_perfil->permissions()->attach($feriastipo_create);
+                $administrador_perfil->permissions()->attach($feriastipo_edit);
+                $administrador_perfil->permissions()->attach($feriastipo_delete);
+                $administrador_perfil->permissions()->attach($feriastipo_show);
+                $administrador_perfil->permissions()->attach($feriastipo_export);
+                # tipos de capacitações
+                $administrador_perfil->permissions()->attach($capacitacaotipo_index);
+                $administrador_perfil->permissions()->attach($capacitacaotipo_create);
+                $administrador_perfil->permissions()->attach($capacitacaotipo_edit);
+                $administrador_perfil->permissions()->attach($capacitacaotipo_delete);
+                $administrador_perfil->permissions()->attach($capacitacaotipo_show);
+                $administrador_perfil->permissions()->attach($capacitacaotipo_export);
+                # Profissionais
+                $administrador_perfil->permissions()->attach($profissional_index);
+                $administrador_perfil->permissions()->attach($profissional_create);
+                $administrador_perfil->permissions()->attach($profissional_edit);
+                $administrador_perfil->permissions()->attach($profissional_delete);
+                $administrador_perfil->permissions()->attach($profissional_show);
+                $administrador_perfil->permissions()->attach($profissional_export);
+                #profissionais LIXEIRA
+                $administrador_perfil->permissions()->attach($profissional_trash_index);
+                $administrador_perfil->permissions()->attach($profissional_trash_restore);
+                # Profissionais->férias
+                $administrador_perfil->permissions()->attach($profissional_ferias_index);
+                $administrador_perfil->permissions()->attach($profissional_ferias_create);
+                $administrador_perfil->permissions()->attach($profissional_ferias_edit);
+                $administrador_perfil->permissions()->attach($profissional_ferias_delete);
+                $administrador_perfil->permissions()->attach($profissional_ferias_show);
+                $administrador_perfil->permissions()->attach($profissional_ferias_export);
+                # Profissionais->licenças
+                $administrador_perfil->permissions()->attach($profissional_licenca_index);
+                $administrador_perfil->permissions()->attach($profissional_licenca_create);
+                $administrador_perfil->permissions()->attach($profissional_licenca_edit);
+                $administrador_perfil->permissions()->attach($profissional_licenca_delete);
+                $administrador_perfil->permissions()->attach($profissional_licenca_show);
+                $administrador_perfil->permissions()->attach($profissional_licenca_export);
+                # Profissionais->capacitações
+                $administrador_perfil->permissions()->attach($profissional_capacitacao_create);
+                $administrador_perfil->permissions()->attach($profissional_capacitacao_delete);
+                # Orgão Emissor
+                $administrador_perfil->permissions()->attach($orgaoemissor_index);
+                $administrador_perfil->permissions()->attach($orgaoemissor_create);
+                $administrador_perfil->permissions()->attach($orgaoemissor_edit);
+                $administrador_perfil->permissions()->attach($orgaoemissor_delete);
+                $administrador_perfil->permissions()->attach($orgaoemissor_show);
+                $administrador_perfil->permissions()->attach($orgaoemissor_export);
+                # Equipes (e vagas)
+                $administrador_perfil->permissions()->attach($equipe_index);
+                $administrador_perfil->permissions()->attach($equipe_create);
+                $administrador_perfil->permissions()->attach($equipe_edit);
+                $administrador_perfil->permissions()->attach($equipe_delete);
+                $administrador_perfil->permissions()->attach($equipe_show);
+                $administrador_perfil->permissions()->attach($equipe_export);
+                # Equipes (e vagas) LIXEIRA
+                $administrador_perfil->permissions()->attach($equipe_trash_index);
+                $administrador_perfil->permissions()->attach($equipe_trash_restore);
+                # gestão de equipes
+                $administrador_perfil->permissions()->attach($equipegestao_index);
+                $administrador_perfil->permissions()->attach($equipegestao_show);
+                $administrador_perfil->permissions()->attach($equipegestao_export);
+                $administrador_perfil->permissions()->attach($equipegestao_vincular);
+                $administrador_perfil->permissions()->attach($equipegestao_desvincular);
+                # historicos
+                $administrador_perfil->permissions()->attach($historico_index);
+                $administrador_perfil->permissions()->attach($historico_export);
 
         
         
@@ -109,6 +356,116 @@ class AclSeeder extends Seeder
                 $gerente_perfil->permissions()->attach($log_show);
                 $gerente_perfil->permissions()->attach($log_show);
                 $gerente_perfil->permissions()->attach($log_export);
+                // 
+                # distritos
+                $gerente_perfil->permissions()->attach($distrito_index);
+                $gerente_perfil->permissions()->attach($distrito_create);
+                $gerente_perfil->permissions()->attach($distrito_edit);
+                $gerente_perfil->permissions()->attach($distrito_show);
+                $gerente_perfil->permissions()->attach($distrito_export);
+                # unidades
+                $gerente_perfil->permissions()->attach($unidade_index);
+                $gerente_perfil->permissions()->attach($unidade_create);
+                $gerente_perfil->permissions()->attach($unidade_edit);
+                $gerente_perfil->permissions()->attach($unidade_show);
+                $gerente_perfil->permissions()->attach($unidade_export);
+                #unidades e profissionais
+                $gerente_perfil->permissions()->attach($unidade_profissional_create);
+                $gerente_perfil->permissions()->attach($unidade_profissional_delete);
+                # cargos
+                $gerente_perfil->permissions()->attach($cargo_index);
+                $gerente_perfil->permissions()->attach($cargo_create);
+                $gerente_perfil->permissions()->attach($cargo_edit);
+                $gerente_perfil->permissions()->attach($cargo_show);
+                $gerente_perfil->permissions()->attach($cargo_export);
+                # cargas horárias
+                $gerente_perfil->permissions()->attach($cargahoraria_index);
+                $gerente_perfil->permissions()->attach($cargahoraria_create);
+                $gerente_perfil->permissions()->attach($cargahoraria_edit);
+                $gerente_perfil->permissions()->attach($cargahoraria_show);
+                $gerente_perfil->permissions()->attach($cargahoraria_export);
+                # vínculos
+                $gerente_perfil->permissions()->attach($vinculo_index);
+                $gerente_perfil->permissions()->attach($vinculo_create);
+                $gerente_perfil->permissions()->attach($vinculo_edit);
+                $gerente_perfil->permissions()->attach($vinculo_show);
+                $gerente_perfil->permissions()->attach($vinculo_export);
+                # tipos vínculos
+                $gerente_perfil->permissions()->attach($vinculotipo_index);
+                $gerente_perfil->permissions()->attach($vinculotipo_create);
+                $gerente_perfil->permissions()->attach($vinculotipo_edit);
+                $gerente_perfil->permissions()->attach($vinculotipo_show);
+                $gerente_perfil->permissions()->attach($vinculotipo_export);
+                # tipos licença
+                $gerente_perfil->permissions()->attach($licencatipo_index);
+                $gerente_perfil->permissions()->attach($licencatipo_create);
+                $gerente_perfil->permissions()->attach($licencatipo_edit);
+                $gerente_perfil->permissions()->attach($licencatipo_show);
+                $gerente_perfil->permissions()->attach($licencatipo_export);
+                # tipos férias
+                $gerente_perfil->permissions()->attach($feriastipo_index);
+                $gerente_perfil->permissions()->attach($feriastipo_create);
+                $gerente_perfil->permissions()->attach($feriastipo_edit);
+                $gerente_perfil->permissions()->attach($feriastipo_show);
+                $gerente_perfil->permissions()->attach($feriastipo_export);
+                # tipos de capacitação
+                $gerente_perfil->permissions()->attach($capacitacaotipo_index);
+                $gerente_perfil->permissions()->attach($capacitacaotipo_create);
+                $gerente_perfil->permissions()->attach($capacitacaotipo_edit);
+                $gerente_perfil->permissions()->attach($capacitacaotipo_show);
+                $gerente_perfil->permissions()->attach($capacitacaotipo_export);
+                # Profissionais -- pode enviar para a lixeira
+                $gerente_perfil->permissions()->attach($profissional_index);
+                $gerente_perfil->permissions()->attach($profissional_create);
+                $gerente_perfil->permissions()->attach($profissional_edit);
+                $gerente_perfil->permissions()->attach($profissional_delete);
+                $gerente_perfil->permissions()->attach($profissional_show);
+                $gerente_perfil->permissions()->attach($profissional_export);
+                #profissionais LIXEIRA
+                $gerente_perfil->permissions()->attach($profissional_trash_index);
+                $gerente_perfil->permissions()->attach($profissional_trash_restore);
+                # Profissionais->férias
+                $gerente_perfil->permissions()->attach($profissional_ferias_index);
+                $gerente_perfil->permissions()->attach($profissional_ferias_create);
+                $gerente_perfil->permissions()->attach($profissional_ferias_edit);
+                $gerente_perfil->permissions()->attach($profissional_ferias_delete);
+                $gerente_perfil->permissions()->attach($profissional_ferias_show);
+                $gerente_perfil->permissions()->attach($profissional_ferias_export);
+                # Profissionais->licenças
+                $gerente_perfil->permissions()->attach($profissional_licenca_index);
+                $gerente_perfil->permissions()->attach($profissional_licenca_create);
+                $gerente_perfil->permissions()->attach($profissional_licenca_edit);
+                $gerente_perfil->permissions()->attach($profissional_licenca_delete);
+                $gerente_perfil->permissions()->attach($profissional_licenca_show);
+                $gerente_perfil->permissions()->attach($profissional_licenca_export);
+                # Profissionais->capacitações
+                $gerente_perfil->permissions()->attach($profissional_capacitacao_create);
+                $gerente_perfil->permissions()->attach($profissional_capacitacao_delete);
+                # Orgão Emissor
+                $gerente_perfil->permissions()->attach($orgaoemissor_index);
+                $gerente_perfil->permissions()->attach($orgaoemissor_create);
+                $gerente_perfil->permissions()->attach($orgaoemissor_edit);
+                $gerente_perfil->permissions()->attach($orgaoemissor_show);
+                $gerente_perfil->permissions()->attach($orgaoemissor_export);
+                # Equipes (e vagas) -- pode enviar para a lixeira
+                $gerente_perfil->permissions()->attach($equipe_index);
+                $gerente_perfil->permissions()->attach($equipe_create);
+                $gerente_perfil->permissions()->attach($equipe_edit);
+                $gerente_perfil->permissions()->attach($equipe_delete);
+                $gerente_perfil->permissions()->attach($equipe_show);
+                $gerente_perfil->permissions()->attach($equipe_export);
+                # Equipes (e vagas) LIXEIRA
+                $gerente_perfil->permissions()->attach($equipe_trash_index);
+                $gerente_perfil->permissions()->attach($equipe_trash_restore);
+                #gestão de equipes
+                $gerente_perfil->permissions()->attach($equipegestao_index);
+                $gerente_perfil->permissions()->attach($equipegestao_show);
+                $gerente_perfil->permissions()->attach($equipegestao_export);
+                $gerente_perfil->permissions()->attach($equipegestao_vincular);
+                $gerente_perfil->permissions()->attach($equipegestao_desvincular);
+                # Historico
+                $gerente_perfil->permissions()->attach($historico_index);
+                $gerente_perfil->permissions()->attach($historico_export);
 
         
         
@@ -117,12 +474,139 @@ class AclSeeder extends Seeder
                 $operador_perfil->permissions()->attach($user_index);
                 $operador_perfil->permissions()->attach($user_show);
                 $operador_perfil->permissions()->attach($user_export);
+                //
+                # distritos
+                $operador_perfil->permissions()->attach($distrito_index);
+                $operador_perfil->permissions()->attach($distrito_show);
+                $operador_perfil->permissions()->attach($distrito_export);
+                # unidades
+                $operador_perfil->permissions()->attach($unidade_index);
+                $operador_perfil->permissions()->attach($unidade_show);
+                $operador_perfil->permissions()->attach($unidade_export);
+                $operador_perfil->permissions()->attach($unidade_edit); // operador pode criar e editar
+                $operador_perfil->permissions()->attach($unidade_create);
+                # unidade e profissionais
+                $operador_perfil->permissions()->attach($unidade_profissional_create);
+                # cargos
+                $operador_perfil->permissions()->attach($cargo_index);
+                $operador_perfil->permissions()->attach($cargo_show);
+                $operador_perfil->permissions()->attach($cargo_export);
+                # cargas horárias
+                $operador_perfil->permissions()->attach($cargahoraria_index);
+                $operador_perfil->permissions()->attach($cargahoraria_show);
+                $operador_perfil->permissions()->attach($cargahoraria_export);
+                # vínculos
+                $operador_perfil->permissions()->attach($vinculo_index);
+                $operador_perfil->permissions()->attach($vinculo_show);
+                $operador_perfil->permissions()->attach($vinculo_export);
+                # tipos de vínculos
+                $operador_perfil->permissions()->attach($vinculotipo_index);
+                $operador_perfil->permissions()->attach($vinculotipo_show);
+                $operador_perfil->permissions()->attach($vinculotipo_export);
+                # tipos de licença
+                $operador_perfil->permissions()->attach($licencatipo_index);
+                $operador_perfil->permissions()->attach($licencatipo_show);
+                $operador_perfil->permissions()->attach($licencatipo_export);
+                # tipos de férias
+                $operador_perfil->permissions()->attach($feriastipo_index);
+                $operador_perfil->permissions()->attach($feriastipo_show);
+                $operador_perfil->permissions()->attach($feriastipo_export);
+                # tipos de capacitação
+                $operador_perfil->permissions()->attach($capacitacaotipo_index);
+                $operador_perfil->permissions()->attach($capacitacaotipo_show);
+                $operador_perfil->permissions()->attach($capacitacaotipo_export);
+                # profissionais, o operador pode cadastrar e alterar os dados
+                $operador_perfil->permissions()->attach($profissional_index);
+                $operador_perfil->permissions()->attach($profissional_edit);
+                $operador_perfil->permissions()->attach($profissional_create);
+                $operador_perfil->permissions()->attach($profissional_show);
+                $operador_perfil->permissions()->attach($profissional_export);
+                #profissionais LIXEIRA
+                $operador_perfil->permissions()->attach($profissional_trash_index);
+                # profissionais->férias
+                $operador_perfil->permissions()->attach($profissional_ferias_index);
+                $operador_perfil->permissions()->attach($profissional_ferias_edit);
+                $operador_perfil->permissions()->attach($profissional_ferias_create);
+                $operador_perfil->permissions()->attach($profissional_ferias_show);
+                $operador_perfil->permissions()->attach($profissional_ferias_export);
+                # profissionais->licenças
+                $operador_perfil->permissions()->attach($profissional_licenca_index);
+                $operador_perfil->permissions()->attach($profissional_licenca_edit);
+                $operador_perfil->permissions()->attach($profissional_licenca_create);
+                $operador_perfil->permissions()->attach($profissional_licenca_show);
+                $operador_perfil->permissions()->attach($profissional_licenca_export);
+                # profissionais->capacitações
+                $operador_perfil->permissions()->attach($profissional_capacitacao_create);
+                # Orgão Emissor
+                $operador_perfil->permissions()->attach($orgaoemissor_index);
+                $operador_perfil->permissions()->attach($orgaoemissor_edit);
+                $operador_perfil->permissions()->attach($orgaoemissor_create);
+                $operador_perfil->permissions()->attach($orgaoemissor_show);
+                $operador_perfil->permissions()->attach($orgaoemissor_export);
+                # Equipe (e vagas)
+                $operador_perfil->permissions()->attach($equipe_index);
+                $operador_perfil->permissions()->attach($equipe_edit);
+                $operador_perfil->permissions()->attach($equipe_create);
+                $operador_perfil->permissions()->attach($equipe_show);
+                $operador_perfil->permissions()->attach($equipe_export);
+                # Equipe (e vagas) LIXEIRA
+                $operador_perfil->permissions()->attach($equipe_trash_index);
+                # gestão de equipes
+                $operador_perfil->permissions()->attach($equipegestao_index);
+                $operador_perfil->permissions()->attach($equipegestao_show);
+                $operador_perfil->permissions()->attach($equipegestao_export);
+                $operador_perfil->permissions()->attach($equipegestao_vincular);
+                $operador_perfil->permissions()->attach($equipegestao_desvincular);
         
         
                 // leitura é um tipo de operador que só pode ler
                 // os dados na tela
                 $leitor_perfil->permissions()->attach($user_index);
                 $leitor_perfil->permissions()->attach($user_show);
+                # distritos
+                $leitor_perfil->permissions()->attach($distrito_index);
+                $leitor_perfil->permissions()->attach($distrito_show);
+                # unidades
+                $leitor_perfil->permissions()->attach($unidade_index);
+                $leitor_perfil->permissions()->attach($unidade_show);
+                # cargos
+                $leitor_perfil->permissions()->attach($cargo_index);
+                $leitor_perfil->permissions()->attach($cargo_show);
+                # cargas horárias
+                $leitor_perfil->permissions()->attach($cargahoraria_index);
+                $leitor_perfil->permissions()->attach($cargahoraria_show);
+                # vínculos
+                $leitor_perfil->permissions()->attach($vinculo_index);
+                $leitor_perfil->permissions()->attach($vinculo_show);
+                # vínculos tipos
+                $leitor_perfil->permissions()->attach($vinculotipo_index);
+                $leitor_perfil->permissions()->attach($vinculotipo_show);
+                # licença tipo
+                $leitor_perfil->permissions()->attach($licencatipo_index);
+                $leitor_perfil->permissions()->attach($licencatipo_show);
+                # férias tipo
+                $leitor_perfil->permissions()->attach($feriastipo_index);
+                $leitor_perfil->permissions()->attach($feriastipo_show);
+                # tipos de capacitações
+                $leitor_perfil->permissions()->attach($capacitacaotipo_index);
+                $leitor_perfil->permissions()->attach($capacitacaotipo_show);
+                # profissionais
+                $leitor_perfil->permissions()->attach($profissional_index);
+                $leitor_perfil->permissions()->attach($profissional_show);
+                # podem ver as férias e licencas
+                $leitor_perfil->permissions()->attach($profissional_ferias_index);
+                $leitor_perfil->permissions()->attach($profissional_ferias_show);
+                $leitor_perfil->permissions()->attach($profissional_licenca_index);
+                $leitor_perfil->permissions()->attach($profissional_licenca_show);
+                # orgão emissor
+                $leitor_perfil->permissions()->attach($orgaoemissor_index);
+                $leitor_perfil->permissions()->attach($orgaoemissor_show);
+                # equipes (e vagas)
+                $leitor_perfil->permissions()->attach($equipe_index);
+                $leitor_perfil->permissions()->attach($equipe_show);
+                # gestão de equipes
+                $leitor_perfil->permissions()->attach($equipegestao_index);
+                $leitor_perfil->permissions()->attach($equipegestao_show);
         
         
     }
