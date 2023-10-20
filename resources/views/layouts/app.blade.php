@@ -68,6 +68,13 @@
                                     </a>
                                 </li>
                                 @endcan
+                                @can('licenca.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('licencas.index') }}">
+                                        <x-icon icon='file-medical' /> Licenças dos Profissionais
+                                    </a>
+                                </li>
+                                @endcan
                             </ul>
 
 

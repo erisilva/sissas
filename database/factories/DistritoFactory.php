@@ -17,7 +17,7 @@ class DistritoFactory extends Factory
     public function definition(): array
     {
         return [
-            'nome' => $this->faker->word,
+            'nome' => $this->faker->sentence(3),
         ];
     }
 }

@@ -22,7 +22,7 @@ class EquipeFactory extends Factory
             'cnes' => $this->faker->word,
             'ine' => $this->faker->word,
             'minima' => $this->faker->randomElement(["s","n"]),
-            'unidade_id' => \App\Models\Unidade::factory(),
+            'unidade_id' => \App\Models\Unidade::inRandomOrder()->first()->id,
         ];
     }
 }

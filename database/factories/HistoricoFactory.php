@@ -19,11 +19,11 @@ class HistoricoFactory extends Factory
         return [
             'created_at' => $this->faker->date(),
             'observacao' => $this->faker->word,
-            'user_id' => \App\Models\User::factory(),
-            'equipe_id' => \App\Models\Equipe::factory(),
-            'profissional_id' => \App\Models\Profissional::factory(),
-            'unidade_id' => \App\Models\Unidade::factory(),
-            'historico_tipo_id' => \App\Models\HistoricoTipo::factory(),
+            'user_id' => \App\Models\User::inRandomOrder()->first()->id,
+            'equipe_id' => \App\Models\Equipe::inRandomOrder()->first()->id,
+            'profissional_id' => \App\Models\Profissional::inRandomOrder()->first()->id,
+            'unidade_id' => \App\Models\Unidade::inRandomOrder()->first()->id,
+            'historico_tipo_id' => \App\Models\HistoricoTipo::inRandomOrder()->first()->id,
         ];
     }
 }

@@ -17,7 +17,7 @@ class HistoricoTipoFactory extends Factory
     public function definition(): array
     {
         return [
-            'descricao' => $this->faker->word,
+            'descricao' => $this->faker->word(3),
         ];
     }
 }

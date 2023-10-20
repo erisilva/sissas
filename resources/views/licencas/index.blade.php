@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
 @endsection
 
-@section('title', 'Férias' )
+@section('title', 'Licenças' )
 
 @section('content')
 <div class="container-fluid">
@@ -12,7 +12,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ route('profissionals.index') }}">Profissionais</a></li>
       <li class="breadcrumb-item active" aria-current="page">
-        <a href="{{ route('ferias.index') }}">Férias</a>
+        <a href="{{ route('licencas.index') }}">Licenças</a>
       </li>
     </ol>
   </nav>
@@ -21,7 +21,7 @@
 
   <x-btn-group label='MenuPrincipal' class="py-1">
 
-    <a class="btn btn-primary" href="{{ route('ferias.create') }}" role="button"><x-icon icon='file-earmark'/> {{ __('New') }}</a>  
+    <a class="btn btn-primary" href="{{ route('licencas.create') }}" role="button"><x-icon icon='file-earmark'/> {{ __('New') }}</a>  
      
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalFilter"><x-icon icon='funnel'/> {{ __('Filters') }}</button>
 
@@ -29,13 +29,13 @@
 
       {{-- Não precisa passar pra rota as variáveis do request, pois a filtragem será feita pelas variáveis da session --}}
       <li>
-        <a class="dropdown-item" href="{{route('ferias.export.xls')}}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS' }}</a>
+        <a class="dropdown-item" href="{{route('licencas.export.xls')}}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS' }}</a>
       </li>
       <li>
-        <a class="dropdown-item" href="{{route('ferias.export.csv')}}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV' }}</a>
+        <a class="dropdown-item" href="{{route('licencas.export.csv')}}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV' }}</a>
       </li>
       <li>
-        <a class="dropdown-item" href="{{route('ferias.export.pdf')}}"><x-icon icon='file-pdf-fill' /> {{ __('Export') . ' PDF' }}</a>
+        <a class="dropdown-item" href="{{route('licencas.export.pdf')}}"><x-icon icon='file-pdf-fill' /> {{ __('Export') . ' PDF' }}</a>
       </li>
     
     </x-dropdown-menu>  
@@ -56,32 +56,32 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($ferias as $ferias_index)
+            @foreach($licencas as $licenca_index)
             <tr>
               <td>
-                {{$ferias_index->profissional->nome}}
+                {{$licenca_index->profissional->nome}}
               </td>
               <td>
-                {{$ferias_index->profissional->matricula}}
+                {{$licenca_index->profissional->matricula}}
               </td>
               <td>
-                {{$ferias_index->profissional->cargo->nome}}
+                {{$licenca_index->profissional->cargo->nome}}
               </td>
               <td>
-                {{$ferias_index->feriasTipo->nome}}
+                {{$licenca_index->licencaTipo->nome}}
               </td>
               <td>
-                {{ isset($ferias_index->inicio) ?  $ferias_index->inicio->format('d/m/Y') : '-' }}
+                {{ isset($licenca_index->inicio) ?  $licenca_index->inicio->format('d/m/Y') : '-' }}
               </td>
               <td>
-                {{ isset($ferias_index->fim) ?  $ferias_index->fim->format('d/m/Y') : '-' }}
+                {{ isset($licenca_index->fim) ?  $licenca_index->fim->format('d/m/Y') : '-' }}
               </td> 
               <td>
                 <x-btn-group label='Opções'>
 
-                  <a href="{{route('ferias.edit', $ferias_index->id)}}" class="btn btn-primary btn-sm" role="button"><x-icon icon='pencil-square'/></a>
+                  <a href="{{route('licencas.edit', $licenca_index->id)}}" class="btn btn-primary btn-sm" role="button"><x-icon icon='pencil-square'/></a>
 
-                  <a href="{{route('ferias.show', $ferias_index)}}" class="btn btn-info btn-sm" role="button"><x-icon icon='eye'/></a>
+                  <a href="{{route('licencas.show', $licenca_index)}}" class="btn btn-info btn-sm" role="button"><x-icon icon='eye'/></a>
 
                 </x-btn-group>
               </td>
@@ -91,29 +91,29 @@
     </table>
   </div>
   
-  <x-pagination :query="$ferias" />
+  <x-pagination :query="$licencas" />
 
 </div>
 
 <x-modal-filter :perpages="$perpages" icon='funnel' title='Filtros'>
   <div class="container">
-    <form method="GET" action="{{ route('ferias.index') }}">
+    <form method="GET" action="{{ route('licencas.index') }}">
       <div class="row g-3">
         
         <div class="col-12">
           <label for="profissional" class="form-label">Profissional</label>
-          <input type="text" class="form-control" id="profissional" name="profissional" value="{{ session()->get('ferias_profissional') }}">
+          <input type="text" class="form-control" id="profissional" name="profissional" value="{{ session()->get('licencas_profissional') }}">
         </div>
 
 
         <div class="col-md-6">
           <label for="data_inicio" class="form-label">Data inicial</label>
-          <input type="text" class="form-control" id="data_inicio" name="data_inicio" value="{{ session()->get('ferias_data_inicio') }}" autocomplete="off">
+          <input type="text" class="form-control" id="data_inicio" name="data_inicio" value="{{ session()->get('licenca_data_inicio') }}" autocomplete="off">
         </div>
 
         <div class="col-md-6">
           <label for="data_fim" class="form-label">Data final</label>
-          <input type="text" class="form-control" id="data_fim" name="data_fim" value="{{ session()->get('ferias_data_fim') }}" autocomplete="off">
+          <input type="text" class="form-control" id="data_fim" name="data_fim" value="{{ session()->get('licenca_data_fim') }}" autocomplete="off">
         </div>
 
         <div class="col-12">
@@ -123,11 +123,11 @@
         </div>  
 
         <div class="col-md-12">
-          <label for="ferias_tipo_id" class="form-label">Tipo</label>
-          <select class="form-select" id="ferias_tipo_id" name="ferias_tipo_id">
+          <label for="licencas_tipo_id" class="form-label">Tipo</label>
+          <select class="form-select" id="licencas_tipo_id" name="licencas_tipo_id">
             <option value="">Selecione...</option>
-            @foreach($feriastipos as $feriastipo)
-            <option value="{{ $feriastipo->id }}" @selected(session()->get('ferias_ferias_tipo_id') == $feriastipo->id) >{{ $feriastipo->nome }}</option>
+            @foreach($licencatipos as $licencatipo)
+            <option value="{{ $licencatipo->id }}" @selected(session()->get('licencas_licencas_tipo_id') == $licencatipo->id) >{{ $licencatipo->nome }}</option>
             @endforeach
           </select>
         </div>
@@ -136,7 +136,7 @@
           <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
       
           {{-- Reset the Filter --}}
-          <a href="{{ route('ferias.index', ['profissional' => '', 'data_inicio' => '', 'data_fim' => '', 'ferias_tipo_id' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
+          <a href="{{ route('licencas.index', ['profissional' => '', 'data_inicio' => '', 'data_fim' => '', 'licencas_tipo_id' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
         </div>
       
       </div>  
@@ -156,7 +156,7 @@ $(document).ready(function(){
     $('#perpage').on('change', function() {
         perpage = $(this).find(":selected").val(); 
         
-        window.open("{{ route('ferias.index') }}" + "?perpage=" + perpage,"_self");
+        window.open("{{ route('licencas.index') }}" + "?perpage=" + perpage,"_self");
     });
 
 

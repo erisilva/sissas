@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Férias - ' . __('Show'))
+@section('title', 'Licenças - ' . __('Show'))
 
 @section('content')
 <div class="container-fluid">
@@ -12,8 +12,8 @@
         </a>
       </li>
       <li class="breadcrumb-item">
-        <a href="{{ route('ferias.index') }}">
-          Férias
+        <a href="{{ route('licencas.index') }}">
+          Licenças
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
@@ -28,37 +28,37 @@
     <div class="row g-3">
       <div class="col-md-6">
         <label for="profissional_nome" class="form-label">Profissional</label>
-        <input type="text" class="form-control" name="profissional_nome" value="{{ $ferias->profissional->nome }}" readonly disabled>
+        <input type="text" class="form-control" name="profissional_nome" value="{{ $licenca->profissional->nome }}" readonly disabled>
       </div>
       <div class="col-md-4">
         <label for="cargo_descricao" class="form-label">Cargo</label>
-        <input type="text" class="form-control" name="cargo_descricao" value="{{ $ferias->profissional->cargo->nome }}" readonly disabled>
+        <input type="text" class="form-control" name="cargo_descricao" value="{{ $licenca->profissional->cargo->nome }}" readonly disabled>
       </div>
       <div class="col-md-2">
         <label for="matricula_profissional" class="form-label">Matrícula</label>
-        <input type="text" class="form-control" name="matricula_profissional" value="{{ $ferias->profissional->matricula }}" readonly disabled>
+        <input type="text" class="form-control" name="matricula_profissional" value="{{ $licenca->profissional->matricula }}" readonly disabled>
       </div>
       <div class="col-md-6">
-        <label for="feriastipo" class="form-label">Tipo de Férias</label>
-        <input type="text" class="form-control" name="feriastipo" value="{{ $ferias->feriastipo->nome }}" readonly disabled>
+        <label for="licencatipo" class="form-label">Tipo de Férias</label>
+        <input type="text" class="form-control" name="licencatipo" value="{{ $licenca->licencatipo->nome }}" readonly disabled>
       </div>
       <div class="col-md-3">
         <label for="inicio" class="form-label">Data Inicial</label>
-        <input type="text" class="form-control" name="inicio" value="{{ $ferias->inicio->format('d/m/Y') }}" readonly disabled>
+        <input type="text" class="form-control" name="inicio" value="{{ $licenca->inicio->format('d/m/Y') }}" readonly disabled>
       </div>
       <div class="col-md-3">
         <label for="fim" class="form-label">Data Final</label>
-        <input type="text" class="form-control" name="fim" value="{{ $ferias->fim->format('d/m/Y') }}" readonly disabled>
+        <input type="text" class="form-control" name="fim" value="{{ $licenca->fim->format('d/m/Y') }}" readonly disabled>
       </div>
       <div class="col-12">
-        <label for="justificativa" class="form-label">Justificativa</label>
-        <input type="text" class="form-control" name="justificativa" value="{{ $ferias->justificativa }}" readonly disabled>
+        <label for="observacao" class="form-label">Observações</label>
+        <input type="text" class="form-control" name="observacao" value="{{ $licenca->observacao }}" readonly disabled>
       </div>
     </div>
   </form>
 </div>
 
-@can('ferias.delete')
+@can('licenca.delete')
 <div class="container py-2">
   <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalLixeira">
     <x-icon icon='trash' /> {{ __('Delete this record?') }}
@@ -67,11 +67,11 @@
 @endcan
 
 
-<x-btn-back route="ferias.index" />
+<x-btn-back route="licencas.index" />
 
-@can('ferias.delete')
+@can('licenca.delete')
 <x-modal-trash class="modal-sm">
-  <form method="post" action="{{route('ferias.destroy', $ferias->id)}}">
+  <form method="post" action="{{route('licencas.destroy', $licenca->id)}}">
     @csrf
     @method('DELETE')
     <button type="submit" class="btn btn-danger">

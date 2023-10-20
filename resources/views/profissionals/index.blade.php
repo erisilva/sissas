@@ -24,6 +24,14 @@
      
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalFilter"><x-icon icon='funnel'/> {{ __('Filters') }}</button>
 
+    @can('ferias.index')
+    <a class="btn btn-info" href="{{ route('ferias.index') }}" role="button"><x-icon icon='airplane'/> Férias</a>  
+    @endcan
+
+    @can('licenca.index')
+    <a class="btn btn-info" href="{{ route('licencas.index') }}" role="button"><x-icon icon='file-medical'/> Licenças</a>  
+    @endcan
+
     @can('profissional.export')
     <x-dropdown-menu title='Reports' icon='printer'>
 

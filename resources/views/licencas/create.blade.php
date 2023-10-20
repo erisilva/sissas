@@ -23,7 +23,7 @@
 </style>
 @endsection
 
-@section('title', 'Férias - ' . __('New'))
+@section('title', 'Licenças - ' . __('New'))
 
 @section('content')
 <div class="container-fluid">
@@ -35,8 +35,8 @@
         </a>
       </li>
       <li class="breadcrumb-item">
-        <a href="{{ route('ferias.index') }}">
-          Férias
+        <a href="{{ route('licencas.index') }}">
+          Licenças
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
@@ -47,10 +47,9 @@
 </div>
 
 <div class="container">
-  <form method="POST" action="{{ route('ferias.store') }}">
+  <form method="POST" action="{{ route('licencas.store') }}">
     @csrf
     <div class="row g-3">
-
       <div class="col-md-6">
         <label for="profissional_nome" class="form-label">Profissional <strong  class="text-danger">(*)</strong></label>
         <input type="text" class="form-control @error('profissional_id') is-invalid @enderror" name="profissional_nome" id="profissional_nome" value="{{ old('profissional_nome') ?? '' }}"  autocomplete="off">
@@ -58,36 +57,30 @@
           <div class="text-danger"><small>{{ $message }}</small></div>
         @enderror      
       </div>
-
       <div class="col-md-4">
         <label for="cargo_descricao" class="form-label">Cargo <strong  class="text-danger">(*)</strong></label>
         <input type="text" class="form-control" name="cargo_descricao" id="cargo_descricao" value="{{ old('cargo_descricao') ?? '' }}" readonly tabIndex="-1" placeholder="">
       </div>
-
       <div class="col-md-2">
         <label for="matricula_profissional" class="form-label">Matrícula <strong  class="text-danger">(*)</strong></label>
         <input type="text" class="form-control" name="matricula_profissional" id="matricula_profissional" value="{{ old('matricula_profissional') ?? '' }}" readonly tabIndex="-1" placeholder="">
-      </div>
-      
+      </div>      
       <input type="hidden" id="profissional_id" name="profissional_id" value="{{ old('profissional_id') ?? '' }}">
-
-      <input type="hidden" id="cargo_profissional_id" name="cargo_profissional_id" value="{{ old('cargo_profissional_id') ?? '' }}">
-      
+      <input type="hidden" id="cargo_profissional_id" name="cargo_profissional_id" value="{{ old('cargo_profissional_id') ?? '' }}">      
       <div class="col-md-6">        
-        <label for="feriastipo_id" class="form-label">Tipo de Férias <strong  class="text-danger">(*)</strong></label>
-        <select class="form-select" id="feriastipo_id" name="feriastipo_id">
+        <label for="licenca_tipo_id" class="form-label">Tipo de Licença <strong  class="text-danger">(*)</strong></label>
+        <select class="form-select" id="licenca_tipo_id" name="licenca_tipo_id">
           <option value="" selected>Clique ...</option> 
-          @foreach($feriastipos as $feriastipo)
-          <option value="{{ $feriastipo->id }}" @selected(old('feriastipo_id') == $feriastipo->id)>
-            {{$feriastipo->nome}}
+          @foreach($licencatipos as $licencatipo)
+          <option value="{{ $licencatipo->id }}" @selected(old('licenca_tipo_id') == $licencatipo->id)>
+            {{$licencatipo->nome}}
           </option>
           @endforeach
         </select>
-        @error('feriastipo_id')
+        @error('licenca_tipo_id')
           <div class="text-danger"><small>{{ $message }}</small></div>
         @enderror
       </div>
-
       <div class="col-md-3">
         <label for="inicio" class="form-label">Data inicial <strong  class="text-danger">(*)</strong></label>
         <input type="text" class="form-control  @error('inicio') is-invalid @enderror" id="inicio" name="inicio" value="{{ session()->get('inicio') }}" autocomplete="off">
@@ -95,7 +88,6 @@
           <div class="invalid-feedback">{{ $message }}</div>
         @enderror   
       </div>
-
       <div class="col-md-3">
         <label for="fim" class="form-label">Data final <strong  class="text-danger">(*)</strong></label>
         <input type="text" class="form-control  @error('fim') is-invalid @enderror" id="fim" name="fim" value="{{ session()->get('fim') }}" autocomplete="off">
@@ -103,25 +95,18 @@
           <div class="invalid-feedback">{{ $message }}</div>
         @enderror   
       </div>
-
       <div class="col-12">
-        <label for="justificativa" class="form-label">Justificativa</label>
-        <input type="text" class="form-control" name="justificativa" value="{{ old('justificativa') ?? '' }}">     
+        <label for="observacao" class="form-label">Observações</label>
+        <input type="text" class="form-control" name="observacao" value="{{ old('observacao') ?? '' }}">     
       </div>
-
-
-
-
       <div class="col12">
         <button type="submit" class="btn btn-primary"><x-icon icon='plus-circle' /> {{ __('Save') }}</button>  
       </div>
-
-
     </div>     
   </form>
 </div>
 
-<x-btn-back route="ferias.index" />
+<x-btn-back route="licencas.index" />
 @endsection
 
 @section('script-footer')

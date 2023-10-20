@@ -23,6 +23,7 @@ use App\Http\Controllers\OrgaoEmissorController;
 use App\Http\Controllers\VinculoTipoController;
 use App\Http\Controllers\ProfissionalController;
 use App\Http\Controllers\FeriasController;
+use App\Http\Controllers\LicencaController;
 
 
 /*
@@ -212,3 +213,13 @@ Route::get('/ferias/export/xls', [FeriasController::class, 'exportxls'])->name('
 Route::get('/ferias/export/pdf', [FeriasController::class, 'exportpdf'])->name('ferias.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
 Route::resource('/ferias', FeriasController::class)->middleware('auth', 'verified');
+
+# licencas::class
+
+Route::get('/licencas/export/csv', [LicencaController::class, 'exportcsv'])->name('licencas.export.csv')->middleware('auth', 'verified');
+
+Route::get('/licencas/export/xls', [LicencaController::class, 'exportxls'])->name('licencas.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/licencas/export/pdf', [LicencaController::class, 'exportpdf'])->name('licencas.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/licencas', LicencaController::class)->middleware('auth', 'verified');

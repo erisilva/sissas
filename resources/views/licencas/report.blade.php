@@ -54,7 +54,7 @@
 </head>
     <body>
         <header>
-            Férias
+            Licenças
         </header>
 
         <footer>
@@ -89,8 +89,8 @@
 
                 <tr>
                     <td colspan="12">
-                        <label for="feriastipo"><strong>Tipo de Férias</strong></label>
-                        <div id="feriastipo">{{ $row->feriastipo->nome }}</div>
+                        <label for="feriastipo"><strong>Tipo de Licenca</strong></label>
+                        <div id="feriastipo">{{ $row->licencatipo->nome }}</div>
                     </td>
                 </tr>
 
@@ -108,8 +108,8 @@
 
                 <tr>
                     <td colspan="12">
-                        <label for="justificativa"><strong>Justificativa</strong></label>
-                        <div id="justificativa">{{ $row->justificativa }}</div>
+                        <label for="observacao"><strong>Observações</strong></label>
+                        <div id="observacao">{{ $row->observacao }}</div>
                     </td>
 
                 </tr>

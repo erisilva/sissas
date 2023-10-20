@@ -17,7 +17,7 @@ class CapacitacaoTipoFactory extends Factory
     public function definition(): array
     {
         return [
-            'nome' => $this->faker->text(6),
+            'nome' => $this->faker->sentence(4),
         ];
     }
 }
