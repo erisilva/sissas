@@ -61,6 +61,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CapacitacaoSeeder::class);
 
+        $this->call(EquipeTipoSeeder::class);
+
         $this->call(EquipeSeeder::class);
 
         $this->call(EquipeProfissionalSeeder::class);

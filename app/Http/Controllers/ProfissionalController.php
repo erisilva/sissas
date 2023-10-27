@@ -9,6 +9,8 @@ use App\Models\Vinculo;
 use App\Models\VinculoTipo;
 use App\Models\CargaHoraria;
 use App\Models\OrgaoEmissor;
+use App\Models\FeriasTipo;
+use App\Models\LicencaTipo;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -124,6 +126,10 @@ class ProfissionalController extends Controller
             'vinculotipos' => VinculoTipo::orderBy('nome')->get(),
             'cargahorarias' => CargaHoraria::orderBy('nome')->get(),
             'orgaoemissors' => OrgaoEmissor::orderBy('nome')->get(),
+            'feriastipos' => FeriasTipo::orderBy('nome')->get(),
+            'ferias' => $profissional->ferias()->orderBy('id', 'desc')->get(),
+            'licencatipos' => LicencaTipo::orderBy('nome')->get(),
+            'licencas' => $profissional->licencas()->orderBy('id', 'desc')->get(),
         ]);
     }
 

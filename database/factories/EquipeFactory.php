@@ -23,6 +23,7 @@ class EquipeFactory extends Factory
             'ine' => $this->faker->word,
             'minima' => $this->faker->randomElement(["s","n"]),
             'unidade_id' => \App\Models\Unidade::inRandomOrder()->first()->id,
+            'equipe_tipo_id' => \App\Models\EquipeTipo::inRandomOrder()->first()->id,
         ];
     }
 }

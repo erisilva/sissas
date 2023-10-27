@@ -47,6 +47,9 @@
 </div>
 
 <div class="container">
+  
+  <x-flash-message status='success'  message='message' />
+
   <form method="POST" action="{{ route('ferias.store') }}">
     @csrf
     <div class="row g-3">

@@ -309,6 +309,236 @@
    </form>
 </div>
 
+
+{{-- Outros Cadastros --}}
+
+<div class="container py-3">
+  <ul class="nav nav-tabs" id="outros_cadastros" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="cadastro-ferias-tab" data-bs-toggle="tab" data-bs-target="#cadastro-ferias-pane" type="button" role="tab" aria-controls="cadastro-ferias" aria-selected="true"><x-icon icon='airplane' /> Férias</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="cadastro-licencas-tab" data-bs-toggle="tab" data-bs-target="#cadastro-licencas-pane" type="button" role="tab" aria-controls="cadastro-licencas" aria-selected="false"><x-icon icon='file-medical' /> Licenças</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="cadastro-capacitacoes-tab" data-bs-toggle="tab" data-bs-target="#cadastro-capacitacoes-pane" type="button" role="tab" aria-controls="cadastro-capacitacoes" aria-selected="false"><x-icon icon='journal' /> Capacitações</button>
+    </li>
+  </ul>
+  
+  <div class="tab-content" id="myTabContent">
+    
+    
+    <div class="tab-pane fade show active" id="cadastro-ferias-pane" role="tabpanel" aria-labelledby="cadastro-ferias-tab" tabindex="0">
+      
+      
+      
+      @can('ferias.create')
+      <div class="container py-2">
+        <form method="POST" action="{{ route('profisionalferias.store') }}">
+          @csrf
+          <div class="row g-3">
+            
+            <input type="hidden" id="ferias_profissional_id" name="ferias_profissional_id" value="{{ $profissional->id }}">
+            
+            <div class="col-md-6">        
+              <label for="feriastipo_id" class="form-label">Tipo de Férias <strong  class="text-danger">(*)</strong></label>
+              <select class="form-select" id="feriastipo_id" name="feriastipo_id">
+                <option value="" selected>Clique ...</option> 
+                @foreach($feriastipos as $feriastipo)
+                <option value="{{ $feriastipo->id }}" @selected(old('feriastipo_id') == $feriastipo->id)>
+                  {{$feriastipo->nome}}
+                </option>
+                @endforeach
+              </select>
+              @error('feriastipo_id')
+                <div class="text-danger"><small>{{ $message }}</small></div>
+              @enderror
+            </div>
+      
+            <div class="col-md-3">
+              <label for="ferias_inicio" class="form-label">Data inicial <strong  class="text-danger">(*)</strong></label>
+              <input type="text" class="form-control  @error('ferias_inicio') is-invalid @enderror" id="ferias_inicio" name="ferias_inicio" value="{{ session()->get('ferias_inicio') }}" autocomplete="off">
+              @error('ferias_inicio')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror   
+            </div>
+      
+            <div class="col-md-3">
+              <label for="ferias_fim" class="form-label">Data final <strong  class="text-danger">(*)</strong></label>
+              <input type="text" class="form-control  @error('ferias_fim') is-invalid @enderror" id="ferias_fim" name="ferias_fim" value="{{ session()->get('ferias_fim') }}" autocomplete="off">
+              @error('ferias_fim')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror   
+            </div>
+      
+            <div class="col-12">
+              <label for="ferias_justificativa" class="form-label">Justificativa</label>
+              <input type="text" class="form-control" name="ferias_justificativa" value="{{ old('ferias_justificativa') ?? '' }}">     
+            </div>      
+      
+            <div class="col12">
+              <button type="submit" class="btn btn-primary"><x-icon icon='plus-circle' /> Incluir Férias</button>  
+            </div>
+      
+      
+          </div>     
+        </form>
+      </div> {{-- form --}}
+      @endcan
+
+      <div class="container py-2">
+        @if (count($ferias))
+        <div class="table-responsive">
+          <table class="table table-striped">
+              <thead>
+                  <tr>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Inicial</th>
+                      <th scope="col">Final</th>
+                      <th scope="col">Justificativa</th>
+                      <th scope="col"></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  @foreach($ferias as $ferias_index)
+                  <tr>
+                      <td>{{ $ferias_index->feriasTipo->nome }}</td>
+                      <td>{{ isset($ferias_index->inicio) ?  $ferias_index->inicio->format('d/m/Y') : '-' }}</td>
+                      <td>{{ isset($ferias_index->fim) ?  $ferias_index->fim->format('d/m/Y') : '-' }}</td>
+                      <td>{{ $ferias_index->justificativa }}</td>
+                      <td>
+                        @can('ferias.delete')
+                        <form method="post" action="{{route('profisionalferias.destroy', $ferias_index->id)}}" onsubmit="return confirm('Você tem certeza que quer excluir?');">
+                          @csrf
+                          @method('DELETE')  
+                          <button type="submit" class="btn btn-danger btn-sm"><x-icon icon='trash' /></button>
+                        </form>
+                        @endcan
+                      </td>
+                  </tr>
+                  @endforeach                                                 
+              </tbody>
+          </table>
+        </div>
+        @else
+        <div class="alert alert-info" role="alert">
+          Esse profissional não possui férias cadastradas.
+        </div>
+        @endif 
+      </div>
+
+    </div>
+    
+    
+    <div class="tab-pane fade" id="cadastro-licencas-pane" role="tabpanel" aria-labelledby="cadastro-licencas-tab" tabindex="0">
+
+      @can('licenca.create')
+      <div class="container py-2">
+
+
+        <form method="POST" action="{{ route('licencas.store') }}">
+          @csrf
+          <div class="row g-3">
+                
+            <input type="hidden" id="licenca_profissional_id" name="licenca_profissional_id" value="{{ old('licenca_profissional_id') ?? '' }}">
+     
+            <div class="col-md-6">        
+              <label for="licenca_tipo_id" class="form-label">Tipo de Licença <strong  class="text-danger">(*)</strong></label>
+              <select class="form-select" id="licenca_tipo_id" name="licenca_tipo_id">
+                <option value="" selected>Clique ...</option> 
+                @foreach($licencatipos as $licencatipo)
+                <option value="{{ $licencatipo->id }}" @selected(old('licenca_tipo_id') == $licencatipo->id)>
+                  {{$licencatipo->nome}}
+                </option>
+                @endforeach
+              </select>
+              @error('licenca_tipo_id')
+                <div class="text-danger"><small>{{ $message }}</small></div>
+              @enderror
+            </div>
+            <div class="col-md-3">
+              <label for="licenca_inicio" class="form-label">Data inicial <strong  class="text-danger">(*)</strong></label>
+              <input type="text" class="form-control  @error('licenca_inicio') is-invalid @enderror" id="licenca_inicio" name="licenca_inicio" value="{{ session()->get('licenca_inicio') }}" autocomplete="off">
+              @error('licenca_inicio')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror   
+            </div>
+            <div class="col-md-3">
+              <label for="licenca_fim" class="form-label">Data final <strong  class="text-danger">(*)</strong></label>
+              <input type="text" class="form-control  @error('licenca_fim') is-invalid @enderror" id="licenca_fim" name="licenca_fim" value="{{ session()->get('licenca_fim') }}" autocomplete="off">
+              @error('licenca_fim')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror   
+            </div>
+            <div class="col-12">
+              <label for="licenca_observacao" class="form-label">Observações</label>
+              <input type="text" class="form-control" name="licenca_observacao" value="{{ old('licenca_observacao') ?? '' }}">     
+            </div>
+            <div class="col12">
+              <button type="submit" class="btn btn-primary"><x-icon icon='plus-circle' /> Incluir Licença</button>  
+            </div>
+          </div>     
+        </form>
+
+      </div>
+      @endcan
+
+      <div class="container py-2">
+        @if (count($licencas))
+        <div class="table-responsive">
+          <table class="table table-striped">
+              <thead>
+                  <tr>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Inicial</th>
+                      <th scope="col">Final</th>
+                      <th scope="col">Observações</th>
+                      <th scope="col"></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  @foreach($licencas as $licenca)
+                  <tr>
+                      <td>{{ $licenca->licencaTipo->nome }}</td>
+                      <td>{{ isset($licenca->inicio) ?  $licenca->inicio->format('d/m/Y') : '-' }}</td>
+                      <td>{{ isset($licenca->fim) ?  $licenca->fim->format('d/m/Y') : '-' }}</td>
+                      <td>{{ $licenca->observacao }}</td>
+                      <td>
+                        @can('ferias.delete')
+                        <form method="post" action="{{route('profisionalferias.destroy', $licenca->id)}}" onsubmit="return confirm('Você tem certeza que quer excluir?');">
+                          @csrf
+                          @method('DELETE')  
+                          <button type="submit" class="btn btn-danger btn-sm"><x-icon icon='trash' /></button>
+                        </form>
+                        @endcan
+                      </td>
+                  </tr>
+                  @endforeach                                                 
+              </tbody>
+          </table>
+        </div>
+        @else
+        <div class="alert alert-info" role="alert">
+          Esse profissional não possui licenças cadastradas.
+        </div>
+        @endif
+      </div>
+
+    </div> {{-- licencas --}}
+    
+    
+    <div class="tab-pane fade" id="cadastro-capacitacoes-pane" role="tabpanel" aria-labelledby="cadastro-capacitacoes-tab" tabindex="0">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error eveniet, quidem, vitae possimus eaque porro non animi ipsa aliquam atque aspernatur harum, ad minima quod rerum distinctio modi culpa totam.
+    </div>
+  
+  
+  </div>
+</div>
+
+
+
+
+
 <x-btn-back route="profissionals.index" />
 @endsection
 
@@ -331,6 +561,23 @@
           language: "pt-BR",
           autoclose: true,
           todayHighlight: true
+      });
+      $('#ferias_fim').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
+        });
+
+      $('#ferias_inicio').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
       });
 
 

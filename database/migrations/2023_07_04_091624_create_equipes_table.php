@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('cnes')->nullable();
             $table->string('ine')->nullable();
             $table->enum('minima', ['s', 'n'])->default('n');
-            $table->enum('tipo', ['s', 'a'])->default('s');
             $table->foreignId('unidade_id')->constrained()->restrictOnDelete()->cascadeOnUpdate(); 
+            $table->foreignId('equipe_tipo_id')->constrained()->restrictOnDelete()->cascadeOnUpdate(); 
             $table->timestamps();
         });
     }
@@ -31,6 +31,7 @@ return new class extends Migration
     {
         Schema::table('equipes', function (Blueprint $table) {
             $table->dropForeign(['unidade_id']);
+            $table->dropForeign(['equipe_tipo_id']);
         });
         
         Schema::dropIfExists('equipes');

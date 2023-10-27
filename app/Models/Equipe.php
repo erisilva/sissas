@@ -10,7 +10,7 @@ class Equipe extends Model
     use HasFactory;
 
     protected $fillable = [
-        'descricao', 'numero', 'cnes', 'ine', 'minima', 'unidade_id',
+        'descricao', 'numero', 'cnes', 'ine', 'minima', 'unidade_id', 'equipe_tipo_id'
     ];
 
     /**
@@ -21,6 +21,16 @@ class Equipe extends Model
     public function unidade()
     {
         return $this->belongsTo(Unidade::class);
+    }
+
+    /**
+     * Tipo da equipe
+     *
+     * @var EquipeTipo
+     */
+    public function equipeTipo()
+    {
+        return $this->belongsTo(EquipeTipo::class);
     }
 
     /**

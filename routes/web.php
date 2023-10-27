@@ -24,6 +24,7 @@ use App\Http\Controllers\VinculoTipoController;
 use App\Http\Controllers\ProfissionalController;
 use App\Http\Controllers\FeriasController;
 use App\Http\Controllers\LicencaController;
+use App\Http\Controllers\ProfissionalFeriasController;
 
 
 /*
@@ -223,3 +224,9 @@ Route::get('/licencas/export/xls', [LicencaController::class, 'exportxls'])->nam
 Route::get('/licencas/export/pdf', [LicencaController::class, 'exportpdf'])->name('licencas.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
 Route::resource('/licencas', LicencaController::class)->middleware('auth', 'verified');
+
+# ProfissionalFerias::class
+
+Route::post('/profissionalferias', [ProfissionalFeriasController::class, 'store'])->name('profisionalferias.store')->middleware('auth', 'verified');
+
+Route::delete('/profissionalferias/{id}', [ProfissionalFeriasController::class, 'destroy'])->name('profisionalferias.destroy')->middleware('auth', 'verified');
