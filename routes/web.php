@@ -25,6 +25,7 @@ use App\Http\Controllers\ProfissionalController;
 use App\Http\Controllers\FeriasController;
 use App\Http\Controllers\LicencaController;
 use App\Http\Controllers\ProfissionalFeriasController;
+use App\Http\Controllers\ProfissionalLicencaController;
 
 
 /*
@@ -230,3 +231,9 @@ Route::resource('/licencas', LicencaController::class)->middleware('auth', 'veri
 Route::post('/profissionalferias', [ProfissionalFeriasController::class, 'store'])->name('profisionalferias.store')->middleware('auth', 'verified');
 
 Route::delete('/profissionalferias/{id}', [ProfissionalFeriasController::class, 'destroy'])->name('profisionalferias.destroy')->middleware('auth', 'verified');
+
+# ProfissionalLicenca::class
+
+Route::post('/profissionallicencas', [ProfissionalLicencaController::class, 'store'])->name('profissionallicencas.store')->middleware('auth', 'verified');
+
+Route::delete('/profissionallicencas/{licenca}', [ProfissionalLicencaController::class, 'destroy'])->name('profissionallicencas.destroy')->middleware('auth', 'verified');

@@ -436,11 +436,11 @@
       <div class="container py-2">
 
 
-        <form method="POST" action="{{ route('licencas.store') }}">
+        <form method="POST" action="{{ route('profissionallicencas.store') }}">
           @csrf
           <div class="row g-3">
                 
-            <input type="hidden" id="licenca_profissional_id" name="licenca_profissional_id" value="{{ old('licenca_profissional_id') ?? '' }}">
+            <input type="hidden" id="licenca_profissional_id" name="licenca_profissional_id" value="{{ $profissional->id  }}">
      
             <div class="col-md-6">        
               <label for="licenca_tipo_id" class="form-label">Tipo de Licença <strong  class="text-danger">(*)</strong></label>
@@ -505,7 +505,7 @@
                       <td>{{ $licenca->observacao }}</td>
                       <td>
                         @can('ferias.delete')
-                        <form method="post" action="{{route('profisionalferias.destroy', $licenca->id)}}" onsubmit="return confirm('Você tem certeza que quer excluir?');">
+                        <form method="post" action="{{route('profissionallicencas.destroy', $licenca->id)}}" onsubmit="return confirm('Você tem certeza que quer excluir?');">
                           @csrf
                           @method('DELETE')  
                           <button type="submit" class="btn btn-danger btn-sm"><x-icon icon='trash' /></button>
@@ -572,6 +572,24 @@
         });
 
       $('#ferias_inicio').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
+      });
+
+      $('#licenca_fim').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
+        });
+
+      $('#licenca_inicio').datepicker({
         format: "dd/mm/yyyy",
         todayBtn: "linked",
         clearBtn: true,
