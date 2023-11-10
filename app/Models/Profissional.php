@@ -47,7 +47,7 @@ class Profissional extends Model
 
         // update session values if the request has a value
         if (Arr::exists($filters, 'nome')) {
-            session(['unidade_nome' => $filters['nome'] ?? '']);
+            session(['profissional_nome' => $filters['nome'] ?? '']);
         }
 
         if (Arr::exists($filters, 'cargo_id')) {

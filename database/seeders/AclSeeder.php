@@ -154,23 +154,10 @@ class AclSeeder extends Seeder
                 // para profissionais (LIXEIRA)
                 $profissional_trash_index = Permission::where('name', '=', 'profissional.trash.index')->get()->first(); 
                 $profissional_trash_restore = Permission::where('name', '=', 'profissional.trash.restore')->get()->first();
-                // para profissionais->férias
-                $profissional_ferias_index = Permission::where('name', '=', 'ferias.index')->get()->first();
-                $profissional_ferias_create = Permission::where('name', '=', 'ferias.create')->get()->first();
-                $profissional_ferias_edit = Permission::where('name', '=', 'ferias.edit')->get()->first(); 
-                $profissional_ferias_delete = Permission::where('name', '=', 'ferias.delete')->get()->first();
-                $profissional_ferias_show = Permission::where('name', '=', 'ferias.show')->get()->first();
-                $profissional_ferias_export = Permission::where('name', '=', 'ferias.export')->get()->first();
-                // para profissionais->licenças
-                $profissional_licenca_index = Permission::where('name', '=', 'licenca.index')->get()->first();
-                $profissional_licenca_create = Permission::where('name', '=', 'licenca.create')->get()->first();
-                $profissional_licenca_edit = Permission::where('name', '=', 'licenca.edit')->get()->first(); 
-                $profissional_licenca_delete = Permission::where('name', '=', 'licenca.delete')->get()->first();
-                $profissional_licenca_show = Permission::where('name', '=', 'licenca.show')->get()->first();
-                $profissional_licenca_export = Permission::where('name', '=', 'licenca.export')->get()->first();
-                // para profissionais->capacitações
-                $profissional_capacitacao_create = Permission::where('name', '=', 'profissional.capacitacao.create')->get()->first();  
-                $profissional_capacitacao_delete = Permission::where('name', '=', 'profissional.capacitacao.delete')->get()->first();
+                
+
+
+
                 // para orgão emissores
                 $orgaoemissor_index = Permission::where('name', '=', 'orgaoemissor.index')->get()->first(); 
                 $orgaoemissor_create = Permission::where('name', '=', 'orgaoemissor.create')->get()->first();
@@ -301,23 +288,6 @@ class AclSeeder extends Seeder
                 #profissionais LIXEIRA
                 $administrador_perfil->permissions()->attach($profissional_trash_index);
                 $administrador_perfil->permissions()->attach($profissional_trash_restore);
-                # Profissionais->férias
-                $administrador_perfil->permissions()->attach($profissional_ferias_index);
-                $administrador_perfil->permissions()->attach($profissional_ferias_create);
-                $administrador_perfil->permissions()->attach($profissional_ferias_edit);
-                $administrador_perfil->permissions()->attach($profissional_ferias_delete);
-                $administrador_perfil->permissions()->attach($profissional_ferias_show);
-                $administrador_perfil->permissions()->attach($profissional_ferias_export);
-                # Profissionais->licenças
-                $administrador_perfil->permissions()->attach($profissional_licenca_index);
-                $administrador_perfil->permissions()->attach($profissional_licenca_create);
-                $administrador_perfil->permissions()->attach($profissional_licenca_edit);
-                $administrador_perfil->permissions()->attach($profissional_licenca_delete);
-                $administrador_perfil->permissions()->attach($profissional_licenca_show);
-                $administrador_perfil->permissions()->attach($profissional_licenca_export);
-                # Profissionais->capacitações
-                $administrador_perfil->permissions()->attach($profissional_capacitacao_create);
-                $administrador_perfil->permissions()->attach($profissional_capacitacao_delete);
                 # Orgão Emissor
                 $administrador_perfil->permissions()->attach($orgaoemissor_index);
                 $administrador_perfil->permissions()->attach($orgaoemissor_create);
@@ -424,23 +394,6 @@ class AclSeeder extends Seeder
                 #profissionais LIXEIRA
                 $gerente_perfil->permissions()->attach($profissional_trash_index);
                 $gerente_perfil->permissions()->attach($profissional_trash_restore);
-                # Profissionais->férias
-                $gerente_perfil->permissions()->attach($profissional_ferias_index);
-                $gerente_perfil->permissions()->attach($profissional_ferias_create);
-                $gerente_perfil->permissions()->attach($profissional_ferias_edit);
-                $gerente_perfil->permissions()->attach($profissional_ferias_delete);
-                $gerente_perfil->permissions()->attach($profissional_ferias_show);
-                $gerente_perfil->permissions()->attach($profissional_ferias_export);
-                # Profissionais->licenças
-                $gerente_perfil->permissions()->attach($profissional_licenca_index);
-                $gerente_perfil->permissions()->attach($profissional_licenca_create);
-                $gerente_perfil->permissions()->attach($profissional_licenca_edit);
-                $gerente_perfil->permissions()->attach($profissional_licenca_delete);
-                $gerente_perfil->permissions()->attach($profissional_licenca_show);
-                $gerente_perfil->permissions()->attach($profissional_licenca_export);
-                # Profissionais->capacitações
-                $gerente_perfil->permissions()->attach($profissional_capacitacao_create);
-                $gerente_perfil->permissions()->attach($profissional_capacitacao_delete);
                 # Orgão Emissor
                 $gerente_perfil->permissions()->attach($orgaoemissor_index);
                 $gerente_perfil->permissions()->attach($orgaoemissor_create);
@@ -522,21 +475,7 @@ class AclSeeder extends Seeder
                 $operador_perfil->permissions()->attach($profissional_show);
                 $operador_perfil->permissions()->attach($profissional_export);
                 #profissionais LIXEIRA
-                $operador_perfil->permissions()->attach($profissional_trash_index);
-                # profissionais->férias
-                $operador_perfil->permissions()->attach($profissional_ferias_index);
-                $operador_perfil->permissions()->attach($profissional_ferias_edit);
-                $operador_perfil->permissions()->attach($profissional_ferias_create);
-                $operador_perfil->permissions()->attach($profissional_ferias_show);
-                $operador_perfil->permissions()->attach($profissional_ferias_export);
-                # profissionais->licenças
-                $operador_perfil->permissions()->attach($profissional_licenca_index);
-                $operador_perfil->permissions()->attach($profissional_licenca_edit);
-                $operador_perfil->permissions()->attach($profissional_licenca_create);
-                $operador_perfil->permissions()->attach($profissional_licenca_show);
-                $operador_perfil->permissions()->attach($profissional_licenca_export);
-                # profissionais->capacitações
-                $operador_perfil->permissions()->attach($profissional_capacitacao_create);
+                $operador_perfil->permissions()->attach($profissional_trash_index);                
                 # Orgão Emissor
                 $operador_perfil->permissions()->attach($orgaoemissor_index);
                 $operador_perfil->permissions()->attach($orgaoemissor_edit);
@@ -593,11 +532,7 @@ class AclSeeder extends Seeder
                 # profissionais
                 $leitor_perfil->permissions()->attach($profissional_index);
                 $leitor_perfil->permissions()->attach($profissional_show);
-                # podem ver as férias e licencas
-                $leitor_perfil->permissions()->attach($profissional_ferias_index);
-                $leitor_perfil->permissions()->attach($profissional_ferias_show);
-                $leitor_perfil->permissions()->attach($profissional_licenca_index);
-                $leitor_perfil->permissions()->attach($profissional_licenca_show);
+                
                 # orgão emissor
                 $leitor_perfil->permissions()->attach($orgaoemissor_index);
                 $leitor_perfil->permissions()->attach($orgaoemissor_show);

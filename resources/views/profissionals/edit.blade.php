@@ -528,7 +528,106 @@
     
     
     <div class="tab-pane fade" id="cadastro-capacitacoes-pane" role="tabpanel" aria-labelledby="cadastro-capacitacoes-tab" tabindex="0">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error eveniet, quidem, vitae possimus eaque porro non animi ipsa aliquam atque aspernatur harum, ad minima quod rerum distinctio modi culpa totam.
+      
+
+      @can('capacitacao.create')
+      <div class="container py-2">
+
+
+        <form method="POST" action="{{ route('profissionalcapacitacoes.store') }}">
+          @csrf
+          <div class="row g-3">
+                
+            <input type="hidden" id="capacitacao_profissional_id" name="capacitacao_profissional_id" value="{{ $profissional->id  }}">
+     
+            <div class="col-md-6">        
+              <label for="capacitacao_tipo_id" class="form-label">Tipo de Capacitação <strong  class="text-danger">(*)</strong></label>
+              <select class="form-select" id="capacitacao_tipo_id" name="capacitacao_tipo_id">
+                <option value="" selected>Clique ...</option> 
+                @foreach($capacitacaotipos as $capacitacaotipo)
+                <option value="{{ $capacitacaotipo->id }}" @selected(old('capacitacao_tipo_id') == $capacitacaotipo->id)>
+                  {{$capacitacaotipo->nome}}
+                </option>
+                @endforeach
+              </select>
+              @error('capacitacao_tipo_id')
+                <div class="text-danger"><small>{{ $message }}</small></div>
+              @enderror
+            </div>
+            <div class="col-md-3">
+              <label for="capacitacao_inicio" class="form-label">Data inicial <strong  class="text-danger">(*)</strong></label>
+              <input type="text" class="form-control  @error('capacitacao_inicio') is-invalid @enderror" id="capacitacao_inicio" name="capacitacao_inicio" value="{{ session()->get('capacitacao_inicio') }}" autocomplete="off">
+              @error('capacitacao_inicio')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror   
+            </div>
+            <div class="col-md-3">
+              <label for="capacitacao_fim" class="form-label">Data final <strong  class="text-danger">(*)</strong></label>
+              <input type="text" class="form-control  @error('capacitacao_fim') is-invalid @enderror" id="capacitacao_fim" name="capacitacao_fim" value="{{ session()->get('capacitacao_fim') }}" autocomplete="off">
+              @error('capacitacao_fim')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror   
+            </div>
+            <div class="col-12">
+              <label for="capacitacao_observacao" class="form-label">Observações</label>
+              <input type="text" class="form-control" name="capacitacao_observacao" value="{{ old('capacitacao_observacao') ?? '' }}">     
+            </div>
+            <div class="col-12">
+              <label for="capacitacao_carga_horaria" class="form-label">Carga Horária</label>
+              <input type="text" class="form-control" name="capacitacao_carga_horaria" value="{{ old('capacitacao_carga_horaria') ?? '' }}">     
+            </div>
+            <div class="col12">
+              <button type="submit" class="btn btn-primary"><x-icon icon='plus-circle' /> Incluir Capacitação</button>  
+            </div>
+          </div>     
+        </form>
+
+      </div>
+      @endcan
+
+      <div class="container py-2">
+        @if (count($capacitacoes))
+        <div class="table-responsive">
+          <table class="table table-striped">
+              <thead>
+                  <tr>
+                      <th scope="col">Tipo</th>
+                      <th scope="col">Inicial</th>
+                      <th scope="col">Final</th>
+                      <th scope="col">Observações</th>
+                      <th scope="col">Carga Horária</th>
+                      <th scope="col"></th>
+                  </tr>
+              </thead>
+              <tbody>
+                  @foreach($capacitacoes as $capacitacao)
+                  <tr>
+                      <td>{{ $capacitacao->capacitacaoTipo->nome }}</td>
+                      <td>{{ isset($capacitacao->inicio) ?  $capacitacao->inicio->format('d/m/Y') : '-' }}</td>
+                      <td>{{ isset($capacitacao->fim) ?  $capacitacao->fim->format('d/m/Y') : '-' }}</td>
+                      <td>{{ $capacitacao->observacao }}</td>
+                      <td>{{ $capacitacao->cargaHoraria }}</td>
+                      <td>
+                        @can('ferias.delete')
+                        <form method="post" action="{{route('profissionalcapacitacoes.destroy', $capacitacao->id)}}" onsubmit="return confirm('Você tem certeza que quer excluir?');">
+                          @csrf
+                          @method('DELETE')  
+                          <button type="submit" class="btn btn-danger btn-sm"><x-icon icon='trash' /></button>
+                        </form>
+                        @endcan
+                      </td>
+                  </tr>
+                  @endforeach                                                 
+              </tbody>
+          </table>
+        </div>
+        @else
+        <div class="alert alert-info" role="alert">
+          Esse profissional não possui capacitações cadastradas.
+        </div>
+        @endif
+      </div>
+
     </div>
   
   
@@ -590,6 +689,24 @@
         });
 
       $('#licenca_inicio').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
+      });
+
+      $('#capacitacao_fim').datepicker({
+        format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        clearBtn: true,
+        language: "pt-BR",
+        autoclose: true,
+        todayHighlight: true
+        });
+
+      $('#capacitacao_inicio').datepicker({
         format: "dd/mm/yyyy",
         todayBtn: "linked",
         clearBtn: true,

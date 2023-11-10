@@ -22,5 +22,10 @@ class EquipeTipoSeeder extends Seeder
             'id' => 2,
             'nome' => 'Técnica'
         ]);
+
+        DB::table('equipe_tipos')->insert([
+            'id' => 3,
+            'nome' => 'Outro tipo'
+        ]);
     }
 }

@@ -379,70 +379,25 @@ class PermissionSeeder extends Seeder
             'description' => 'Restaurar registro da lixeira de profissionais',
         ]);
 
-        // SISAS 2.0
         // Profissionais->férias
         DB::table('permissions')->insert([
-            'name' => 'ferias.index',
+            'name' => 'profissional.ferias.create',
             'description' => 'Registrar férias para os profissionais',
         ]);
         DB::table('permissions')->insert([
-            'name' => 'ferias.create',
-            'description' => 'Registrar férias para os profissionais',
-        ]);
-        DB::table('permissions')->insert([
-            'name' => 'ferias.edit',
-            'description' => 'Alterar dados de férias dos profissionais',
-        ]);
-        DB::table('permissions')->insert([
-            'name' => 'ferias.delete',
+            'name' => 'profissional.ferias.delete',
             'description' => 'Excluir férias dos profissionais',
         ]);
-        DB::table('permissions')->insert([
-            'name' => 'ferias.show',
-            'description' => 'Mostrar dados das férias dos profissionais',
-        ]);
-        DB::table('permissions')->insert([
-            'name' => 'ferias.export',
-            'description' => 'Exportação de dados das férias dos profissionais',
-        ]);
-        
 
-
-
-
-
-
-        // SISAS 2.0
         // Profissionais->licença
         DB::table('permissions')->insert([
-            'name' => 'licenca.index',
+            'name' => 'profissional.licenca.create',
             'description' => 'Registrar licença para os profissionais',
         ]);
         DB::table('permissions')->insert([
-            'name' => 'licenca.create',
-            'description' => 'Registrar licença para os profissionais',
-        ]);
-        DB::table('permissions')->insert([
-            'name' => 'licenca.edit',
-            'description' => 'Alterar dados de licença dos profissionais',
-        ]);
-        DB::table('permissions')->insert([
-            'name' => 'licenca.delete',
+            'name' => 'profissional.licenca.delete',
             'description' => 'Excluir licença dos profissionais',
         ]);
-        DB::table('permissions')->insert([
-            'name' => 'licenca.show',
-            'description' => 'Mostrar dados das licenças dos profissionais',
-        ]);
-        DB::table('permissions')->insert([
-            'name' => 'licenca.export',
-            'description' => 'Exportação de dados das licenças dos profissionais',
-        ]);
-
-
-
-
-        
 
         // Profissionais->capacitação
         DB::table('permissions')->insert([

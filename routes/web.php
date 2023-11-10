@@ -26,6 +26,8 @@ use App\Http\Controllers\FeriasController;
 use App\Http\Controllers\LicencaController;
 use App\Http\Controllers\ProfissionalFeriasController;
 use App\Http\Controllers\ProfissionalLicencaController;
+use App\Http\Controllers\ProfissionalCapacitacaoController;
+use App\Http\Controllers\EquipeTipoController;
 
 
 /*
@@ -237,3 +239,19 @@ Route::delete('/profissionalferias/{id}', [ProfissionalFeriasController::class, 
 Route::post('/profissionallicencas', [ProfissionalLicencaController::class, 'store'])->name('profissionallicencas.store')->middleware('auth', 'verified');
 
 Route::delete('/profissionallicencas/{licenca}', [ProfissionalLicencaController::class, 'destroy'])->name('profissionallicencas.destroy')->middleware('auth', 'verified');
+
+#ProfissionalCapacitacao::class
+
+Route::post('/profissionalcapacitacoes', [ProfissionalCapacitacaoController::class, 'store'])->name('profissionalcapacitacoes.store')->middleware('auth', 'verified');
+
+Route::delete('/profissionalcapacitacoes/{capacitacao}', [ProfissionalCapacitacaoController::class, 'destroy'])->name('profissionalcapacitacoes.destroy')->middleware('auth', 'verified');
+
+# EquipeTipo::class
+
+Route::get('/equipetipos/export/csv', [EquipeTipoController::class, 'exportcsv'])->name('equipetipos.export.csv')->middleware('auth', 'verified');
+
+Route::get('/equipetipos/export/xls', [EquipeTipoController::class, 'exportxls'])->name('equipetipos.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/equipetipos/export/pdf', [EquipeTipoController::class, 'exportpdf'])->name('equipetipos.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/equipetipos', EquipeTipoController::class)->middleware('auth', 'verified');

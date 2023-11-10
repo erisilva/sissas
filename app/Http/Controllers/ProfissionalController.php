@@ -11,6 +11,7 @@ use App\Models\CargaHoraria;
 use App\Models\OrgaoEmissor;
 use App\Models\FeriasTipo;
 use App\Models\LicencaTipo;
+use App\Models\CapacitacaoTipo;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -130,6 +131,8 @@ class ProfissionalController extends Controller
             'ferias' => $profissional->ferias()->orderBy('id', 'desc')->get(),
             'licencatipos' => LicencaTipo::orderBy('nome')->get(),
             'licencas' => $profissional->licencas()->orderBy('id', 'desc')->get(),
+            'capacitacoes' => $profissional->capacitacaos()->orderBy('id', 'desc')->get(),
+            'capacitacaotipos' => CapacitacaoTipo::orderBy('nome')->get(),
         ]);
     }
 

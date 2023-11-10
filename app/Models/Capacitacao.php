@@ -14,7 +14,10 @@ class Capacitacao extends Model
         'inicio', 'fim', 'cargaHoraria', 'observacao', 'capacitacao_tipo_id', 'profissional_id', 'user_id'
     ];
 
-    protected $dates = ['inicio', 'fim'];
+    protected $casts = [
+        'inicio' => 'datetime',
+        'fim' => 'datetime',
+    ];
     
     public function profissional() : BelongsTo
     {

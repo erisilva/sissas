@@ -3,7 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\EquipeTipo;
+use App\Models\Perpage;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+
+use Barryvdh\DomPDF\Facade\Pdf; // Export PDF
+
+use App\Exports\EquipeTiposExport;
+use Maatwebsite\Excel\Facades\Excel; // Export Excel
 
 class EquipeTipoController extends Controller
 {
@@ -12,7 +22,16 @@ class EquipeTipoController extends Controller
      */
     public function index()
     {
-        //
+        $this->authorize('equipetipo.index');
+
+        if(request()->has('perpage')) {
+            session(['perPage' => request('perpage')]);
+        }
+
+        return view('equipetipos.index', [
+            'equipetipos' => EquipeTipo::orderBy('nome', 'asc')->paginate(session('perPage', '5')),
+            'perpages' => Perpage::orderBy('valor')->get()
+        ]);
     }
 
     /**
@@ -20,7 +39,9 @@ class EquipeTipoController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('equipetipo.create');
+
+        return view('equipetipos.create');
     }
 
     /**
@@ -28,15 +49,29 @@ class EquipeTipoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('equipetipo.create');
+
+        $equipetipo = $request->validate([
+            'nome' => 'required|max:255',
+          ]);
+  
+        EquipeTipo::create($equipetipo);
+
+        return redirect(route('equipetipos.index'))->with('message', 'Tipo de equipe criada com sucesso!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(EquipeTipo $equipeTipo)
+    public function show(EquipeTipo $equipetipo)
     {
-        //
+        $this->authorize('equipetipo.show');
+
+        return view('equipetipos.show', [
+            'equipetipo' => $equipetipo
+            ]
+        );
+
     }
 
     /**
