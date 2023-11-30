@@ -12,6 +12,6 @@ class DistritoSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Distrito::factory(30)->create();
+        \App\Models\Distrito::factory(12)->create();
     }
 }

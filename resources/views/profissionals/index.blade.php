@@ -57,6 +57,10 @@
                 <th>{{ __('Name') }}</th>
                 <th>Cargo</th>
                 <th>Matricula</th>
+                <th>CPF</th>
+                <th>CNS</th>
+                <th>Vínculo</th>
+                <th>Tipo</th>
                 <th></th>
             </tr>
         </thead>
@@ -64,15 +68,26 @@
             @foreach($profissionals as $professional)
             <tr>
                 <td class="text-nowrap">
-                  {{ $professional->nome }}
+                  <strong>{{ $professional->nome }}</strong>
+                </td>
+                <td class="text-nowrap">
+                  {{ $professional->cargo->nome }}
                 </td>
                 <td class="text-nowrap">
                   {{ $professional->matricula }}
                 </td>
                 <td class="text-nowrap">
-                  {{ $professional->cargo->nome }}
+                  {{ $professional->cpf }}
                 </td>
- 
+                <td class="text-nowrap">
+                  {{ $professional->cns }}
+                </td>
+                <td class="text-nowrap">
+                  {{ $professional->vinculo->nome }}
+                </td>
+                <td class="text-nowrap">
+                  {{ $professional->vinculoTipo->nome }}
+                </td>
                 <td>
                   <x-btn-group label='Opções'>
 
@@ -111,7 +126,7 @@
         <input type="text" class="form-control" id="matricula" name="matricula" value="{{ session()->get('profissional_matricula') }}">
         </div>
         <div class="col-md-6">
-          <label for="cargo_id">Cargo</strong></label>
+          <label for="cargo_id" class="form-label">Cargo</label>
           <select class="form-control" id="cargo_id" name="cargo_id">
               <option value="" selected="true">Clique ...</option> 
               @foreach($cargos as $cargo)
@@ -122,7 +137,7 @@
           </select>
         </div>
         <div class="col-md-6">
-          <label for="vinculo_id">Vínculo</strong></label>
+          <label for="vinculo_id" class="form-label">Vínculo</label>
           <select class="form-control" id="vinculo_id" name="vinculo_id">
               <option value="" selected="true">Clique ...</option> 
               @foreach($vinculos as $vinculo)

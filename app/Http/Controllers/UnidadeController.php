@@ -164,4 +164,29 @@ class UnidadeController extends Controller
 
         return Excel::download(new UnidadesExport(request(['nome', 'distrito_id'])),  'Unidades_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
+
+        /**
+     * Função de autocompletar para ser usada pelo typehead
+     *
+     * @param  
+     * @return json
+     */
+    public function autocomplete(Request $request)
+    {
+        $unidades = DB::table('unidades');
+
+        // join
+        $unidades = $unidades->join('distritos', 'distritos.id', '=', 'unidades.distrito_id');
+
+        // select
+        $unidades = $unidades->select('unidades.nome as text', 'unidades.id as value', 'distritos.nome as distrito');
+        
+        //where
+        $unidades = $unidades->where("unidades.nome","LIKE","%{$request->input('query')}%");
+
+        //get
+        $unidades = $unidades->get();
+
+        return response()->json($unidades, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
+    }
 }

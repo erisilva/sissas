@@ -77,17 +77,26 @@ class EquipeTipoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(EquipeTipo $equipeTipo)
+    public function edit(EquipeTipo $equipetipo)
     {
-        //
+        $this->authorize('equipetipo.edit');
+
+        return view('equipetipos.edit', [
+            'equipetipo' => $equipetipo
+            ]
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, EquipeTipo $equipeTipo)
+    public function update(Request $request, EquipeTipo $equipetipo)
     {
-        //
+        $this->authorize('equipetipo.edit');
+  
+        $equipetipo->update($request->validate(['nome' => 'required|max:255']));
+
+        return redirect(route('equipetipos.index'))->with('message', 'Tipo de equipe alterada com sucesso!');
     }
 
     /**
@@ -95,6 +104,10 @@ class EquipeTipoController extends Controller
      */
     public function destroy(EquipeTipo $equipeTipo)
     {
-        //
+        $this->authorize('equipetipo.delete');
+
+        $equipeTipo->delete();
+
+        return redirect(route('equipetipos.index'))->with('message', 'Tipo de equipe excluída com sucesso!');
     }
 }

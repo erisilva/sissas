@@ -76,9 +76,29 @@
                                 </li>
                                 @endcan
                             </ul>
+                        </li>
 
-
-                        </li>    
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                               Equipes
+                            </a>
+                            <ul class="dropdown-menu">
+                                @can('equipe.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('equipes.index') }}">
+                                        <x-icon icon='person-gear' /> Gestão das Equipes
+                                    </a>
+                                </li>
+                                @endcan   
+                                @can('equipe.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('equipes.index') }}">
+                                        <x-icon icon='person-square' /> Profissionais e Equipes
+                                    </a>
+                                </li>
+                                @endcan
+                            </ul>
+                        </li>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -110,6 +130,13 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('unidades.index') }}">
                                         <x-icon icon='table' /> Unidades
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('equipe.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('equipes.index') }}">
+                                        <x-icon icon='person-square' /> Equipes e Vagas
                                     </a>
                                 </li>
                                 @endcan
@@ -159,6 +186,13 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('vinculotipos.index') }}">
                                         <x-icon icon='table' /> Tipos de Vínculo
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('equipetipo.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('equipetipos.index') }}">
+                                        <x-icon icon='table' /> Tipos de Equipe
                                     </a>
                                 </li>
                                 @endcan

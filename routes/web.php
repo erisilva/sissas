@@ -28,6 +28,8 @@ use App\Http\Controllers\ProfissionalFeriasController;
 use App\Http\Controllers\ProfissionalLicencaController;
 use App\Http\Controllers\ProfissionalCapacitacaoController;
 use App\Http\Controllers\EquipeTipoController;
+use App\Http\Controllers\EquipeController;
+use App\Http\Controllers\EquipeVagasController;
 
 
 /*
@@ -113,6 +115,8 @@ Route::get('/unidades/export/csv', [UnidadeController::class, 'exportcsv'])->nam
 Route::get('/unidades/export/xls', [UnidadeController::class, 'exportxls'])->name('unidades.export.xls')->middleware('auth', 'verified'); // Export XLS
 
 Route::get('/unidades/export/pdf', [UnidadeController::class, 'exportpdf'])->name('unidades.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::get('/unidades/autocomplete', [UnidadeController::class, 'autocomplete'])->name('unidades.autocomplete')->middleware('auth', 'verified');
 
 Route::resource('/unidades', UnidadeController::class)->middleware('auth', 'verified');
 
@@ -255,3 +259,17 @@ Route::get('/equipetipos/export/xls', [EquipeTipoController::class, 'exportxls']
 Route::get('/equipetipos/export/pdf', [EquipeTipoController::class, 'exportpdf'])->name('equipetipos.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
 Route::resource('/equipetipos', EquipeTipoController::class)->middleware('auth', 'verified');
+
+# Equipe::class
+
+Route::get('/equipes/export/csv', [EquipeController::class, 'exportcsv'])->name('equipes.export.csv')->middleware('auth', 'verified');
+
+Route::get('/equipes/export/xls', [EquipeController::class, 'exportxls'])->name('equipes.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/equipes/export/pdf', [EquipeController::class, 'exportpdf'])->name('equipes.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/equipes', EquipeController::class)->middleware('auth', 'verified');
+
+# EquipeVagas::class
+
+Route::resource('/equipevagas', EquipeVagasController::class)->only(['store', 'destroy',])->middleware('auth', 'verified');

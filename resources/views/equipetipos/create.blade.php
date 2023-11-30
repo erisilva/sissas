@@ -7,7 +7,7 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="{{ route('licencatipos.index') }}">Tipos de Equipe</a>
+        <a href="{{ route('equipetipos.index') }}">Tipos de Equipe</a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
       {{ __('New') }}

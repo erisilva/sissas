@@ -232,6 +232,10 @@ return [
         'inicio' => 'Data Inicial',
         'fim' => 'Data Final',
         'profissional_id' => 'Profissional',
+        'equipe_id' => 'Equipe',
+        'equipe_tipo_id' => 'Tipo de Equipe',
+        'descricao' => 'Descrição',
+        'numero' => 'Número',
     ],
 
 ];
