@@ -85,8 +85,8 @@
                             <ul class="dropdown-menu">
                                 @can('equipe.index')
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('equipes.index') }}">
-                                        <x-icon icon='person-gear' /> Gestão das Equipes
+                                    <a class="dropdown-item" href="{{ route('equipegestao.index') }}">
+                                        <x-icon icon='person-gear' /> Gestão de Equipes e Vagas
                                     </a>
                                 </li>
                                 @endcan   

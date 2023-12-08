@@ -25,7 +25,7 @@
 
     <div class="col-md-8">
         <label for="descricao" class="form-label">Descrição</label>
-        <input type="text" class="form-control" name="descricao" id="descricao" value="{{ $equipe->decricao }}" readonly> 
+        <input type="text" class="form-control" name="descricao" id="descricao" value="{{ $equipe->descricao }}" readonly> 
     </div>
     <div class="col-md-4">
         <label for="numero" class="form-label">Número</label>
@@ -77,6 +77,61 @@
   </div>  
   </form>  
 </div>
+
+<br>
+
+@if (count($equipeprofissionais))
+<div class="container py-2">
+  <p class="text-center bg-primary text-white">
+    <strong>Cargos e Vagas</strong>
+  </p>  
+</div>
+
+  <div class="container">
+    <div class="table-responsive">
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th scope="col">Cargo</th>
+                  <th scope="col">CBO</th>
+                  <th scope="col">Profissional</th>
+                  <th scope="col">Matrícula</th>
+              </tr>
+          </thead>
+          <tbody>
+              @foreach($equipeprofissionais as $equipeprofissional)
+              <tr>
+                <td>{{ $equipeprofissional->cargo->nome }}</td>
+                <td>{{ $equipeprofissional->cargo->cbo }}</td>
+                <td>
+                  @if(isset($equipeprofissional->profissional->id))
+                    <span><a class="btn btn-sm btn-success" href="{{ route('profissionals.edit', $equipeprofissional->profissional->id) }}" role="button" btn-sm><x-icon icon='people' /></a> {{ $equipeprofissional->profissional->nome }}</span>
+                  @else
+                    <span class="fw-light">Vaga Livre</span>
+                  @endif
+                </td>
+                <td>{{ isset($equipeprofissional->profissional->matricula) ?  $equipeprofissional->profissional->matricula : '-' }}</td>
+              </tr>    
+              @endforeach                                             
+          </tbody>
+      </table>
+    </div>  
+  </div>
+
+@else
+<div class="alert alert-info" role="alert">
+  Essa Unidade não Possui Vagas Preenchidas!
+</div>
+@endif
+
+
+<div class="container">
+
+
+
+
+</div>
+
 
 
 @can('equipe.delete')

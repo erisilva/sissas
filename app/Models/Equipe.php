@@ -159,6 +159,18 @@ class Equipe extends Model
             $query->where('equipes.equipe_tipo_id', session()->get('equipe_tipo'));
         }
 
+        // filtrar para mstrar apenas as equiped dos distritos em que o usuário logado tem permissão
+        // if (auth()->user()->can('distrito')) {
+        //     $query = $query->whereHas('unidade', function ($inner_query) {
+        //         $inner_query->whereHas('distrito', function ($inner_query) {
+        //             $inner_query->whereIn('distritos.id', auth()->user()->distritos->pluck('id'));
+        //         });
+        //     });
+        // }
+
+        // testar
+
+
     }
 
     /**

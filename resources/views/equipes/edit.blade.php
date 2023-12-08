@@ -210,7 +210,13 @@
             <tr>
                 <td>{{ $equipeprofissional->cargo->nome }}</td>
                 <td>{{ $equipeprofissional->cargo->cbo }}</td>
-                <td>{{ isset($equipeprofissional->profissional_id) ?  $equipeprofissional->profissional->nome : 'Não vinculado' }}</td>
+                <td>
+                  @if(isset($equipeprofissional->profissional->id))
+                    <span><a class="btn btn-sm btn-success" href="{{ route('profissionals.edit', $equipeprofissional->profissional->id) }}" role="button" btn-sm><x-icon icon='people' /></a> {{ $equipeprofissional->profissional->nome }}</span>
+                  @else
+                    <span class="fw-light">Vaga Livre</span>
+                  @endif
+                </td>
                 <td>{{ isset($equipeprofissional->profissional_id) ?  $equipeprofissional->profissional->matricula : '-' }}</td>
                 <td>
                   <form method="post" action="{{route('equipevagas.destroy', $equipeprofissional->id)}}" onsubmit="return confirm('Você tem certeza que quer remover essa vaga?');">

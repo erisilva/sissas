@@ -30,6 +30,7 @@ use App\Http\Controllers\ProfissionalCapacitacaoController;
 use App\Http\Controllers\EquipeTipoController;
 use App\Http\Controllers\EquipeController;
 use App\Http\Controllers\EquipeVagasController;
+use App\Http\Controllers\EquipeGestaoController;
 
 
 /*
@@ -273,3 +274,22 @@ Route::resource('/equipes', EquipeController::class)->middleware('auth', 'verifi
 # EquipeVagas::class
 
 Route::resource('/equipevagas', EquipeVagasController::class)->only(['store', 'destroy',])->middleware('auth', 'verified');
+
+# EquipeGestao::class
+
+/* Gestão das equipes */
+Route::get('/equipegestao/export/csv', [EquipeGestaoController::class, 'exportcsv'])->name('equipegestao.export.csv')->middleware('auth', 'verified');
+
+Route::get('/equipegestao/export/xls', [EquipeGestaoController::class, 'exportxls'])->name('equipegestao.export.xls')->middleware('auth', 'verified');
+
+Route::get('/equipegestao/export/csv/completo', [EquipeGestaoController::class, 'exportcsvcompleto'])->name('equipegestao.export.csv.completo')->middleware('auth', 'verified');
+
+Route::get('/equipegestao/export/pdf', [EquipeGestaoController::class, 'exportpdf'])->name('equipegestao.export.pdf')->middleware('auth', 'verified');
+
+Route::get('/equipegestao/export/pdf/{id}/individual', [EquipeGestaoController::class, 'exportpdfindividual'])->name('equipegestao.export.pdf.individual')->middleware('auth', 'verified');
+
+Route::post('/equipegestao/preenchervaga', [EquipeGestaoController::class, 'preenchervaga'])->name('equipegestao.preenchervaga')->middleware('auth', 'verified');
+
+Route::post('/equipegestao/limparvaga', [EquipeGestaoController::class, 'limparvaga'])->name('equipegestao.limparvaga')->middleware('auth', 'verified');
+
+Route::resource('/equipegestao', EquipeGestaoController::class)->only(['index', 'show',])->middleware('auth', 'verified');

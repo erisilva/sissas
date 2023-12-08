@@ -87,7 +87,8 @@ class EquipeController extends Controller
         $this->authorize('equipe.show');
 
         return view('equipes.show', [
-            'equipe' => $equipe
+            'equipe' => $equipe,
+            'equipeprofissionais' => EquipeProfissional::where('equipe_id', '=', $equipe->id)->orderBy('cargo_id', 'desc')->get()
         ]);
     }
 
@@ -102,7 +103,7 @@ class EquipeController extends Controller
             'equipe' => $equipe,
             'equipetipos' => EquipeTipo::orderBy('nome')->get(),
             'cargos' => Cargo::orderBy('nome')->get(),
-            'equipeprofissionais' => EquipeProfissional::where('equipe_id', '=', $equipe->id)->orderBy('id', 'desc')->get()
+            'equipeprofissionais' => EquipeProfissional::where('equipe_id', '=', $equipe->id)->orderBy('cargo_id', 'desc')->get()
         ]);
     }
 
