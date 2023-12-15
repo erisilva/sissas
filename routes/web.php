@@ -31,6 +31,7 @@ use App\Http\Controllers\EquipeTipoController;
 use App\Http\Controllers\EquipeController;
 use App\Http\Controllers\EquipeVagasController;
 use App\Http\Controllers\EquipeGestaoController;
+use App\Http\Controllers\EquipeViewController;
 
 
 /*
@@ -293,3 +294,13 @@ Route::post('/equipegestao/preenchervaga', [EquipeGestaoController::class, 'pree
 Route::post('/equipegestao/limparvaga', [EquipeGestaoController::class, 'limparvaga'])->name('equipegestao.limparvaga')->middleware('auth', 'verified');
 
 Route::resource('/equipegestao', EquipeGestaoController::class)->only(['index', 'show',])->middleware('auth', 'verified');
+
+# Equipes::View
+
+Route::get('/equipeview/export/csv', [EquipeViewController::class, 'exportcsv'])->name('equipeview.export.csv')->middleware('auth', 'verified');
+
+Route::get('/equipeview/export/xls', [EquipeViewController::class, 'exportxls'])->name('equipeview.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/equipeview/export/pdf', [EquipeViewController::class, 'exportpdf'])->name('equipeview.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::resource('/equipeview', EquipeViewController::class)->only(['index', 'show',])->middleware('auth', 'verified');

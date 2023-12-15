@@ -41,6 +41,15 @@
 </div>
 
 <div class="container">
+
+  <x-flash-message status='success'  message='message' />
+
+  @error('cargo_id')
+  <div class="alert alert-danger" role="alert">
+    {{ $message }}
+  </div>
+  @enderror 
+
   <form>
   <div class="row g-3">
 
@@ -79,23 +88,6 @@
         <label for="distrito" class="form-label">Distrito</label>
         <input type="text" class="form-control" name="distrito" id="distrito" value="{{ $equipe->unidade->distrito->nome }}" readonly>   
     </div>
-
-
-    <div class="col-md-4">
-      <label for="total_de_vagas" class="form-label">Total de Vagas</label>
-      <input type="text" class="form-control" name="total_de_vagas" id="total_de_vagas" value="{{ $equipe->total_vagas }}" readonly>   
-    </div>
-    <div class="col-md-4">
-      <label for="total_de_vagas_preenchidas" class="form-label">Total de Vagas Prenchidas</label>
-      <input type="text" class="form-control" name="total_de_vagas_preenchidas" id="total_de_vagas_preenchidas" value="{{ $equipe->vagas_preenchidas }}" readonly>   
-    </div>
-    <div class="col-md-4">
-      <label for="total_de_vagas_livres" class="form-label">Total de Vagas Livres</label>
-      <input type="text" class="form-control" name="numero" id="total_de_vagas_livres" value="{{ $equipe->vagas_disponiveis }}" readonly>   
-    </div>
-
-
-
   </div>  
   </form>  
 </div>
@@ -115,8 +107,8 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th scope="col">Cargo</th>
                 <th scope="col">CBO</th>
+                <th scope="col">Cargo</th>                
                 <th scope="col">Profissional</th>
                 <th scope="col">Matrícula</th>
                 <th scope="col"></th>
@@ -125,8 +117,13 @@
         <tbody>
             @foreach($equipeprofissionais as $equipeprofissional)
             <tr>
-              <td>{{ $equipeprofissional->cargo->nome }}</td>
-              <td>{{ $equipeprofissional->cargo->cbo }}</td>
+              <td>
+                {{ $equipeprofissional->cargo->cbo }}
+              </td>
+              <td>
+                {{ $equipeprofissional->cargo->nome }}
+              </td>
+              
               <td>
                 @if(isset($equipeprofissional->profissional->id))
                   <span><a class="btn btn-sm btn-success" href="{{ route('profissionals.edit', $equipeprofissional->profissional->id) }}" role="button" btn-sm><x-icon icon='people' /></a> {{ $equipeprofissional->profissional->nome }}</span>
@@ -178,6 +175,34 @@
   Essa Unidade não Possui Vagas Preenchidas!
 </div>
 @endif
+
+
+<br>
+
+<div class="container py-2">
+  <p class="text-center bg-primary text-white">
+    <strong>Sumário</strong>
+  </p>  
+</div>
+
+<div class="container py-3">
+  <form>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <label for="total_de_vagas" class="form-label">Total de Vagas</label>
+      <input type="text" class="form-control" name="total_de_vagas" id="total_de_vagas" value="{{ $equipe->total_vagas }}" readonly>   
+    </div>
+    <div class="col-md-4">
+      <label for="total_de_vagas_preenchidas" class="form-label">Total de Vagas Prenchidas</label>
+      <input type="text" class="form-control" name="total_de_vagas_preenchidas" id="total_de_vagas_preenchidas" value="{{ $equipe->vagas_preenchidas }}" readonly>   
+    </div>
+    <div class="col-md-4">
+      <label for="total_de_vagas_livres" class="form-label">Total de Vagas Livres</label>
+      <input type="text" class="form-control" name="numero" id="total_de_vagas_livres" value="{{ $equipe->vagas_disponiveis }}" readonly>   
+    </div>
+  </div>
+  </form>  
+</div>
 
 
 <x-btn-back route="equipegestao.index" />
@@ -313,13 +338,13 @@ $(document).ready(function(){
   $("#profissional_nome").typeahead({
       hint: true,
       highlight: true,
-      minLength: 1,
-      limit: 10
+      minLength: 1
+      
   },
   {
       name: "profissionais",
       displayKey: "text",
-
+      limit: 10,
       source: profissionais.ttAdapter(),
       templates: {
         empty: [
@@ -328,7 +353,7 @@ $(document).ready(function(){
           '</div>'
         ].join('\n'),
         suggestion: function(data) {
-            return '<div><div class="bg-dark text-white rounded"> ' + data.text + ' - <strong>Matrícula:</strong> ' + data.matricula + '</div>' + '<div class="mx-1">Cargo: <i>' + data.cargo + '</i></div></div>';
+            return '<div><div class="text-bg-primary"> ' + data.text + ' - <strong>Matrícula:</strong> ' + data.matricula + '</div>' + '<div class="text-bg-light mx-1">Cargo: <i>' + data.cargo + '</i></div></div>';
           }
       }    
       }).on("typeahead:selected", function(obj, datum, name) {

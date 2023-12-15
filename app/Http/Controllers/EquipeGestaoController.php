@@ -69,11 +69,25 @@ class EquipeGestaoController extends Controller
         $input = $this->validate($request, [
             'equipe_id' => 'required|integer|exists:equipes,id',
             'profissional_id' => 'required|integer|exists:profissionals,id',
-            'cargo_id' => 'required|integer|exists:cargos,id',
-            'equipeprofissional_id' => 'required',
-            'cargo_profissional_id' => 'required',
-        ]);
+            'cargo_id' => 'required|integer|exists:cargos,id|same:cargo_profissional_id',
+            'equipeprofissional_id' => 'required|integer',
+            'cargo_profissional_id' => 'required|integer',
+        ],[
+            'cargo_id.same' => 'O cargo selecionado não é compatível com o profissional selecionado.'
+        ]
+        );
 
+        $vaga = EquipeProfissional::findOrFail($input['equipeprofissional_id']);
+
+        if (!isset($vaga->profissional_id)){
+            $vaga->profissional_id = $input['profissional_id'];
+            $vaga->save();
+            $mensagem = 'Profissional vinculado a equipe com sucesso!' ;
+        } else {
+            $mensagem = 'Vaga já preenchida!' ;
+        }    
+
+        return redirect()->route('equipegestao.show', $input['equipe_id'])->with('message', $mensagem);
     }
     
     
@@ -85,10 +99,24 @@ class EquipeGestaoController extends Controller
      */
     public function limparvaga(Request $request)
     {
-      if (Gate::denies('gestao.equipe.desvincular.vaga')) {
-            abort(403, 'Acesso negado.');
-      }
+      $this->authorize('gestao.equipe.vincular.vaga');
 
+        $input = $this->validate($request, [
+            'equipeprofissional_id_limpar' => 'required|integer|exists:equipe_profissionals,id',
+            'equipe_id_limpar' => 'required|integer|exists:equipes,id',
+        ]);
+
+        $vaga = EquipeProfissional::findOrFail($input['equipeprofissional_id_limpar']);
+
+        if (isset($vaga->profissional_id)){
+            $vaga->profissional_id = null;
+            $vaga->save();
+            $mensagem = 'Vaga limpa com sucesso!' ;
+        } else {
+            $mensagem = 'Vaga já está limpa!' ;
+        }    
+
+        return redirect()->route('equipegestao.show', $input['equipe_id_limpar'])->with('message', $mensagem);
     }
     
     
@@ -100,9 +128,9 @@ class EquipeGestaoController extends Controller
      */
     public function exportcsv()
     {
-        if (Gate::denies('gestao.equipe.export')) {
-            abort(403, 'Acesso negado.');
-        }
+        $this->authorize('gestao.equipe.export');
+
+        return Excel::download(new EquipeGestaoExport(request(['descricao','numero', 'cnes', 'ine', 'minima', 'unidade', 'distrito', 'tipo'])),  'EquipesGestao_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
 
     }
 
@@ -114,27 +142,12 @@ class EquipeGestaoController extends Controller
      */
     public function exportxls()
     {
-        if (Gate::denies('gestao.equipe.export')) {
-            abort(403, 'Acesso negado.');
-        }
+        $this->authorize('gestao.equipe.export');
 
-    }
-
-    /**
-     * Exportação para planilha (csv), traz todos dados, com redundancias na planilha
-     *
-     * @param  int  $id
-     * @return Response::stream()
-     */
-    public function exportcsvcompleto()
-    {
-        if (Gate::denies('gestao.equipe.export')) {
-            abort(403, 'Acesso negado.');
-        }
-
+        return Excel::download(new EquipeGestaoExport(request(['descricao','numero', 'cnes', 'ine', 'minima', 'unidade', 'distrito', 'tipo'])),  'EquipesGestao_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
     
-        /**
+    /**
      * Exportação para pdf
      *
      * @param  
@@ -142,9 +155,11 @@ class EquipeGestaoController extends Controller
      */
     public function exportpdf()
     {
-        if (Gate::denies('gestao.equipe.export')) {
-            abort(403, 'Acesso negado.');
-        }
+        $this->authorize('gestao.equipe.export');
+
+        return Pdf::loadView('equipes.gestao.report', [
+            'dataset' => Equipe::orderBy('descricao', 'asc')->filter(request(['descricao','numero', 'cnes', 'ine', 'minima', 'unidade', 'distrito', 'tipo']))->get()
+        ])->download('EquipesGestao_' .  date("Y-m-d H:i:s") . '.pdf');
 
     }
     

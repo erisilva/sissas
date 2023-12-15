@@ -1,0 +1,77 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        \DB::statement($this->createView());
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        \DB::statement($this->dropView());
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    private function createView(): string
+    {
+        return <<<EOD
+                  CREATE VIEW equipe_views AS
+                    select 
+                    equipe_profissionals.id,
+                    profissionals.nome,
+                    profissionals.matricula,
+                    profissionals.cns,
+                    profissionals.cpf,
+                    profissionals.registroClasse, 
+                    cargos.nome as cargo,
+                    equipes.descricao as equipe,
+                    equipes.numero as equipe_numero,
+                    equipes.ine,
+                    equipes.cnes,
+                    equipes.minima as equipe_minima,
+                    unidades.nome as unidade,
+                    unidades.porte as unidade_porte,
+                    distritos.nome as distrito,
+                    profissionals.id as profissional_id,
+                    cargos.id as cargo_equipe_id,
+                    profissionals.cargo_id as cargo_profissional_id,
+                    equipe_profissionals.equipe_id as equipe_id
+                    from equipe_profissionals
+                    left join profissionals on (profissionals.id = equipe_profissionals.profissional_id)
+                    inner join equipes on (equipes.id = equipe_profissionals.equipe_id)
+                        inner join unidades on (unidades.id = equipes.unidade_id)
+                            inner join distritos on (unidades.distrito_id = distritos.id)
+                    inner join cargos on (equipe_profissionals.cargo_id = cargos.id)
+                    
+                order by equipe_profissionals.id asc;
+                EOD;
+    }
+   
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    private function dropView(): string
+    {
+        return <<<EOD
+
+            DROP VIEW IF EXISTS `equipe_views`;
+            EOD;
+    }    
+};

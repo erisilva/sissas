@@ -92,7 +92,7 @@
                                 @endcan   
                                 @can('equipe.index')
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('equipes.index') }}">
+                                    <a class="dropdown-item" href="{{ route('equipeview.index') }}">
                                         <x-icon icon='person-square' /> Profissionais e Equipes
                                     </a>
                                 </li>

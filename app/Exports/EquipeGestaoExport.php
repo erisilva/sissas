@@ -22,6 +22,8 @@ class EquipeGestaoExport implements FromQuery, WithHeadings
     *
     */
 
+    private $filter;
+
     public function __construct($filter)
     {
         $this->filter = $filter;
@@ -29,11 +31,33 @@ class EquipeGestaoExport implements FromQuery, WithHeadings
 
     public function query()
     {
-        return Permission::query()->select('name', 'description')->orderBy('id', 'asc')->filter($this->filter);
+        return Equipe::query()
+                        ->select('equipes.descricao as descricao',
+                                    'equipes.numero as numero',
+                                    'equipe_tipos.nome as tipo',
+                                    'equipes.cnes as cnes',
+                                    'equipes.ine as ine',
+                                    'equipes.minima as minima',   
+                                    'unidades.nome as unidade',
+                                    'distritos.nome as distrito'
+                                    )
+                        ->join('unidades', 'unidades.id', '=', 'equipes.unidade_id')
+                        ->join('distritos', 'distritos.id', '=', 'unidades.distrito_id')
+                        ->join('equipe_tipos', 'equipe_tipos.id', '=', 'equipes.equipe_tipo_id')
+                        ->orderBy('equipes.id', 'asc')
+                        ->filter($this->filter);
     }
 
     public function headings(): array
     {
-        return ["Nome", "Descrição"];
+        return ["Equipe", 
+                "Número",
+                "Tipo",
+                "CNES",
+                "INE",
+                "Mínima",
+                "Unidade",
+                "Distrito"
+            ];
     }
 }
