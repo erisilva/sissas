@@ -47,6 +47,7 @@
                 <th>CPF</th>
                 <th>Cargo</th>
                 <th>Equipe</th>
+                <th>Tipo</th>
                 <th>Nº</th>
                 <th>CNES</th>
                 <th>INE</th>
@@ -61,21 +62,21 @@
                   @if ($equipeviewdata_item->profissional_id)
                       {{ $equipeviewdata_item->nome }}
                   @else
-                      <span class="fw-light">Vaga Livre</span>                          
+                      <span class="badge text-bg-info">Vaga Livre</span>                         
                   @endif
                 </td>
                 <td>
                   @if ($equipeviewdata_item->profissional_id)
                       {{ $equipeviewdata_item->matricula }}
                   @else
-                      <span class="fw-light">Vaga Livre</span>                          
+                      <span class="fw-light">-</span>                          
                   @endif
                 </td>
                 <td>
                   @if ($equipeviewdata_item->profissional_id)
                       {{ $equipeviewdata_item->cpf }}
                   @else
-                      <span class="fw-light">Vaga Livre</span>                          
+                      <span class="fw-light">-</span>                          
                   @endif
                 </td>
                 
@@ -85,6 +86,10 @@
 
                 <td class="text-nowrap">
                   {{ $equipeviewdata_item->equipe }}
+                </td>
+
+                <td class="text-nowrap">
+                  {{ $equipeviewdata_item->equipe_tipo }}
                 </td>
 
                 <td class="text-nowrap">
@@ -135,6 +140,28 @@
 
   <form method="GET" action="{{ route('equipeview.index') }}">
     
+    <div class="row g-3">
+        
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="nome" class="form-label">Profissional</label>
+            <input type="text" class="form-control" id="nome" name="nome" value="{{ session()->get('equipe_view_nome') }}">
+          </div>
+        </div>
+  
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="matricula" class="form-label">Matrícula</label>
+            <input type="text" class="form-control" id="matricula" name="matricula" value="{{ session()->get('equipe_view_matricula') }}">
+          </div>
+        </div>
+
+
+
+    </div>  
+
+
+
     <div class="mb-3">
       <label for="name" class="form-label">{{ __('Name') }}</label>
       <input type="text" class="form-control" id="name" name="name" value="{{ session()->get('permission_name') }}">
