@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EquipeView;
 use App\Models\Perpage;
+use App\Models\Cargo;
 use Illuminate\Http\Request;
 
 class EquipeViewController extends Controller
@@ -21,7 +22,8 @@ class EquipeViewController extends Controller
 
         return view('equipes.view.index', [
             'equipeviewdata' => EquipeView::orderBy('equipe_id', 'asc')->filter(request(['name','description']))->paginate(session('perPage', '5'))->appends(request(['name', 'description'])),
-            'perpages' => Perpage::orderBy('valor')->get()
+            'perpages' => Perpage::orderBy('valor')->get(),
+            'cargos' => Cargo::orderBy('nome')->get(),
         ]);
     }
 

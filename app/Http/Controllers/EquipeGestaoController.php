@@ -38,6 +38,7 @@ class EquipeGestaoController extends Controller
             'distritos' => Distrito::orderBy('nome')->get(),
             'equipetipos' => EquipeTipo::orderBy('nome')->get(),
             'perpages' => Perpage::orderBy('valor')->get()
+            
         ]);        
     }
 

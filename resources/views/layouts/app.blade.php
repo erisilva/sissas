@@ -93,7 +93,7 @@
                                 @can('equipe.index')
                                 <li>
                                     <a class="dropdown-item" href="{{ route('equipeview.index') }}">
-                                        <x-icon icon='person-square' /> Profissionais e Equipes
+                                        <x-icon icon='compass' /> Mapa
                                     </a>
                                 </li>
                                 @endcan

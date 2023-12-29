@@ -69,14 +69,14 @@
                   @if ($equipeviewdata_item->profissional_id)
                       {{ $equipeviewdata_item->matricula }}
                   @else
-                      <span class="fw-light">-</span>                          
+                      <span class="badge text-bg-info">Vaga Livre</span>                         
                   @endif
                 </td>
                 <td>
                   @if ($equipeviewdata_item->profissional_id)
                       {{ $equipeviewdata_item->cpf }}
                   @else
-                      <span class="fw-light">-</span>                          
+                      <span class="badge text-bg-info">Vaga Livre</span>                          
                   @endif
                 </td>
                 
@@ -136,45 +136,54 @@
 
 {{-- Modal Filter --}}
 
-<x-modal-filter class="modal-lg" :perpages="$perpages" icon='funnel' title='Filters'>
+<x-modal-filter class="modal-xl" :perpages="$perpages" icon='funnel' title='Filters'>
 
   <form method="GET" action="{{ route('equipeview.index') }}">
     
     <div class="row g-3">
         
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="nome" class="form-label">Profissional</label>
-            <input type="text" class="form-control" id="nome" name="nome" value="{{ session()->get('equipe_view_nome') }}">
-          </div>
+        <div class="col-md-4">
+          <label for="nome" class="form-label">Profissional</label>
+          <input type="text" class="form-control" id="nome" name="nome" value="{{ session()->get('equipe_view_nome') }}">
         </div>
   
+        <div class="col-md-2">
+          <label for="matricula" class="form-label">Matrícula</label>
+          <input type="text" class="form-control" id="matricula" name="matricula" value="{{ session()->get('equipe_view_matricula') }}">
+        </div>
+
+        <div class="col-md-2">
+          <label for="cpf" class="form-label">CPF</label>
+          <input type="text" class="form-control" id="cpf" name="cpf" value="{{ session()->get('equipe_view_cpf') }}">
+        </div>
+
+        <div class="col-md-4">
+          <label for="cargo_id" class="form-label">Cargo</label>
+          <select class="form-control" id="cargo_id" name="cargo_id">
+              <option value="" selected="true">Clique ...</option> 
+              @foreach($cargos as $cargo)
+              <option value="{{ $cargo->id }}" @selected(session()->get('equipe_view_cargo_id') == $cargo->id) >
+                {{ $cargo->nome }}
+              </option>
+              @endforeach
+          </select>
+        </div>
+
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="matricula" class="form-label">Matrícula</label>
-            <input type="text" class="form-control" id="matricula" name="matricula" value="{{ session()->get('equipe_view_matricula') }}">
+            <label for="cargo" class="form-label">Cargo</label>
+            <input type="text" class="form-control" id="cargo" name="cargo" value="{{ session()->get('equipe_view_cargo') }}">
           </div>
         </div>
 
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
+      
+          {{-- Reset the Filter --}}
+          <a href="{{ route('equipeview.index', ['nome' => '', 'matricula' => '', 'cargo_id' => '', 'vinculo_id' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
+        </div>
 
-
-    </div>  
-
-
-
-    <div class="mb-3">
-      <label for="name" class="form-label">{{ __('Name') }}</label>
-      <input type="text" class="form-control" id="name" name="name" value="{{ session()->get('permission_name') }}">
     </div>
-    
-    <div class="mb-3">
-      <label for="description" class="form-label">{{ __('Description') }}</label>
-      <input type="text" class="form-control" id="description" name="description" value="{{ session()->get('permission_description') }}">
-    </div>
-    
-    <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
-    
-    <a href="{{ route('equipeview.index', ['name' => '', 'description' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
 
   </form>
 
