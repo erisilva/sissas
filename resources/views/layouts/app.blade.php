@@ -122,21 +122,21 @@
                                 @can('distrito.index')
                                 <li>
                                     <a class="dropdown-item" href="{{ route('distritos.index') }}">
-                                        <x-icon icon='table' /> Distritos
+                                        <x-icon icon='house-door-fill' /> Distritos
                                     </a>
                                 </li>
                                 @endcan
                                 @can('unidade.index')
                                 <li>
                                     <a class="dropdown-item" href="{{ route('unidades.index') }}">
-                                        <x-icon icon='table' /> Unidades
+                                        <x-icon icon='house-heart' /> Unidades
                                     </a>
                                 </li>
                                 @endcan
                                 @can('equipe.index')
                                 <li>
                                     <a class="dropdown-item" href="{{ route('equipes.index') }}">
-                                        <x-icon icon='person-square' /> Equipes e Vagas
+                                        <x-icon icon='people-fill' /> Equipes e Vagas
                                     </a>
                                 </li>
                                 @endcan

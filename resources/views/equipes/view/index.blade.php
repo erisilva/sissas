@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Profissionais e Equipes')
+@section('title', 'Mapa')
 
 @section('content')
 <div class="container-fluid">
@@ -8,7 +8,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item active" aria-current="page">
         <a href="{{ route('equipeview.index') }}">
-          Profissionais e Equipes
+          <x-icon icon='compass' /> Mapa
         </a>
       </li>
     </ol>
@@ -169,18 +169,69 @@
           </select>
         </div>
 
-        <div class="col-md-6">
-          <div class="mb-3">
-            <label for="cargo" class="form-label">Cargo</label>
-            <input type="text" class="form-control" id="cargo" name="cargo" value="{{ session()->get('equipe_view_cargo') }}">
-          </div>
+        <div class="col-md-4">
+          <label for="equipe" class="form-label">Equipe</label>
+          <input type="text" class="form-control" id="equipe" name="equipe" value="{{ session()->get('equipe_view_equipe') }}">
+        </div>
+
+        <div class="col-md-4">
+          <label for="equipe_tipo_id" class="form-label">Tipo</label>
+          <select class="form-control" id="equipe_tipo_id" name="equipe_tipo_id">
+              <option value="" selected="true">Clique ...</option>
+              @foreach($equipe_tipos as $equipe_tipo)
+              <option value="{{ $equipe_tipo->id }}" @selected(session()->get('equipe_view_equipe_tipo_id') == $equipe_tipo->id) >
+                {{ $equipe_tipo->nome }}
+              </option>
+              @endforeach
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label for="numero" class="form-label">Nº</label>
+          <input type="text" class="form-control" id="numero" name="numero" value="{{ session()->get('equipe_view_numero') }}">
+        </div>
+        
+        <div class="col-md-2">
+          <label for="cnes" class="form-label">CNES</label>
+          <input type="text" class="form-control" id="cnes" name="cnes" value="{{ session()->get('equipe_view_cnes') }}">
+        </div>
+
+        <div class="col-md-2">
+          <label for="ine" class="form-label">INE</label>
+          <input type="text" class="form-control" id="ine" name="ine" value="{{ session()->get('equipe_view_ine') }}">
+        </div>
+
+        <div class="col-md-4">
+          <label for="unidade" class="form-label">Unidade</label>
+          <input type="text" class="form-control" id="unidade" name="unidade" value="{{ session()->get('equipe_view_unidade') }}">
+        </div>
+
+        <div class="col-md-4">
+          <label for="distrito_id" class="form-label">Distrito</label>
+          <select class="form-control" id="distrito_id" name="distrito_id">
+              <option value="" selected="true">Clique ...</option>
+              @foreach($distritos as $distrito)
+              <option value="{{ $distrito->id }}" @selected(session()->get('equipe_view_distrito_id') == $equipe_tipo->id) >
+                {{ $distrito->nome }}
+              </option>
+              @endforeach
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label for="mostrar_vagas" class="form-label">Mostrar Vagas</label>
+          <select class="form-control" id="mostrar_vagas" name="mostrar_vagas">
+              <option value="1" @selected(session()->get('equipe_view_mostrar_vagas') == 1)>Todas</option>
+              <option value="2" @selected(session()->get('equipe_view_mostrar_vagas') == 2)>Livres</option>
+              <option value="3" @selected(session()->get('equipe_view_mostrar_vagas') == 3)>Preenchidas</option>
+          </select>
         </div>
 
         <div class="col-12">
           <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
       
           {{-- Reset the Filter --}}
-          <a href="{{ route('equipeview.index', ['nome' => '', 'matricula' => '', 'cargo_id' => '', 'vinculo_id' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
+          <a href="{{ route('equipeview.index', ['nome' => '', 'matricula' => '', 'cpf' => '', 'cargo_id' => '', 'equipe' => '', 'equipe_tipo_id' => '', 'numero' => '', 'cnes' => '', 'ine' => '', 'unidade' => '', 'distrito_id' => '', 'mostrar_vagas' => '1']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
         </div>
 
     </div>

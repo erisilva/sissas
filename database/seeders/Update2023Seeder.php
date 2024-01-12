@@ -114,7 +114,20 @@ class Update2023Seeder extends Seeder
         ]);
 
 
-
+        // SISAS 2.0
+        // Tipos de equipe, para o cadastro de equipes
+        DB::table('permissions')->insert([
+            'name' => 'mapa.index',
+            'description' => 'Acessar o Mapa de Equipes',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'mapa.show',
+            'description' => 'Mostrar dados do Mapa de Equipes',
+        ]);
+        DB::table('permissions')->insert([
+            'name' => 'mapa.export',
+            'description' => 'Exportação de dados do Mapa de Equipes',
+        ]);
 
 
 
@@ -149,6 +162,10 @@ class Update2023Seeder extends Seeder
         $profissional_tipo_equipe_delete = Permission::where('name', '=', 'equipetipo.delete')->get()->first();
         $profissional_tipo_equipe_show = Permission::where('name', '=', 'equipetipo.show')->get()->first();
         $profissional_tipo_equipe_export = Permission::where('name', '=', 'equipetipo.export')->get()->first();
+        // para mapas
+        $profissional_mapa_index = Permission::where('name', '=', 'mapa.index')->get()->first();
+        $profissional_mapa_show = Permission::where('name', '=', 'mapa.show')->get()->first();
+        $profissional_mapa_export = Permission::where('name', '=', 'mapa.export')->get()->first();
 
 
 
@@ -176,6 +193,10 @@ class Update2023Seeder extends Seeder
         $administrador_perfil->permissions()->attach($profissional_tipo_equipe_delete);
         $administrador_perfil->permissions()->attach($profissional_tipo_equipe_show);
         $administrador_perfil->permissions()->attach($profissional_tipo_equipe_export);
+        # mapa
+        $administrador_perfil->permissions()->attach($profissional_mapa_index);
+        $administrador_perfil->permissions()->attach($profissional_mapa_show);
+        $administrador_perfil->permissions()->attach($profissional_mapa_export);
         
         
 
@@ -198,6 +219,10 @@ class Update2023Seeder extends Seeder
         $gerente_perfil->permissions()->attach($profissional_capacitacao_create);
         $gerente_perfil->permissions()->attach($profissional_capacitacao_delete);
         # Profissionais tipos de equipe (não possui acesso)
+        #mapa
+        $gerente_perfil->permissions()->attach($profissional_mapa_index);
+        $gerente_perfil->permissions()->attach($profissional_mapa_show);
+        $gerente_perfil->permissions()->attach($profissional_mapa_export);
 
 
         # profissionais->férias
@@ -215,6 +240,9 @@ class Update2023Seeder extends Seeder
         # profissionais->capacitações
         $operador_perfil->permissions()->attach($profissional_capacitacao_create);
         # Profissionais tipos de equipe (não possui acesso)
+        #mapa
+        $operador_perfil->permissions()->attach($profissional_mapa_index);
+        $operador_perfil->permissions()->attach($profissional_mapa_show);
 
 
         # podem ver as férias e licencas
@@ -223,6 +251,9 @@ class Update2023Seeder extends Seeder
         $leitor_perfil->permissions()->attach($profissional_licenca_index);
         $leitor_perfil->permissions()->attach($profissional_licenca_show);
         # Profissionais tipos de equipe (não possui acesso)
+        #mapa
+        $leitor_perfil->permissions()->attach($profissional_mapa_index);
+        $leitor_perfil->permissions()->attach($profissional_mapa_show);
 
     }
 }
