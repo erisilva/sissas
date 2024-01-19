@@ -16,22 +16,7 @@ class EquipeView extends Model
      */
     public function scopeFilter($query, array $filters) : void
     {
-        # filtros
-        // nome (do profissional)
-        // matricula
-        // cpf
-        // cargo_id
-        // equipe (descricao)
-        // equipe_tipo_id
-        // numero
-        // cnes
-        // ine
-        // unidade (descricao)
-        // distrito_id
-        // mostrar_vagas (1=todas, 2= somente vagas, 3= somente ocupadas)
-
-        // ['nome' => '', 'matricula' => '', 'cpf' => '', 'cargo_id' => '', 'equipe' => '', 'equipe_tipo_id' => '', 'numero' => '', 'cnes' => '', 'ine' => '', 'unidade' => '', 'distrito_id' => '', 'mostrar_vagas' => '1']
-
+        
         // showing only the distritos that the user has access to
         $query->whereIn('distrito_id', auth()->user()->distritos->pluck('id'));
 
@@ -50,6 +35,14 @@ class EquipeView extends Model
 
         if (!session()->exists('equipe_view_cargo_id')){
             session(['equipe_view_cargo_id' => '']);
+        }
+
+        if (!session()->exists('equipe_view_vinculo_id')){
+            session(['equipe_view_vinculo_id' => '']);
+        }
+
+        if (!session()->exists('equipe_view_vinculo_tipo_id')){
+            session(['equipe_view_vinculo_tipo_id' => '']);
         }
 
         if (!session()->exists('equipe_view_equipe')){
@@ -102,6 +95,14 @@ class EquipeView extends Model
             session(['equipe_view_cargo_id' => $filters['cargo_id'] ?? '']);
         }
 
+        if (Arr::exists($filters, 'vinculo_id')) {
+            session(['equipe_view_vinculo_id' => $filters['vinculo_id'] ?? '']);
+        }
+
+        if (Arr::exists($filters, 'vinculo_tipo_id')) {
+            session(['equipe_view_vinculo_tipo_id' => $filters['vinculo_tipo_id'] ?? '']);
+        }
+
         if (Arr::exists($filters, 'equipe')) {
             session(['equipe_view_equipe' => $filters['equipe'] ?? '']);
         }
@@ -150,6 +151,14 @@ class EquipeView extends Model
 
         if (trim(session()->get('equipe_view_cargo_id')) !== '') {
             $query->where('cargo_equipe_id', session()->get('equipe_view_cargo_id'));
+        }
+
+        if (trim(session()->get('equipe_view_vinculo_id')) !== '') {
+            $query->where('vinculo_id', session()->get('equipe_view_vinculo_id'));
+        }
+
+        if (trim(session()->get('equipe_view_vinculo_tipo_id')) !== '') {
+            $query->where('vinculo_tipo_id', session()->get('equipe_view_vinculo_tipo_id'));
         }
 
         if (trim(session()->get('equipe_view_equipe')) !== '') {

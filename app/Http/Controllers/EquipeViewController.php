@@ -7,7 +7,14 @@ use App\Models\Perpage;
 use App\Models\Cargo;
 use App\Models\EquipeTipo;
 use App\Models\Distrito;
+use App\Models\Vinculo;
+use App\Models\VinculoTipo;
 use Illuminate\Http\Request;
+
+use Barryvdh\DomPDF\Facade\Pdf; // Export PDF
+
+use App\Exports\EquipeViewSimplesExport;
+use Maatwebsite\Excel\Facades\Excel; // Export Excel
 
 class EquipeViewController extends Controller
 {
@@ -22,25 +29,14 @@ class EquipeViewController extends Controller
             session(['perPage' => request('perpage')]);
         }
 
-                // nome (do profissional)
-        // matricula
-        // cpf
-        // cargo_id
-        // equipe (descricao)
-        // equipe_tipo_id
-        // numero
-        // cnes
-        // ine
-        // unidade (descricao)
-        // distrito_id
-        // mostrar_vagas (1=todas, 2= somente vagas, 3= somente ocupadas)
-
         return view('equipes.view.index', [
-            'equipeviewdata' => EquipeView::orderBy('equipe_id', 'asc')->filter(request(['nome','matricula', 'cpf', 'cargo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas']))->paginate(session('perPage', '5'))->appends(request(['nome','matricula', 'cpf', 'cargo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),
+            'equipeviewdata' => EquipeView::orderBy('equipe_id', 'asc')->filter(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas']))->paginate(session('perPage', '5'))->appends(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),
             'perpages' => Perpage::orderBy('valor')->get(),
             'cargos' => Cargo::orderBy('nome')->get(),
             'equipe_tipos' => EquipeTipo::orderBy('nome')->get(),
             'distritos' => auth()->user()->distritos->sortBy('nome'),
+            'vinculos' => Vinculo::orderBy('nome')->get(),
+            'vinculo_tipos' => VinculoTipo::orderBy('nome')->get(),
         ]);
     }
 
@@ -53,4 +49,27 @@ class EquipeViewController extends Controller
 
         return view('equipes.view.show', compact('equipeView'));
     }
+
+
+    /**
+     * Export the specified resource to Excel.
+     */
+    public function exportcsv() : \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        $this->authorize('mapa.export');
+
+        // ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')]
+
+        return Excel::download(new EquipeViewSimplesExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
+    }
+
+    /**
+     * Export the specified resource to Excel.
+     */
+    public function exportxls() : \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        $this->authorize('mapa.export');
+
+        return Excel::download(new EquipeViewSimplesExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+    }       
 }

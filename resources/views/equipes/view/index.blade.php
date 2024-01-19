@@ -24,13 +24,13 @@
     <x-dropdown-menu title='Reports' icon='printer'>
 
       <li>
-        <a class="dropdown-item" href="{{route('equipeview.export.xls', ['description' => request()->input('description'), 'name' => request()->input('name')])}}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS' }}</a>
+        <a class="dropdown-item" href="{{route('equipeview.export.xls', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')])}}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS' }}</a>
       </li>
       <li>
-        <a class="dropdown-item" href="{{route('equipeview.export.csv', ['description' => request()->input('description'), 'name' => request()->input('name')])}}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV' }}</a>
+        <a class="dropdown-item" href="{{route('equipeview.export.csv', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')])}}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV' }}</a>
       </li>
       <li>
-        <a class="dropdown-item" href="{{route('equipeview.export.pdf', ['description' => request()->input('description'), 'name' => request()->input('name')])}}"><x-icon icon='file-pdf-fill' /> {{ __('Export') . ' PDF' }}</a>
+        <a class="dropdown-item" href="{{route('equipeview.export.pdf',['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')])}}"><x-icon icon='file-pdf-fill' /> {{ __('Export') . ' PDF' }}</a>
       </li>
     
     </x-dropdown-menu>
@@ -45,6 +45,8 @@
                 <th>Profissional</th>
                 <th>Matrícula</th>
                 <th>CPF</th>
+                <th>Vínculo</th>
+                <th>Tipo</th>
                 <th>Cargo</th>
                 <th>Equipe</th>
                 <th>Tipo</th>
@@ -75,6 +77,20 @@
                 <td>
                   @if ($equipeviewdata_item->profissional_id)
                       {{ $equipeviewdata_item->cpf }}
+                  @else
+                      <span class="badge text-bg-info">Vaga Livre</span>                          
+                  @endif
+                </td>
+                <td>
+                  @if ($equipeviewdata_item->profissional_id)
+                      {{ $equipeviewdata_item->vinculo }}
+                  @else
+                      <span class="badge text-bg-info">Vaga Livre</span>                          
+                  @endif
+                </td>
+                <td>
+                  @if ($equipeviewdata_item->profissional_id)
+                      {{ $equipeviewdata_item->tipo_de_vinculo }}
                   @else
                       <span class="badge text-bg-info">Vaga Livre</span>                          
                   @endif
@@ -142,17 +158,17 @@
     
     <div class="row g-3">
         
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="nome" class="form-label">Profissional</label>
           <input type="text" class="form-control" id="nome" name="nome" value="{{ session()->get('equipe_view_nome') }}">
         </div>
   
-        <div class="col-md-2">
+        <div class="col-md-3">
           <label for="matricula" class="form-label">Matrícula</label>
           <input type="text" class="form-control" id="matricula" name="matricula" value="{{ session()->get('equipe_view_matricula') }}">
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-3">
           <label for="cpf" class="form-label">CPF</label>
           <input type="text" class="form-control" id="cpf" name="cpf" value="{{ session()->get('equipe_view_cpf') }}">
         </div>
@@ -164,6 +180,30 @@
               @foreach($cargos as $cargo)
               <option value="{{ $cargo->id }}" @selected(session()->get('equipe_view_cargo_id') == $cargo->id) >
                 {{ $cargo->nome }}
+              </option>
+              @endforeach
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="vinculo_id" class="form-label">Vínculo</label>
+          <select class="form-control" id="vinculo_id" name="vinculo_id">
+              <option value="" selected="true">Clique ...</option> 
+              @foreach($vinculos as $vinculo)
+              <option value="{{ $vinculo->id }}" @selected(session()->get('equipe_view_vinculo_id') == $vinculo->id) >
+                {{ $vinculo->nome }}
+              </option>
+              @endforeach
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="vinculo_tipo_id" class="form-label">Tipo de Vínculo</label>
+          <select class="form-control" id="vinculo_tipo_id" name="vinculo_tipo_id">
+              <option value="" selected="true">Clique ...</option> 
+              @foreach($vinculo_tipos as $vinculotipo)
+              <option value="{{ $vinculotipo->id }}" @selected(session()->get('equipe_view_vinculo_tipo_id') == $vinculotipo->id) >
+                {{ $vinculotipo->nome }}
               </option>
               @endforeach
           </select>
@@ -231,7 +271,7 @@
           <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
       
           {{-- Reset the Filter --}}
-          <a href="{{ route('equipeview.index', ['nome' => '', 'matricula' => '', 'cpf' => '', 'cargo_id' => '', 'equipe' => '', 'equipe_tipo_id' => '', 'numero' => '', 'cnes' => '', 'ine' => '', 'unidade' => '', 'distrito_id' => '', 'mostrar_vagas' => '1']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
+          <a href="{{ route('equipeview.index', ['nome' => '', 'matricula' => '', 'cpf' => '', 'cargo_id' => '', 'vinculo_id' => '', 'vinculo_tipo_id' => '', 'equipe' => '', 'equipe_tipo_id' => '', 'numero' => '', 'cnes' => '', 'ine' => '', 'unidade' => '', 'distrito_id' => '', 'mostrar_vagas' => '1']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
         </div>
 
     </div>
