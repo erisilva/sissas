@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Unidade;
 use App\Models\Perpage;
-use App\Models\Distrito;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -32,7 +31,7 @@ class UnidadeController extends Controller
         return view('unidades.index', [
             'unidades' => Unidade::orderBy('nome', 'asc')->filter(request(['nome', 'distrito_id']))->paginate(session('perPage', '5'))->appends(request(['nome', 'descricao'])),
             'perpages' => Perpage::orderBy('valor')->get(),
-            'distritos' => Distrito::orderBy('nome')->get(),
+            'distritos' => auth()->user()->distritos->sortBy('nome'),
         ]);
 
         // with('author')
@@ -46,7 +45,7 @@ class UnidadeController extends Controller
         $this->authorize('unidade.create');
 
         return view('unidades.create', [
-            'distritos' => Distrito::orderBy('nome')->get(),
+            'distritos' => auth()->user()->distritos->sortBy('nome'),
         ]);
     }
 
@@ -63,9 +62,9 @@ class UnidadeController extends Controller
             'porte' => 'required|max:10',
         ]);
   
-        Unidade::create($request->all());
+        $unidade = Unidade::create($request->all());
 
-        return redirect(route('unidades.index'))->with('message', 'Unidade cadastrada com sucesso!');
+        return redirect(route('unidades.edit', $unidade))->with('message', 'Unidade criada com sucesso!');
     }
 
     /**
@@ -77,6 +76,7 @@ class UnidadeController extends Controller
 
         return view('unidades.show', [
             'unidade' => $unidade,
+            'equipes' => $unidade->equipes()->orderBy('descricao', 'asc')->get(),
         ]);
     }
 
@@ -89,7 +89,8 @@ class UnidadeController extends Controller
 
         return view('unidades.edit', [
             'unidade' => $unidade,
-            'distritos' => Distrito::orderBy('nome')->get(),
+            'distritos' => auth()->user()->distritos->sortBy('nome'),
+            'equipes' => $unidade->equipes()->orderBy('descricao', 'asc')->get(),
         ]);
     }
 
@@ -108,7 +109,7 @@ class UnidadeController extends Controller
 
         $unidade->update($request->all());
 
-        return redirect(route('unidades.index'))->with('message', 'Unidade atualizada com sucesso!');
+        return redirect(route('unidades.edit', $unidade))->with('message', 'Unidade alterada com sucesso!');
     }
 
     /**
@@ -173,6 +174,8 @@ class UnidadeController extends Controller
      */
     public function autocomplete(Request $request)
     {
+        $this->authorize('unidade.index'); // verifica se o usuário possui acesso para listar
+
         $unidades = DB::table('unidades');
 
         // join

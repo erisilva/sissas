@@ -93,13 +93,11 @@
                   {{ $equipe->vagas_disponiveis }}
                 </td>
                 <td>
+                  @can('gestao.equipe.show')
                   <x-btn-group label='Opções'>
-
-                    @can('equipe.show')
                     <a href="{{ route('equipegestao.show', $equipe->id) }}" class="btn btn-info btn-sm" role="button"><x-icon icon='eye'/></a>
-                    @endcan
-
                   </x-btn-group>
+                  @endcan
                 </td>
             </tr>    
             @endforeach                                                 

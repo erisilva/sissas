@@ -8,7 +8,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="{{ route('unidades.index') }}">
-          Unidades
+          <x-icon icon='house-heart' /> Unidades
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
@@ -25,11 +25,6 @@
     @csrf
     @method('PUT')
     <div class="row g-3">
-
-
-
-
-
 
       <div class="col-md-8">
         <label for="nome" class="form-label">{{ __('Name') }} <strong  class="text-danger">(*)</strong></label>
@@ -139,7 +134,7 @@
       </div>
 
       <div class="col-md-2">
-        <label for="porte" class="form-label">Porte</label>
+        <label for="porte" class="form-label">Porte <strong  class="text-danger">(*)</strong></label>
         <input type="text" class="form-control @error('porte') is-invalid @enderror" name="porte" value="{{ old('porte') ?? $unidade->porte }}">
         @error('porte')
           <div class="invalid-feedback">{{ $message }}</div>
@@ -156,7 +151,80 @@
    </form>
 </div>
 
-<x-btn-back route="unidades.index" />
+<div class="container py-3">
+  @if($equipes->count() > 0)
+
+  <div class="container py-2">
+    <p class="text-center bg-primary text-white">
+      <strong>Equipes</strong>
+    </p>  
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Número</th>
+                <th>Tipo</th>
+                <th>CNES</th>
+                <th>INE</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($equipes as $equipe)
+            <tr>
+                <td class="text-nowrap">
+                  {{$equipe->descricao}}
+                </td>
+                <td class="text-nowrap">
+                  {{$equipe->numero}}
+                </td>
+                <td class="text-nowrap">
+                  {{$equipe->equipeTipo->nome}}
+                </td>
+                <td>
+                  {{$equipe->cnes}}
+                </td>
+                <td>
+                  {{$equipe->ine}}
+                </td>
+                <td>
+                  @can('gestao.equipe.show')
+                  <x-btn-group label='Opções'>
+                    <a href="{{route('equipegestao.show', $equipe->id)}}" target="blank_" class="btn btn-info btn-sm" role="button"><x-icon icon='eye'/></a>
+                  </x-btn-group>
+                  @endcan
+                </td>
+            </tr>    
+            @endforeach                                                 
+        </tbody>
+    </table>
+  </div>
+
+  @else
+  <div class="alert alert-info" role="alert">
+    Essa Unidade não possui Equipes cadastradas.
+  </div>
+
+  @endif
+</div>
+
+
+<div class="container py-4">
+  <div class="float-sm-end">
+    <a href="{{ route('unidades.create') }}" class="btn btn-primary btn-lg" role="button">
+      <x-icon icon='file-earmark' />
+      {{ __('New') }}
+   </a>
+    <a href="{{ route('unidades.index') }}" class="btn btn-secondary btn-lg" role="button">
+       <x-icon icon='arrow-left-square' />
+       {{ __('Back') }}
+    </a>
+  </div>      
+</div>
+
 @endsection
 
 @section('script-footer')

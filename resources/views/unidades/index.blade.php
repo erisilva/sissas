@@ -7,7 +7,9 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item active" aria-current="page">
-        <a href="{{ route('unidades.index') }}">Unidades</a>
+        <a href="{{ route('unidades.index') }}">
+          <x-icon icon='house-heart' /> Unidades
+        </a>
       </li>
     </ol>
   </nav>
@@ -45,6 +47,7 @@
                 <th>Tel</th>
                 <th>E-mail</th>
                 <th>Bairro</th>
+                <th>Porte</th>
                 <th></th>
             </tr>
         </thead>
@@ -65,14 +68,19 @@
                 </td>
                 <td>
                   {{ $unidade->bairro }}
-                </td>  
+                </td>
+                <td>
+                  {{ $unidade->porte }}
+                </td>
                 <td>
                   <x-btn-group label='Opções'>
-
+                    @can('unidade.edit')
                     <a href="{{route('unidades.edit', $unidade->id)}}" class="btn btn-primary btn-sm" role="button"><x-icon icon='pencil-square'/></a>
+                    @endcan
 
+                    @can('unidade.show')
                     <a href="{{route('unidades.show', $unidade->id)}}" class="btn btn-info btn-sm" role="button"><x-icon icon='eye'/></a>
-
+                    @endcan
                   </x-btn-group>
                 </td>
             </tr>    
@@ -95,7 +103,7 @@
     </div>
     
     <div class="mb-3">
-      <label for="distrito_id">Tipo</strong></label>
+      <label for="distrito_id">Distrito</strong></label>
       <select class="form-control" id="distrito_id" name="distrito_id">
           <option value="" selected="true">Clique ...</option> 
           @foreach($distritos as $distrito)

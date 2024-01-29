@@ -12,6 +12,6 @@ class EquipeSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Equipe::factory(80)->create();
+        \App\Models\Equipe::factory(212)->create();
     }
 }

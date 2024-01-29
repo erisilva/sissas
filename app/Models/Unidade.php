@@ -22,6 +22,9 @@ class Unidade extends Model
      */
     public function scopeFilter($query, array $filters) : void
     {
+        // showing only the distritos that the user has access to
+        $query->whereIn('distrito_id', auth()->user()->distritos->pluck('id'));
+        
         // start session values if not yet initialized
         if (!session()->exists('unidade_nome')){
             session(['unidade_nome' => '']);

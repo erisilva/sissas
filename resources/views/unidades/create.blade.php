@@ -7,7 +7,9 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="{{ route('unidades.index') }}">Unidade</a>
+        <a href="{{ route('unidades.index') }}">
+          <x-icon icon='house-heart' /> Unidade
+        </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
       {{ __('New') }}
@@ -127,7 +129,7 @@
       </div>
 
       <div class="col-md-2">
-        <label for="porte" class="form-label">Porte</label>
+        <label for="porte" class="form-label">Porte <strong  class="text-danger">(*)</strong></label>
         <input type="text" class="form-control @error('porte') is-invalid @enderror" name="porte" value="{{ old('porte') ?? '' }}">
         @error('porte')
           <div class="invalid-feedback">{{ $message }}</div>

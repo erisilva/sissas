@@ -297,10 +297,14 @@ Route::resource('/equipegestao', EquipeGestaoController::class)->only(['index', 
 
 # Equipes::View
 
-Route::get('/equipeview/export/csv', [EquipeViewController::class, 'exportcsv'])->name('equipeview.export.csv')->middleware('auth', 'verified');
+Route::get('/equipeview/export/csv/simples', [EquipeViewController::class, 'exportcsvsimples'])->name('equipeview.export.csv.simples')->middleware('auth', 'verified');
 
-Route::get('/equipeview/export/xls', [EquipeViewController::class, 'exportxls'])->name('equipeview.export.xls')->middleware('auth', 'verified'); // Export XLS
+Route::get('/equipeview/export/xls/simples', [EquipeViewController::class, 'exportxlssimples'])->name('equipeview.export.xls.simples')->middleware('auth', 'verified');
 
-Route::get('/equipeview/export/pdf', [EquipeViewController::class, 'exportpdf'])->name('equipeview.export.pdf')->middleware('auth', 'verified'); // Export PDF
+Route::get('/equipeview/export/csv/completo', [EquipeViewController::class, 'exportcsvcompleto'])->name('equipeview.export.csv.completo')->middleware('auth', 'verified');
+
+Route::get('/equipeview/export/xls/completo', [EquipeViewController::class, 'exportxlscompleto'])->name('equipeview.export.xls.completo')->middleware('auth', 'verified');
+
+Route::get('/equipeview/export/pdf', [EquipeViewController::class, 'exportpdf'])->name('equipeview.export.pdf')->middleware('auth', 'verified');
 
 Route::resource('/equipeview', EquipeViewController::class)->only(['index', 'show',])->middleware('auth', 'verified');

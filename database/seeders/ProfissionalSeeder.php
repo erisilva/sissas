@@ -12,6 +12,6 @@ class ProfissionalSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Profissional::factory()->count(800)->create();
+        \App\Models\Profissional::factory()->count(2000)->create();
     }
 }

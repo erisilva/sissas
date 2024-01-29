@@ -46,63 +46,30 @@
                     <!-- Left Side Of Navbar -->
                     @auth
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        
-                        
+                       
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('profissionals.index') }}">Profissionais</a>
+                        </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                               Profissionais
-                            </a>
-                            <ul class="dropdown-menu">
-                                @can('profissional.index')
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('profissionals.index') }}">
-                                        <x-icon icon='people' /> Profissionais
-                                    </a>
-                                </li>
-                                @endcan   
-                                @can('ferias.index')
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('ferias.index') }}">
-                                        <x-icon icon='airplane' /> Férias dos Profissionais
-                                    </a>
-                                </li>
-                                @endcan
-                                @can('licenca.index')
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('licencas.index') }}">
-                                        <x-icon icon='file-medical' /> Licenças dos Profissionais
-                                    </a>
-                                </li>
-                                @endcan
-                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('equipegestao.index') }}">Equipes</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Unidades</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('equipeview.index') }}">Mapa</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Histórico</a>
                         </li>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                               Equipes
-                            </a>
-                            <ul class="dropdown-menu">
-                                @can('equipe.index')
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('equipegestao.index') }}">
-                                        <x-icon icon='person-gear' /> Gestão de Equipes e Vagas
-                                    </a>
-                                </li>
-                                @endcan   
-                                @can('equipe.index')
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('equipeview.index') }}">
-                                        <x-icon icon='compass' /> Mapa
-                                    </a>
-                                </li>
-                                @endcan
-                            </ul>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                               {{ __('Config') }} 
+                               Outros
                             </a>
                             <ul class="dropdown-menu">
                                 @can('user-index')
@@ -119,13 +86,6 @@
                                     </a>
                                 </li>
                                 @endcan
-                                @can('distrito.index')
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('distritos.index') }}">
-                                        <x-icon icon='house-door-fill' /> Distritos
-                                    </a>
-                                </li>
-                                @endcan
                                 @can('unidade.index')
                                 <li>
                                     <a class="dropdown-item" href="{{ route('unidades.index') }}">
@@ -136,7 +96,14 @@
                                 @can('equipe.index')
                                 <li>
                                     <a class="dropdown-item" href="{{ route('equipes.index') }}">
-                                        <x-icon icon='people-fill' /> Equipes e Vagas
+                                        <x-icon icon='table' /> Equipes e Vagas
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('distrito.index')
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('distritos.index') }}">
+                                        <x-icon icon='table' /> Distritos
                                     </a>
                                 </li>
                                 @endcan

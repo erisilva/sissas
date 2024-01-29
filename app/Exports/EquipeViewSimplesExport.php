@@ -33,11 +33,11 @@ class EquipeViewSimplesExport implements FromQuery, WithHeadings
     public function query()
     {
         return EquipeView::query()
-            ->select(   DB::raw('COALESCE(nome, \'Vaga Livre\') AS profissional'),
-                        DB::raw('COALESCE(matricula, \'Vaga Livre\') AS matricula'),
-                        DB::raw('COALESCE(cpf, \'Vaga Livre\') AS cpf'),
-                        DB::raw('COALESCE(vinculo, \'Vaga Livre\') AS vinculo'),
-                        DB::raw('COALESCE(tipo_de_vinculo, \'Vaga Livre\') AS tipo_de_vinculo'),
+            ->select(   DB::raw('COALESCE(nome, \' \') AS profissional'),
+                        DB::raw('COALESCE(matricula, \' \') AS matricula'),
+                        DB::raw('COALESCE(cpf, \' \') AS cpf'),
+                        DB::raw('COALESCE(vinculo, \' \') AS vinculo'),
+                        DB::raw('COALESCE(tipo_de_vinculo, \' \') AS tipo_de_vinculo'),
                         'cargo',
                         'equipe',
                         'equipe_tipo',
@@ -57,7 +57,7 @@ class EquipeViewSimplesExport implements FromQuery, WithHeadings
                 "CPF",
                 "Vínculo", 
                 "Tipo de Vínculo",
-                "Cargo",
+                "Cargo da Vaga",
                 "Equipe",
                 "Tipo de Equipe",
                 "Número da Equipe",

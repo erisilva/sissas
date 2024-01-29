@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf; // Export PDF
 
 use App\Exports\EquipeViewSimplesExport;
+use App\Exports\EquipeViewCompletoExport;
 use Maatwebsite\Excel\Facades\Excel; // Export Excel
 
 class EquipeViewController extends Controller
@@ -54,11 +55,9 @@ class EquipeViewController extends Controller
     /**
      * Export the specified resource to Excel.
      */
-    public function exportcsv() : \Symfony\Component\HttpFoundation\BinaryFileResponse
+    public function exportcsvsimples() : \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         $this->authorize('mapa.export');
-
-        // ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')]
 
         return Excel::download(new EquipeViewSimplesExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
     }
@@ -66,10 +65,30 @@ class EquipeViewController extends Controller
     /**
      * Export the specified resource to Excel.
      */
-    public function exportxls() : \Symfony\Component\HttpFoundation\BinaryFileResponse
+    public function exportxlssimples() : \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         $this->authorize('mapa.export');
 
         return Excel::download(new EquipeViewSimplesExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
-    }       
+    }
+
+        /**
+     * Export the specified resource to Excel.
+     */
+    public function exportcsvcompleto() : \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        $this->authorize('mapa.export');
+
+        return Excel::download(new EquipeViewCompletoExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
+    }
+
+    /**
+     * Export the specified resource to Excel.
+     */
+    public function exportxlscompleto() : \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        $this->authorize('mapa.export');
+
+        return Excel::download(new EquipeViewCompletoExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+    }
 }
