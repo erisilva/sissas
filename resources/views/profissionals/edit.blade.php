@@ -12,7 +12,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="{{ route('profissionals.index') }}">
-          Profissional
+          <x-icon icon='file-person' /> Profissional
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">

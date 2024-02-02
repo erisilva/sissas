@@ -10,9 +10,15 @@
 <div class="container-fluid">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('profissionals.index') }}">Profissionais</a></li>
+      <li class="breadcrumb-item">
+        <a href="{{ route('profissionals.index') }}">
+          <x-icon icon='file-person' /> Profissionais
+        </a>
+      </li>
       <li class="breadcrumb-item active" aria-current="page">
-        <a href="{{ route('licencas.index') }}">Licenças</a>
+        <a href="{{ route('licencas.index') }}">
+          Licenças
+        </a>
       </li>
     </ol>
   </nav>

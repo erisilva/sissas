@@ -8,7 +8,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="{{ route('unidades.index') }}">
-          <x-icon icon='house-heart' /> Unidade
+          <x-icon icon='hospital' /> Unidade
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">

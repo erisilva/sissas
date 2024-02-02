@@ -22,7 +22,7 @@
 </style>
 @endsection
 
-@section('title', 'Gestão de Equipes e Vagas')
+@section('title', 'Equipes')
 
 @section('content')
 <div class="container-fluid">
@@ -30,7 +30,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
         <a href="{{ route('equipegestao.index') }}">
-          Gestão de Equipes e Vagas
+          <x-icon icon='people' /> Equipes
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">
@@ -111,6 +111,7 @@
                 <th scope="col">Cargo</th>                
                 <th scope="col">Profissional</th>
                 <th scope="col">Matrícula</th>
+                <th scope="col">CPF</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -128,11 +129,26 @@
                 @if(isset($equipeprofissional->profissional->id))
                   <span><a class="btn btn-sm btn-success" href="{{ route('profissionals.edit', $equipeprofissional->profissional->id) }}" role="button" btn-sm><x-icon icon='people' /></a> {{ $equipeprofissional->profissional->nome }}</span>
                 @else
-                  <span class="fw-light">Vaga Livre</span>
+                <span class="badge text-bg-info">Vaga Livre</span>
                 @endif
               </td>
-              <td>{{ isset($equipeprofissional->profissional->matricula) ?  $equipeprofissional->profissional->matricula : '-' }}</td>
+
               <td>
+                @if(isset($equipeprofissional->profissional->matricula))
+                  {{ $equipeprofissional->profissional->matricula }}
+                @else
+                  <span class="badge text-bg-info">Vaga Livre</span>
+                @endif
+              </td>
+
+              <td>
+                @if(isset($equipeprofissional->profissional->cpf))
+                  {{ $equipeprofissional->profissional->cpf }}
+                @else
+                  <span class="badge text-bg-info">Vaga Livre</span>
+                @endif
+              </td>
+
 
               <td>
                 @if(isset($equipeprofissional->profissional_id))

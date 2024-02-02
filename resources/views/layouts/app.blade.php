@@ -56,7 +56,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Unidades</a>
+                            <a class="nav-link" href="{{ route('unidades.index') }}">Unidades</a>
                         </li>
                         
                         <li class="nav-item">
@@ -83,13 +83,6 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logs.index') }}">
                                         <x-icon icon='list' /> {{ __('Logs') }}
-                                    </a>
-                                </li>
-                                @endcan
-                                @can('unidade.index')
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('unidades.index') }}">
-                                        <x-icon icon='house-heart' /> Unidades
                                     </a>
                                 </li>
                                 @endcan

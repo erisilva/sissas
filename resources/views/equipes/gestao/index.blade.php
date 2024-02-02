@@ -1,13 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Gestão de Equipes e Vagas')
+@section('title', 'Equipes')
 
 @section('content')
 <div class="container-fluid">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item active" aria-current="page">
-        <a href="{{ route('equipegestao.index') }}">Gestão de Equipes e Vagas</a>
+        <a href="{{ route('equipegestao.index') }}">
+          <x-icon icon='people' /> Equipes
+        </a>
       </li>
     </ol>
   </nav>

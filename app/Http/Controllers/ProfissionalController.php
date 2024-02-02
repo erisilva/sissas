@@ -49,6 +49,7 @@ class ProfissionalController extends Controller
             'perpages' => Perpage::orderBy('valor')->get(),
             'cargos' => Cargo::orderBy('nome')->get(),
             'vinculos' => Vinculo::orderBy('nome')->get(),
+            'cargahorarias' => CargaHoraria::orderBy('nome')->get(),
         ]);
     }
 
@@ -219,6 +220,7 @@ class ProfissionalController extends Controller
      */
     public function autocomplete(Request $request)
     {
+        $this->authorize('profissional.index');
 
         $profissionais = DB::table('profissionals');
 
@@ -239,7 +241,7 @@ class ProfissionalController extends Controller
         $profissionais = $profissionais->whereNull('deleted_at');
 
         //get
-        $profissionais = $profissionais->get();
+        $profissionais = $profissionais->orderBy('profissionals.nome', 'asc')->take(10)->get();
 
         return response()->json($profissionais, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
     }

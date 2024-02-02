@@ -8,7 +8,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item active" aria-current="page">
         <a href="{{ route('profissionals.index') }}">
-          Profissionais
+          <x-icon icon='file-person' /> Profissionais
         </a>
       </li>
     </ol>
@@ -61,6 +61,7 @@
                 <th>CNS</th>
                 <th>Vínculo</th>
                 <th>Tipo</th>
+                <th>CHR</th>
                 <th></th>
             </tr>
         </thead>
@@ -87,6 +88,9 @@
                 </td>
                 <td class="text-nowrap">
                   {{ $professional->vinculoTipo->nome }}
+                </td>
+                <td class="text-nowrap">
+                  {{ $professional->cargaHoraria->nome }}
                 </td>
                 <td>
                   <x-btn-group label='Opções'>
@@ -125,7 +129,7 @@
           <label for="matricula" class="form-label">Matrícula</label>
         <input type="text" class="form-control" id="matricula" name="matricula" value="{{ session()->get('profissional_matricula') }}">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="cargo_id" class="form-label">Cargo</label>
           <select class="form-control" id="cargo_id" name="cargo_id">
               <option value="" selected="true">Clique ...</option> 
@@ -136,13 +140,24 @@
               @endforeach
           </select>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="vinculo_id" class="form-label">Vínculo</label>
           <select class="form-control" id="vinculo_id" name="vinculo_id">
               <option value="" selected="true">Clique ...</option> 
               @foreach($vinculos as $vinculo)
               <option value="{{ $vinculo->id }}" @selected(session()->get('profissional_vinculo_id') == $vinculo->id) >
                 {{ $vinculo->nome }}
+              </option>
+              @endforeach
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="carga_horaria_id" class="form-label">Carga Horária</label>
+          <select class="form-control" id="carga_horaria_id" name="carga_horaria_id">
+              <option value="" selected="true">Clique ...</option> 
+              @foreach($cargahorarias as $cargahoraria)
+              <option value="{{ $cargahoraria->id }}" @selected(session()->get('profissional_carga_horaria_id') == $cargahoraria->id) >
+                {{ $cargahoraria->nome }}
               </option>
               @endforeach
           </select>
