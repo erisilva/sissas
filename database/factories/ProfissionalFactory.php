@@ -21,7 +21,7 @@ class ProfissionalFactory extends Factory
                 'matricula' => $this->faker->regexify('[A-Za-z0-9]{8}'),
                 'cns' => $this->faker->regexify('[A-Za-z0-9]{12}'),
                 'cpf' => $this->faker->cpf(),
-                'flexibilizacao' => $this->faker->word(),
+                'flexibilizacao' => $this->faker->randomElement(['Nenhum', 'Extensão', 'Redução']),
                 'admissao' => $this->faker->dateTimeBetween('-7 year', '-1 month'),
                 'observacao' => $this->faker->sentence(),
                 'tel' => $this->faker->phoneNumber(),

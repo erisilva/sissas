@@ -12,10 +12,13 @@ use App\Models\OrgaoEmissor;
 use App\Models\FeriasTipo;
 use App\Models\LicencaTipo;
 use App\Models\CapacitacaoTipo;
+use App\Models\EquipeProfissional;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+
 
 use App\Rules\Cpf; // validação de um cpf
 
@@ -43,12 +46,13 @@ class ProfissionalController extends Controller
 
         return view('profissionals.index', [
             'profissionals' => Profissional::orderBy('nome', 'asc')
-                ->filter(request(['nome', 'cargo_id', 'vinculo_id', 'matricula']))
+                ->filter(request(['nome', 'matricula', 'cpf', 'cns', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'flexibilizacao']))
                 ->paginate(session('perPage', '5'))
-                ->appends(request(['nome', 'cargo_id', 'vinculo_id', 'matricula'])),
+                ->appends(request(['nome', 'matricula', 'cpf', 'cns', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'flexibilizacao'])),
             'perpages' => Perpage::orderBy('valor')->get(),
             'cargos' => Cargo::orderBy('nome')->get(),
             'vinculos' => Vinculo::orderBy('nome')->get(),
+            'vinculotipos' => VinculoTipo::orderBy('nome')->get(),
             'cargahorarias' => CargaHoraria::orderBy('nome')->get(),
         ]);
     }
@@ -111,6 +115,7 @@ class ProfissionalController extends Controller
 
         return view('profissionals.show', [
             'profissional' => $profissional,
+            'equipeprofissionals' => EquipeProfissional::where('profissional_id', $profissional->id)->orderBy('id', 'desc')->get(),
         ]);
     }
 
@@ -165,7 +170,7 @@ class ProfissionalController extends Controller
 
         $profissional->update($profissional_request);
 
-        return redirect()->route('profissionals.index')->with('message', 'Profissional atualizado com sucesso!');
+        return redirect()->route('profissionals.edit', $profissional)->with('message', 'Profissional atualizado com sucesso!');
     }
 
     /**
@@ -175,10 +180,31 @@ class ProfissionalController extends Controller
     {
         $this->authorize('profissional.delete');
 
-        $profissional->delete();
+        DB::beginTransaction();
+  
+            try {
 
-        return redirect()->route('profissionals.index')->with('message', 'Profissional excluído com sucesso!');
-    }
+                // apaga todos relacionamentos com equipes
+                $equipes = $profissional->equipeProfissionals;
+                if (count($equipes) > 0) {
+                    foreach ($equipes as $equipe) {
+                        $equipe->profissional_id = null;
+                        $equipe->save();
+                    }
+                }
+
+                $profissional->delete();
+
+                DB::commit();
+
+                return redirect()->route('profissionals.index')->with('message', 'Profissional excluído com sucesso!');
+  
+            }catch(\Exception $e){
+                DB::rollback();
+
+                return redirect()->route('profissionals.index')->with('message', __('Error saving record!') . ' ' . $e->getMessage());
+            }       
+   }
 
     /**
      * Export the specified resource to PDF.
@@ -188,7 +214,7 @@ class ProfissionalController extends Controller
         $this->authorize('profissional.export');
 
         return Pdf::loadView('profissionals.report', [
-            'dataset' => Profissional::orderBy('nome', 'asc')->filter(request(['nome', 'cargo_id', 'vinculo_id', 'matricula']))->get()
+            'dataset' => Profissional::orderBy('nome', 'asc')->filter(request(['nome', 'matricula', 'cpf', 'cns', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'flexibilizacao']))->get()
         ])->download('Profissionais_' .  date("Y-m-d H:i:s") . '.pdf');
     }
 
@@ -199,7 +225,7 @@ class ProfissionalController extends Controller
     {
         $this->authorize('profissional.export');
 
-        return Excel::download(new ProfissionalsExport(request(['nome', 'cargo_id', 'vinculo_id', 'matricula'])),  'Profissionais_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
+        return Excel::download(new ProfissionalsExport(request(['nome', 'matricula', 'cpf', 'cns', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'flexibilizacao'])),  'Profissionais_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
     }
 
     /**

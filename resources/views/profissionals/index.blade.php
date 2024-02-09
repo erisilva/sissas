@@ -32,17 +32,23 @@
     <a class="btn btn-info" href="{{ route('licencas.index') }}" role="button"><x-icon icon='file-medical'/> Licenças</a>  
     @endcan
 
+    @can('profissional.trash.index')
+    <a class="btn btn-secondary" href="{{ route('profissionals.trash') }}" role="button"><x-icon icon='trash'/> Lixeira</a>  
+    @endcan
+
     @can('profissional.export')
     <x-dropdown-menu title='Reports' icon='printer'>
 
       <li>
-        <a class="dropdown-item" href="{{route('profissionals.export.xls', ['description' => request()->input('description'), 'name' => request()->input('name')])}}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS' }}</a>
+        <a class="dropdown-item" href="{{route('profissionals.export.xls', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cns' => request()->input('cns'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'carga_horaria_id' => request()->input('carga_horaria_id'), 'flexibilizacao' => request()->input('flexibilizacao')])}}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS' }}</a>
       </li>
+
       <li>
-        <a class="dropdown-item" href="{{route('profissionals.export.csv', ['description' => request()->input('description'), 'name' => request()->input('name')])}}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV' }}</a>
+        <a class="dropdown-item" href="{{route('profissionals.export.csv', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cns' => request()->input('cns'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'carga_horaria_id' => request()->input('carga_horaria_id'), 'flexibilizacao' => request()->input('flexibilizacao')])}}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV' }}</a>
       </li>
+
       <li>
-        <a class="dropdown-item" href="{{route('profissionals.export.pdf', ['description' => request()->input('description'), 'name' => request()->input('name')])}}"><x-icon icon='file-pdf-fill' /> {{ __('Export') . ' PDF' }}</a>
+        <a class="dropdown-item" href="{{route('profissionals.export.pdf', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cns' => request()->input('cns'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'carga_horaria_id' => request()->input('carga_horaria_id'), 'flexibilizacao' => request()->input('flexibilizacao')])}}"><x-icon icon='file-pdf-fill' /> {{ __('Export') . ' PDF' }}</a>
       </li>
     
     </x-dropdown-menu>
@@ -54,14 +60,15 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>{{ __('Name') }}</th>
-                <th>Cargo</th>
+                <th>{{ __('Name') }}</th>                
                 <th>Matricula</th>
                 <th>CPF</th>
                 <th>CNS</th>
+                <th>Cargo</th>
                 <th>Vínculo</th>
                 <th>Tipo</th>
                 <th>CHR</th>
+                <th>Flex.</th>
                 <th></th>
             </tr>
         </thead>
@@ -70,10 +77,7 @@
             <tr>
                 <td class="text-nowrap">
                   <strong>{{ $professional->nome }}</strong>
-                </td>
-                <td class="text-nowrap">
-                  {{ $professional->cargo->nome }}
-                </td>
+                </td>                
                 <td class="text-nowrap">
                   {{ $professional->matricula }}
                 </td>
@@ -84,6 +88,9 @@
                   {{ $professional->cns }}
                 </td>
                 <td class="text-nowrap">
+                  {{ $professional->cargo->nome }}
+                </td>
+                <td class="text-nowrap">
                   {{ $professional->vinculo->nome }}
                 </td>
                 <td class="text-nowrap">
@@ -92,6 +99,9 @@
                 <td class="text-nowrap">
                   {{ $professional->cargaHoraria->nome }}
                 </td>
+                <td class="text-nowrap">
+                  {{ $professional->flexibilizacao }}
+                </td>
                 <td>
                   <x-btn-group label='Opções'>
 
@@ -99,7 +109,7 @@
                     <a href="{{route('profissionals.edit', $professional->id)}}" class="btn btn-primary btn-sm" role="button"><x-icon icon='pencil-square'/></a>
                     @endcan
 
-                    @can('profissional.delete')
+                    @can('profissional.show')
                     <a href="{{route('profissionals.show', $professional->id)}}" class="btn btn-info btn-sm" role="button"><x-icon icon='eye'/></a>
                     @endcan
 
@@ -121,13 +131,21 @@
     <form method="GET" action="{{ route('profissionals.index') }}">
 
       <div class="row g-3">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="nome" class="form-label">{{ __('Name') }}</label>
           <input type="text" class="form-control" id="nome" name="nome" value="{{ session()->get('profissonal_nome') }}">
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="matricula" class="form-label">Matrícula</label>
         <input type="text" class="form-control" id="matricula" name="matricula" value="{{ session()->get('profissional_matricula') }}">
+        </div>
+        <div class="col-md-4">
+          <label for="cpf" class="form-label">CPF</label>
+        <input type="text" class="form-control" id="cpf" name="cpf" value="{{ session()->get('profissional_cpf') }}">
+        </div>
+        <div class="col-md-4">
+          <label for="cns" class="form-label">CNS</label>
+        <input type="text" class="form-control" id="cns" name="cns" value="{{ session()->get('profissional_cns') }}">
         </div>
         <div class="col-md-4">
           <label for="cargo_id" class="form-label">Cargo</label>
@@ -152,6 +170,17 @@
           </select>
         </div>
         <div class="col-md-4">
+          <label for="vinculo_tipo_id" class="form-label">Tipo Vínculo</label>
+          <select class="form-control" id="vinculo_tipo_id" name="vinculo_tipo_id">
+              <option value="" selected="true">Clique ...</option> 
+              @foreach($vinculotipos as $vinculo_tipo)
+              <option value="{{ $vinculo_tipo->id }}" @selected(session()->get('profissional_vinculo_tipo_id') == $vinculo_tipo->id) >
+                {{ $vinculo_tipo->nome }}
+              </option>
+              @endforeach
+          </select>
+        </div>
+        <div class="col-md-4">
           <label for="carga_horaria_id" class="form-label">Carga Horária</label>
           <select class="form-control" id="carga_horaria_id" name="carga_horaria_id">
               <option value="" selected="true">Clique ...</option> 
@@ -162,11 +191,22 @@
               @endforeach
           </select>
         </div>
+
+        <div class="col-md-4">
+          <label for="flexibilizacao" class="form-label">Flexibilização</label>
+          <select class="form-control" id="flexibilizacao" name="flexibilizacao">
+              <option value="" selected="true">Clique ...</option>
+              <option value="Nenhum" @selected(session()->get('profissional_flexibilizacao') == 'Nenhum') >Nenhum</option>
+              <option value="Extensão" @selected(session()->get('profissional_flexibilizacao') == 'Extensão') >Extensão</option>
+              <option value="Redução" @selected(session()->get('profissional_flexibilizacao') == 'Redução') >Redução</option>
+          </select>
+        </div>
+
         <div class="col-12">
           <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
       
           {{-- Reset the Filter --}}
-          <a href="{{ route('profissionals.index', ['nome' => '', 'matricula' => '', 'cargo_id' => '', 'vinculo_id' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
+          <a href="{{ route('profissionals.index', ['nome' => '', 'matricula' => '', 'cpf' => '', 'cms' => '', 'cargo_id' => '', 'vinculo_id' => '', 'vinculo_tipo_id' => '', 'carga_horaria_id' => '', 'flexibilizacao' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
         </div> 
       </div> 
     </form>

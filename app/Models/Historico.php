@@ -10,7 +10,7 @@ class Historico extends Model
     use HasFactory;
 
     protected $fillable = [
-        'observacao', 'historico_tipo_id', 'profissional_id', 'user_id', 'unidade_id', 'equipe_id',
+        'changes', 'historico_tipo_id', 'profissional_id', 'user_id', 'unidade_id', 'equipe_id',
     ];
 
     protected $dates = ['created_at'];

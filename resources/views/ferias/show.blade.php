@@ -13,7 +13,7 @@
       </li>
       <li class="breadcrumb-item">
         <a href="{{ route('ferias.index') }}">
-          Férias
+          <x-icon icon='airplane' /> Férias
         </a>
       </li>
       <li class="breadcrumb-item active" aria-current="page">

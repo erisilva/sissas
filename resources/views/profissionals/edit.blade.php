@@ -635,10 +635,64 @@
 </div>
 
 
+<div class="container py-2">
+  <p class="text-center bg-primary text-white">
+    <strong>Vínculo à Equipes</strong>
+  </p>  
+</div>
 
+@if (count($profissional->equipeProfissionals))
+<div class="container">
+  <div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Tipo</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">CNES</th>
+                <th scope="col">INE</th>
+                <th scope="col">Nº</th>
+                <th scope="col">Unidade</th>
+                <th scope="col">Distrito</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($profissional->equipeProfissionals as $equipeprofissional)
+            <tr>
+              <td>{{ $equipeprofissional->equipe->equipeTipo->nome }}</td>
+              <td>{{ $equipeprofissional->equipe->descricao }}</td>
+              <td>{{ $equipeprofissional->equipe->cnes }}</td>
+              <td>{{ $equipeprofissional->equipe->ine }}</td>
+              <td>{{ $equipeprofissional->equipe->numero }}</td>
+              <td>{{ $equipeprofissional->equipe->unidade->nome }}</td>
+              <td>{{ $equipeprofissional->equipe->unidade->distrito->nome }}</td>
+            </tr>    
+            @endforeach                                             
+        </tbody>
+    </table>
+  </div>  
+</div>
+@else
+<div class="container py-2">
+  <p class="text-center bg-warning text-white">
+    <strong>Não há vínculo à equipes</strong>
+  </p>
+</div>
+@endif
 
+<div class="container py-4">
+  <div class="float-sm-end">
+    <a href="{{ route('profissionals.create') }}" class="btn btn-primary btn-lg" role="button">
+      <x-icon icon='file-earmark' />
+      {{ __('New') }}
+   </a>
+    <a href="{{ route('profissionals.index') }}" class="btn btn-secondary btn-lg" role="button">
+       <x-icon icon='arrow-left-square' />
+       {{ __('Back') }}
+    </a>
+  </div>      
+</div>
 
-<x-btn-back route="profissionals.index" />
 @endsection
 
 @section('script-footer')

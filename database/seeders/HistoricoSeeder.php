@@ -13,7 +13,7 @@ class HistoricoSeeder extends Seeder
     public function run(): void
     {
         \App\Models\Historico::factory()
-            ->count(100)
+            ->count(2000)
             ->create();
     }
 }

@@ -17,7 +17,7 @@
       </li>
       <li class="breadcrumb-item active" aria-current="page">
         <a href="{{ route('licencas.index') }}">
-          Licenças
+          <x-icon icon='file-medical' /> Licenças
         </a>
       </li>
     </ol>

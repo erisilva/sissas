@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Profissionais - ' . __('Show'))
+@section('title', 'Profissionais - Lixeira' . __('Show'))
 
 @section('content')
 <div class="container-fluid">
@@ -11,12 +11,16 @@
           <x-icon icon='file-person' /> Profissionais
         </a>
       </li>
+      <li class="breadcrumb-item" aria-current="page">
+        <a href="{{ route('profissionals.trash') }}">
+          <x-icon icon='trash' /> Lixeira
+        </a>
+      </li>
       <li class="breadcrumb-item active" aria-current="page">
-        {{ __('Show') }}
+        Exibir e Restaurar Registro
       </li>
     </ol>
   </nav>
-</div>
 
 <div class="container py-3">
   <form>
@@ -169,34 +173,43 @@
 
 
 
-@can('profissional.delete')
+@can('profissional.trash.restore')
 <div class="container py-2">
-  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalLixeira">
-    <x-icon icon='trash' /> {{ __('Delete this record?') }}
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLixeira">
+    <x-icon icon='arrow-clockwise' /> Restaurar
   </button>
 </div>
 @endcan
 
-<x-btn-back route="profissionals.index" />
+<x-btn-back route="profissionals.trash" />
 
-@can('profissional.delete')
-<x-modal-trash class="modal-sm">
-  <form method="post" action="{{route('profissionals.destroy', $profissional->id)}}">
-    @csrf
-    @method('DELETE')
-    <div class="container py-2">
-      <div class="row g-3">
-        <div class="col-md-12">
-          <label for="motivo" class="form-label">Motivo</label>
-          <input type="text" class="form-control" name="motivo">
-        </div>
+@can('profissional.trash.restore')
+<!-- Modal -->
+<div class="modal fade" id="modalLixeira" tabindex="-1" aria-labelledby="restoreProfissional" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="restoreProfissional"><x-icon icon='arrow-clockwise' /> Restaurar</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Deseja realmente restaurar o registro do profissional <strong>{{ $profissional->nome }}</strong>?
+        </p>
+        <form method="post" action="{{ route('profissionals.trash.restore', $profissional->id) }}">
+          @csrf
+          <button type="submit" class="btn btn-danger">
+            <x-icon icon='arrow-clockwise' /> Restaurar?
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-square"></i> {{ __('Cancel') }}</button>
       </div>
     </div>
-    <button type="submit" class="btn btn-danger">
-      <x-icon icon='trash' /> {{ __('Delete this record?') }}
-    </button>
-  </form>
-</x-modal-trash>
+  </div>
+</div>
+
 @endcan
 
 @endsection

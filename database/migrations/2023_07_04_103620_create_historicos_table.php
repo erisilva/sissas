@@ -23,6 +23,8 @@ return new class extends Migration
             $table->bigInteger('unidade_id')->unsigned()->nullable();
             $table->bigInteger('equipe_id')->unsigned()->nullable();
 
+            $table->text('changes')->nullable();
+
             $table->timestamps();
         });
     }

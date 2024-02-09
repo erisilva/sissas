@@ -32,7 +32,7 @@ use App\Http\Controllers\EquipeController;
 use App\Http\Controllers\EquipeVagasController;
 use App\Http\Controllers\EquipeGestaoController;
 use App\Http\Controllers\EquipeViewController;
-
+use App\Http\Controllers\ProfissionalTrashController;
 
 /*
 |--------------------------------------------------------------------------
@@ -211,6 +211,14 @@ Route::get('/profissionals/export/xls', [ProfissionalController::class, 'exportx
 Route::get('/profissionals/export/pdf', [ProfissionalController::class, 'exportpdf'])->name('profissionals.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
 Route::get('/profissionals/autocomplete', [ProfissionalController::class, 'autocomplete'])->name('profissionals.autocomplete')->middleware('auth', 'verified');
+
+# Profissional trash
+
+Route::get('/profissionals/trash', [ProfissionalTrashController::class, 'index'])->name('profissionals.trash')->middleware('auth', 'verified');
+
+Route::get('/profissionals/trash/{id}', [ProfissionalTrashController::class, 'show'])->name('profissionals.trash.show')->middleware('auth', 'verified');
+
+Route::post('/profissionals/trash/{id}/restore', [ProfissionalTrashController::class, 'restore'])->name('profissionals.trash.restore')->middleware('auth', 'verified');
 
 Route::resource('/profissionals', ProfissionalController::class)->middleware('auth', 'verified');
 

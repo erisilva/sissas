@@ -2,63 +2,70 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profissional;
+use App\Models\Perpage;
+use App\Models\Cargo;
+use App\Models\Vinculo;
+use App\Models\VinculoTipo;
+use App\Models\CargaHoraria;
+use App\Models\EquipeProfissional;
+
 use Illuminate\Http\Request;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 
 class ProfissionalTrashController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : View
     {
-        //
+        $this->authorize('profissional.trash.index');
+
+        if(request()->has('perpage')) {
+            session(['perPage' => request('perpage')]);
+        }
+
+        return view('profissionals.trash.index', [
+            'profissionals' => Profissional::orderBy('nome', 'asc')
+                ->onlyTrashed()
+                ->filter(request(['nome', 'matricula', 'cpf', 'cns', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'flexibilizacao']))
+                ->paginate(session('perPage', '5'))
+                ->appends(request(['nome', 'matricula', 'cpf', 'cns', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'flexibilizacao'])),
+            'perpages' => Perpage::orderBy('valor')->get(),
+            'cargos' => Cargo::orderBy('nome')->get(),
+            'vinculos' => Vinculo::orderBy('nome')->get(),
+            'vinculotipos' => VinculoTipo::orderBy('nome')->get(),
+            'cargahorarias' => CargaHoraria::orderBy('nome')->get(),
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id) : View
     {
-        //
-    }
+        $this->authorize('profissional.trash.index');
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+        return view('profissionals.trash.show', [
+            'profissional' => Profissional::withTrashed()->find($id),
+            'equipeprofissionals' => EquipeProfissional::where('profissional_id', $id)->orderBy('id', 'desc')->get(),
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function restore(string $id) : RedirectResponse
     {
-        //
+        $this->authorize('profissional.trash.restore');
+
+        $profissional = Profissional::withTrashed()->findOrFail($id)->restore();
+
+        return Redirect::route('profissionals.index')->with('message', 'Profissional restaurado com sucesso');
+
     }
 }
