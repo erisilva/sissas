@@ -165,7 +165,7 @@
 
         <div class="col-md-4">
           <label for="distrito" class="form-label">Distrito</label>
-          <select class="form-control" id="distrito" name="distrito">
+          <select class="form-select" id="distrito" name="distrito">
               <option value="" selected="true">Mostrar Todos ...</option> 
               @foreach($distritos as $distrito)
               <option value="{{ $distrito->id }}" @selected(session()->get('equipe_distrito') == $distrito->id) >
@@ -177,7 +177,7 @@
 
         <div class="col-md-3">
           <label for="tipo" class="form-label">Tipo</label>
-          <select class="form-control" id="tipo" name="tipo">
+          <select class="form-select" id="tipo" name="tipo">
               <option value="" selected="true">Mostrar Todos ...</option> 
               @foreach($equipetipos as $equipetipo)
               <option value="{{ $equipetipo->id }}" @selected(session()->get('equipe_tipo') == $equipetipo->id) >

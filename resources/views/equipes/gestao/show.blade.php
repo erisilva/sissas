@@ -127,7 +127,12 @@
               
               <td>
                 @if(isset($equipeprofissional->profissional->id))
-                  <span><a class="btn btn-sm btn-success" href="{{ route('profissionals.edit', $equipeprofissional->profissional->id) }}" role="button" btn-sm><x-icon icon='people' /></a> {{ $equipeprofissional->profissional->nome }}</span>
+                  <span>
+                    <a class="btn btn-sm btn-success" role="button" data-bs-toggle="modal" data-bs-target="#ProfissionalModal" data-profissional-id="{{ $equipeprofissional->profissional->id }}">
+                      <x-icon icon='people' />
+                    </a> 
+                        {{ $equipeprofissional->profissional->nome }}
+                  </span>
                 @else
                 <span class="badge text-bg-info">Vaga Livre</span>
                 @endif
@@ -303,7 +308,136 @@
   </div>
 </div>
 
+<!-- Profissional Modal -->
+<div class="modal fade modal-xl" id="ProfissionalModal" tabindex="-1" aria-labelledby="Profissional" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><x-icon icon='people' /> Profissional</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+        
 
+
+
+
+
+        <form>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="nome" class="form-label">Nome</label>
+              <input type="text" class="form-control" name="nome" id="nome" value="" readonly disabled>
+            </div>
+            <div class="col-md-2">
+              <label for="matricula" class="form-label">Matricula</label>
+              <input type="text" class="form-control" name="matricula" id="matricula" value="" readonly disabled>
+            </div>
+            <div class="col-md-2">
+              <label for="cpf" class="form-label">CPF</label>
+              <input type="text" class="form-control" name="cpf" id="cpf" value="" readonly disabled>
+            </div>
+            <div class="col-md-2">
+              <label for="cns" class="form-label">CNS</label>
+              <input type="text" class="form-control" name="cns" id="cns" value="" readonly disabled>
+            </div>
+            <div class="col-md-6">
+              <label for="email" class="form-label">E-mail</label>
+              <input type="text" class="form-control" name="email" id="email" value="" readonly disabled>
+            </div>
+            <div class="col-md-3">
+              <label for="tel" class="form-label">TEL</label>
+              <input type="text" class="form-control" name="tel" id="tel" value="" readonly disabled>
+            </div>
+            <div class="col-md-3">
+              <label for="cel" class="form-label">CEL</label>
+              <input type="text" class="form-control" name="cel" id="cel" value="" readonly disabled>
+            </div>
+            <div class="col-md-2">
+              <label for="cep" class="form-label">CEP</label>
+              <input type="text" class="form-control" name="cep" id="cep" value="" readonly disabled>
+            </div>
+            <div class="col-md-5">
+              <label for="logradouro" class="form-label">Logradouro</label>
+              <input type="text" class="form-control" name="logradouro" id="logradouro" value="" readonly disabled>
+            </div>
+            <div class="col-md-2">
+              <label for="numero" class="form-label">Nº</label>
+              <input type="text" class="form-control" name="numero" id="numero" value="" readonly disabled>
+            </div>
+            <div class="col-md-3">
+              <label for="complemento" class="form-label">Complemento</label>
+              <input type="text" class="form-control" name="complemento" id="complemento" value="" readonly disabled>
+            </div>
+            <div class="col-md-5">
+              <label for="bairro" class="form-label">Bairro</label>
+              <input type="text" class="form-control" name="bairro" id="bairro" value="" readonly disabled>
+            </div>
+            <div class="col-md-5">
+              <label for="cidade" class="form-label">Cidade</label>
+              <input type="text" class="form-control" name="cidade" id="cidade" value="" readonly disabled>
+            </div>
+            <div class="col-md-2">
+              <label for="uf" class="form-label">UF</label>
+              <input type="text" class="form-control" name="uf" id="uf" value="" readonly disabled>
+            </div>
+            <div class="col-md-5">
+              <label for="cargo" class="form-label">Cargo</label>
+              <input type="text" class="form-control" name="cargo" id="cargo" value="" readonly disabled>
+            </div>
+            <div class="col-md-3">
+              <label for="vinculo" class="form-label">Vinculo</label>
+              <input type="text" class="form-control" name="vinculo" value="" readonly disabled>
+            </div>
+            <div class="col-md-4">
+              <label for="vinculotipo" class="form-label">Tipo de Vínculo</label>
+              <input type="text" class="form-control" name="vinculotipo" value="" readonly disabled>
+            </div>
+            <div class="col-md-3">
+              <label for="cargahoraria" class="form-label">Carga Horária</label>
+              <input type="text" class="form-control" name="cargahoraria" value="" readonly disabled>
+            </div>
+            <div class="col-md-6">
+              <label for="flexibilizacao" class="form-label">Flexibilização</label>
+              <input type="text" class="form-control" name="flexibilizacao" value="" readonly disabled>
+            </div>
+            <div class="col-md-3">
+              <label for="admissao" class="form-label">Admissão</label>
+              <input type="text" class="form-control" name="admissao" value="" readonly disabled>
+            </div>
+            <div class="col-md-4">
+              <label for="registroClasse" class="form-label">Registro de Classe</label>
+              <input type="text" class="form-control" name="registroClasse" value="" readonly disabled>
+            </div>
+            <div class="col-md-4">
+              <label for="orgao_emissor" class="form-label">Orgão Emissor</label>
+              <input type="text" class="form-control" name="orgao_emissor" value="" readonly disabled>
+            </div>
+            <div class="col-md-4">
+              <label for="ufOrgaoEmissor" class="form-label">UF/SSP</label>
+              <input type="text" class="form-control" name="ufOrgaoEmissor" value="" readonly disabled>
+            </div>
+          </div>
+        </form>
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 @endsection
@@ -385,6 +519,20 @@ $(document).ready(function(){
           $('#cargo_descricao').val(datum.cargo);
           $('#cargo_profissional_id').val(datum.cargo_id);
   });
+
+  $('#ProfissionalModal').on('show.bs.modal', function(e) {
+          var profissionalid = $(e.relatedTarget).data('profissional-id');
+
+          $.ajax({
+            dataType: "json",
+            url: "{{url('/')}}" + "/profissionals/export/json/" + profissionalid,
+            type: "GET",
+            success: function(json) {
+                    $("#nome").val(json['nome']);
+
+            }
+        });
+      }); 
 
 }); 
 </script>

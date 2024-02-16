@@ -184,7 +184,7 @@
 
         <div class="col-md-4">
           <label for="cargo_id" class="form-label">Cargo</label>
-          <select class="form-control" id="cargo_id" name="cargo_id">
+          <select class="form-select" id="cargo_id" name="cargo_id">
               <option value="" selected="true">Clique ...</option> 
               @foreach($cargos as $cargo)
               <option value="{{ $cargo->id }}" @selected(session()->get('equipe_view_cargo_id') == $cargo->id) >
@@ -196,7 +196,7 @@
 
         <div class="col-md-4">
           <label for="vinculo_id" class="form-label">Vínculo</label>
-          <select class="form-control" id="vinculo_id" name="vinculo_id">
+          <select class="form-select" id="vinculo_id" name="vinculo_id">
               <option value="" selected="true">Clique ...</option> 
               @foreach($vinculos as $vinculo)
               <option value="{{ $vinculo->id }}" @selected(session()->get('equipe_view_vinculo_id') == $vinculo->id) >
@@ -208,7 +208,7 @@
 
         <div class="col-md-4">
           <label for="vinculo_tipo_id" class="form-label">Tipo de Vínculo</label>
-          <select class="form-control" id="vinculo_tipo_id" name="vinculo_tipo_id">
+          <select class="form-select" id="vinculo_tipo_id" name="vinculo_tipo_id">
               <option value="" selected="true">Clique ...</option> 
               @foreach($vinculo_tipos as $vinculotipo)
               <option value="{{ $vinculotipo->id }}" @selected(session()->get('equipe_view_vinculo_tipo_id') == $vinculotipo->id) >
@@ -225,7 +225,7 @@
 
         <div class="col-md-4">
           <label for="equipe_tipo_id" class="form-label">Tipo</label>
-          <select class="form-control" id="equipe_tipo_id" name="equipe_tipo_id">
+          <select class="form-select" id="equipe_tipo_id" name="equipe_tipo_id">
               <option value="" selected="true">Clique ...</option>
               @foreach($equipe_tipos as $equipe_tipo)
               <option value="{{ $equipe_tipo->id }}" @selected(session()->get('equipe_view_equipe_tipo_id') == $equipe_tipo->id) >
@@ -257,7 +257,7 @@
 
         <div class="col-md-4">
           <label for="distrito_id" class="form-label">Distrito</label>
-          <select class="form-control" id="distrito_id" name="distrito_id">
+          <select class="form-select" id="distrito_id" name="distrito_id">
               <option value="" selected="true">Clique ...</option>
               @foreach($distritos as $distrito)
               <option value="{{ $distrito->id }}" @selected(session()->get('equipe_view_distrito_id') == $equipe_tipo->id) >
@@ -269,7 +269,7 @@
 
         <div class="col-md-2">
           <label for="mostrar_vagas" class="form-label">Mostrar Vagas</label>
-          <select class="form-control" id="mostrar_vagas" name="mostrar_vagas">
+          <select class="form-select" id="mostrar_vagas" name="mostrar_vagas">
               <option value="1" @selected(session()->get('equipe_view_mostrar_vagas') == 1)>Todas</option>
               <option value="2" @selected(session()->get('equipe_view_mostrar_vagas') == 2)>Livres</option>
               <option value="3" @selected(session()->get('equipe_view_mostrar_vagas') == 3)>Preenchidas</option>

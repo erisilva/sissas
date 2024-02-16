@@ -271,4 +271,20 @@ class ProfissionalController extends Controller
 
         return response()->json($profissionais, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return 
+     **/
+    public function exportjson(Profissional $profissional) : \Illuminate\Http\JsonResponse
+    {
+        $this->authorize('profissional.index');
+
+        $profissional = Profissional::with('cargo', 'vinculo', 'vinculotipo', 'cargahoraria', 'orgaoemissor')->find($profissional->id);
+
+
+        return response()->json($profissional, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
+    }
 }

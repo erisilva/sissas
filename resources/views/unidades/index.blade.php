@@ -104,7 +104,7 @@
     
     <div class="mb-3">
       <label for="distrito_id">Distrito</strong></label>
-      <select class="form-control" id="distrito_id" name="distrito_id">
+      <select class="form-select" id="distrito_id" name="distrito_id">
           <option value="" selected="true">Clique ...</option> 
           @foreach($distritos as $distrito)
           <option value="{{ $distrito->id }}" {{ session()->get('unidade_distrito_id') == $distrito->id ? "selected":"" }}>

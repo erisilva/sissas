@@ -134,7 +134,7 @@
           </div>
           <div class="col-md-4">
             <label for="cargo_id" class="form-label">Cargo</label>
-            <select class="form-control" id="cargo_id" name="cargo_id">
+            <select class="form-select" id="cargo_id" name="cargo_id">
                 <option value="" selected="true">Clique ...</option> 
                 @foreach($cargos as $cargo)
                 <option value="{{ $cargo->id }}" @selected(session()->get('profissional_cargo_id') == $cargo->id) >
@@ -145,7 +145,7 @@
           </div>
           <div class="col-md-4">
             <label for="vinculo_id" class="form-label">Vínculo</label>
-            <select class="form-control" id="vinculo_id" name="vinculo_id">
+            <select class="form-select" id="vinculo_id" name="vinculo_id">
                 <option value="" selected="true">Clique ...</option> 
                 @foreach($vinculos as $vinculo)
                 <option value="{{ $vinculo->id }}" @selected(session()->get('profissional_vinculo_id') == $vinculo->id) >
@@ -156,7 +156,7 @@
           </div>
           <div class="col-md-4">
             <label for="vinculo_tipo_id" class="form-label">Tipo Vínculo</label>
-            <select class="form-control" id="vinculo_tipo_id" name="vinculo_tipo_id">
+            <select class="form-select" id="vinculo_tipo_id" name="vinculo_tipo_id">
                 <option value="" selected="true">Clique ...</option> 
                 @foreach($vinculotipos as $vinculo_tipo)
                 <option value="{{ $vinculo_tipo->id }}" @selected(session()->get('profissional_vinculo_tipo_id') == $vinculo_tipo->id) >
@@ -167,7 +167,7 @@
           </div>
           <div class="col-md-4">
             <label for="carga_horaria_id" class="form-label">Carga Horária</label>
-            <select class="form-control" id="carga_horaria_id" name="carga_horaria_id">
+            <select class="form-select" id="carga_horaria_id" name="carga_horaria_id">
                 <option value="" selected="true">Clique ...</option> 
                 @foreach($cargahorarias as $cargahoraria)
                 <option value="{{ $cargahoraria->id }}" @selected(session()->get('profissional_carga_horaria_id') == $cargahoraria->id) >
@@ -179,7 +179,7 @@
   
           <div class="col-md-4">
             <label for="flexibilizacao" class="form-label">Flexibilização</label>
-            <select class="form-control" id="flexibilizacao" name="flexibilizacao">
+            <select class="form-select" id="flexibilizacao" name="flexibilizacao">
                 <option value="" selected="true">Clique ...</option>
                 <option value="Nenhum" @selected(session()->get('profissional_flexibilizacao') == 'Nenhum') >Nenhum</option>
                 <option value="Extensão" @selected(session()->get('profissional_flexibilizacao') == 'Extensão') >Extensão</option>

@@ -111,7 +111,7 @@
 
 </div>
 
-<x-modal-filter class="modal-lg" :perpages="$perpages" icon='funnel' title='Filters'>
+<x-modal-filter class="modal-xl" :perpages="$perpages" icon='funnel' title='Filters'>
 
   <div class="container">
     <form method="GET" action="{{ route('equipegestao.index') }}">
@@ -119,57 +119,11 @@
 
 
       <div class="row g-3">
-        <div class="col-md-8">
-          <label for="descricao" class="form-label">Descrição</label>
-          <input type="text" class="form-control" id="descricao" name="descricao" value="{{ session()->get('equipe_descricao') }}">
-        </div>
-        <div class="col-md-4">
-          <label for="numero" class="form-label">Número</label>
-          <input type="text" class="form-control" id="numero" name="numero" value="{{ session()->get('equipe_numero') }}">
-        </div>
-      </div>  
 
 
-      <div class="row g-3">
         <div class="col-md-4">
-          <label for="cnes" class="form-label">CNES</label>
-          <input type="text" class="form-control" id="cnes" name="cnes" value="{{ session()->get('equipe_cnes') }}">
-        </div>
-        <div class="col-md-4">
-          <label for="ine" class="form-label">INE</label>
-          <input type="text" class="form-control" id="ine" name="ine" value="{{ session()->get('equipe_ine') }}">
-        </div>
-        <div class="col-md-4">
-          <label for="minima" class="form-label">Mínima</label>
-          <select class="form-select" aria-label="Mínima filtro"  name="minima" id="minima">  
-            <option value="">Mostrar todos</option>         
-            <option value="s" @checked(session()->get('equipe_minima') == 's')>Sim</option>
-            <option value="n" @checked(session()->get('equipe_minima') == 'n')>Não</option>
-          </select>
-        </div>  
-      </div>
-      
-      <div class="row g-3">
-        <div class="col-md-5">
-          <label for="unidade" class="form-label">Unidade</label>
-          <input type="text" class="form-control" id="unidade" name="unidade" value="{{ session()->get('equipe_unidade') }}">
-        </div>
-
-        <div class="col-md-4">
-          <label for="distrito" class="form-label">Distrito</label>
-          <select class="form-control" id="distrito" name="distrito">
-              <option value="" selected="true">Mostrar Todos ...</option> 
-              @foreach($distritos as $distrito)
-              <option value="{{ $distrito->id }}" @selected(session()->get('equipe_distrito') == $distrito->id) >
-                {{ $distrito->nome }}
-              </option>
-              @endforeach
-          </select>
-        </div>
-
-        <div class="col-md-3">
           <label for="tipo" class="form-label">Tipo</label>
-          <select class="form-control" id="tipo" name="tipo">
+          <select class="form-select" id="tipo" name="tipo">
               <option value="" selected="true">Mostrar Todos ...</option> 
               @foreach($equipetipos as $equipetipo)
               <option value="{{ $equipetipo->id }}" @selected(session()->get('equipe_tipo') == $equipetipo->id) >
@@ -179,15 +133,63 @@
           </select>
         </div>
 
+        <div class="col-md-8">
+          <label for="descricao" class="form-label">Descrição</label>
+          <input type="text" class="form-control" id="descricao" name="descricao" value="{{ session()->get('equipe_descricao') }}">
+        </div>
 
+
+        <div class="col-md-4">
+          <label for="numero" class="form-label">Número</label>
+          <input type="text" class="form-control" id="numero" name="numero" value="{{ session()->get('equipe_numero') }}">
+        </div>
+
+        <div class="col-md-4">
+          <label for="cnes" class="form-label">CNES</label>
+          <input type="text" class="form-control" id="cnes" name="cnes" value="{{ session()->get('equipe_cnes') }}">
+        </div>
+
+        <div class="col-md-4">
+          <label for="ine" class="form-label">INE</label>
+          <input type="text" class="form-control" id="ine" name="ine" value="{{ session()->get('equipe_ine') }}">
+        </div>
+
+        <div class="col-md-6">
+          <label for="unidade" class="form-label">Unidade</label>
+          <input type="text" class="form-control" id="unidade" name="unidade" value="{{ session()->get('equipe_unidade') }}">
+        </div>
+
+        <div class="col-md-4">
+          <label for="distrito" class="form-label">Distrito</label>
+          <select class="form-select" id="distrito" name="distrito">
+              <option value="" selected="true">Mostrar Todos ...</option> 
+              @foreach($distritos as $distrito)
+              <option value="{{ $distrito->id }}" @selected(session()->get('equipe_distrito') == $distrito->id) >
+                {{ $distrito->nome }}
+              </option>
+              @endforeach
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label for="minima" class="form-label">Mínima</label>
+          <select class="form-select" aria-label="Mínima filtro"  name="minima" id="minima">  
+            <option value="">Mostrar todos</option>         
+            <option value="s" @checked(session()->get('equipe_minima') == 's')>Sim</option>
+            <option value="n" @checked(session()->get('equipe_minima') == 'n')>Não</option>
+          </select>
+        </div>
+        
         <div class="col-12">
           <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
       
           {{-- Reset the Filter --}}
-          <a href="{{ route('equipegestao.index', ['descricao' => '', 'numero' => '', 'cnes' => '', 'ine' => '', 'minima' => '', 'unidade' => '', 'distrito' => '', 'tipo' => '' ]) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
+          <a href="{{ route('equipes.index', ['descricao' => '', 'numero' => '', 'cnes' => '', 'ine' => '', 'minima' => '', 'unidade' => '', 'distrito' => '', 'tipo' => '' ]) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
         </div>
 
+
       </div>  
+ 
       
     </form>    
   </div>    

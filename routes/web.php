@@ -220,6 +220,10 @@ Route::get('/profissionals/trash/{id}', [ProfissionalTrashController::class, 'sh
 
 Route::post('/profissionals/trash/{id}/restore', [ProfissionalTrashController::class, 'restore'])->name('profissionals.trash.restore')->middleware('auth', 'verified');
 
+# Profissional, export to json
+
+Route::get('/profissionals/export/json/{profissional}', [ProfissionalController::class, 'exportjson'])->name('profissionals.export.json')->middleware('auth', 'verified');
+
 Route::resource('/profissionals', ProfissionalController::class)->middleware('auth', 'verified');
 
 # Ferias::class
