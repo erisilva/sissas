@@ -34,8 +34,11 @@ class EquipeGestaoController extends Controller
         }
 
         return view('equipes.gestao.index', [
-            'equipes' => Equipe::orderBy('descricao', 'asc')->filter(request(['descricao','numero', 'cnes', 'ine', 'minima', 'unidade', 'distrito', 'tipo']))->paginate(session('perPage', '5'))->appends(request(['name', 'description'])),
-            'distritos' => Distrito::orderBy('nome')->get(),
+            'equipes' => Equipe::orderBy('descricao', 'asc')
+                ->filter(request(['descricao','numero', 'cnes', 'ine', 'minima', 'unidade', 'distrito', 'tipo']))
+                ->paginate(session('perPage', '5')
+                )->appends(request(['descricao','numero', 'cnes', 'ine', 'minima', 'unidade', 'distrito', 'tipo'])),
+            'distritos' => auth()->user()->distritos->sortBy('nome'),
             'equipetipos' => EquipeTipo::orderBy('nome')->get(),
             'perpages' => Perpage::orderBy('valor')->get()
             

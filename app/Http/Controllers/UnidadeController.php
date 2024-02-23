@@ -187,6 +187,9 @@ class UnidadeController extends Controller
         //where
         $unidades = $unidades->where("unidades.nome","LIKE","%{$request->input('query')}%");
 
+        //mostrar apenas as unidades dos distritos que o usuário logado tem acesso 
+        $unidades = $unidades->whereIn("distritos.id", auth()->user()->distritos->pluck('id'));
+
         //get
         $unidades = $unidades->get();
 

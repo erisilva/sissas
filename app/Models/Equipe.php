@@ -61,6 +61,13 @@ class Equipe extends Model
      */
     public function scopeFilter($query, array $filters) : void
     {
+        // showing only the distritos that the user has access to
+        $query = $query->whereHas('unidade', function ($inner_query) {
+            $inner_query->whereHas('distrito', function ($inner_query) {
+                $inner_query->whereIn('distritos.id', auth()->user()->distritos->pluck('id'));
+            });
+        });
+
         // start session values if not yet initialized
         if (!session()->exists('equipe_descricao')){
             session(['equipe_descricao' => '']);

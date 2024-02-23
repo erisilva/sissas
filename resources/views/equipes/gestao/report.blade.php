@@ -60,7 +60,7 @@
 </head>
     <body>
         <header>
-            Gestão de Equipes e Vagas
+            Equipes e Vagas
         </header>
 
         <footer>
