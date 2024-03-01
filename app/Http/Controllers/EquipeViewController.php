@@ -9,6 +9,7 @@ use App\Models\EquipeTipo;
 use App\Models\Distrito;
 use App\Models\Vinculo;
 use App\Models\VinculoTipo;
+use App\Models\CargaHoraria;
 use Illuminate\Http\Request;
 
 use Barryvdh\DomPDF\Facade\Pdf; // Export PDF
@@ -32,24 +33,27 @@ class EquipeViewController extends Controller
 
         return view('equipes.view.index', [
             'equipeviewdata' => EquipeView::orderBy('equipe_id', 'asc')
-                ->filter(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas']))
+                ->filter(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas']))
                 ->paginate(session('perPage', '5'))
-                ->appends(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),
+                ->appends(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),
             'perpages' => Perpage::orderBy('valor')->get(),
             'cargos' => Cargo::orderBy('nome')->get(),
             'equipe_tipos' => EquipeTipo::orderBy('nome')->get(),
             'distritos' => auth()->user()->distritos->sortBy('nome'),
             'vinculos' => Vinculo::orderBy('nome')->get(),
             'vinculo_tipos' => VinculoTipo::orderBy('nome')->get(),
+            'carga_horarias' => CargaHoraria::orderBy('nome')->get(),
         ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(EquipeView $equipeView)
+    public function show(int $id)
     {
         $this->authorize('mapa.show');
+
+        $equipeView = EquipeView::findOrFail($id);
 
         return view('equipes.view.show', compact('equipeView'));
     }
@@ -62,7 +66,7 @@ class EquipeViewController extends Controller
     {
         $this->authorize('mapa.export');
 
-        return Excel::download(new EquipeViewSimplesExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
+        return Excel::download(new EquipeViewSimplesExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
     }
 
     /**
@@ -72,7 +76,7 @@ class EquipeViewController extends Controller
     {
         $this->authorize('mapa.export');
 
-        return Excel::download(new EquipeViewSimplesExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+        return Excel::download(new EquipeViewSimplesExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
 
         /**
@@ -82,7 +86,7 @@ class EquipeViewController extends Controller
     {
         $this->authorize('mapa.export');
 
-        return Excel::download(new EquipeViewCompletoExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
+        return Excel::download(new EquipeViewCompletoExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
     }
 
     /**
@@ -92,6 +96,6 @@ class EquipeViewController extends Controller
     {
         $this->authorize('mapa.export');
 
-        return Excel::download(new EquipeViewCompletoExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+        return Excel::download(new EquipeViewCompletoExport(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),  'Mapa_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
 }

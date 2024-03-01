@@ -9,6 +9,7 @@ use App\Models\Vinculo;
 use App\Models\VinculoTipo;
 use App\Models\CargaHoraria;
 use App\Models\EquipeProfissional;
+use App\Models\Historico;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -62,6 +63,12 @@ class ProfissionalTrashController extends Controller
     public function restore(string $id) : RedirectResponse
     {
         $this->authorize('profissional.trash.restore');
+
+        $historico = new Historico;
+        $historico->user_id = auth()->user()->id;
+        $historico->profissional_id = Profissional::withTrashed()->findOrFail($id)->id;
+        $historico->historico_tipo_id = 4; //Registro do profissional restaurado da lixeira
+        $historico->save();
 
         $profissional = Profissional::withTrashed()->findOrFail($id)->restore();
 

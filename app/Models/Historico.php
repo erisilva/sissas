@@ -10,10 +10,12 @@ class Historico extends Model
     use HasFactory;
 
     protected $fillable = [
-        'changes', 'historico_tipo_id', 'profissional_id', 'user_id', 'unidade_id', 'equipe_id',
+        'changes', 'observacao', 'historico_tipo_id', 'profissional_id', 'user_id', 'unidade_id', 'equipe_id',
     ];
 
-    protected $dates = ['created_at'];
+    protected $casts = [
+        'created_at' => 'datetime',
+      ];
 
     /**
      * Profissional do histórico
@@ -64,4 +66,14 @@ class Historico extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Filtro
+     *
+     * @return string
+     */
+    public function scopeFilter($query, array $filters) : void
+    {
+
+    }    
 }

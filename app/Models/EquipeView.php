@@ -45,6 +45,10 @@ class EquipeView extends Model
             session(['equipe_view_vinculo_tipo_id' => '']);
         }
 
+        if (!session()->exists('equipe_view_carga_horaria_id')){
+            session(['equipe_view_carga_horaria_id' => '']);
+        }
+
         if (!session()->exists('equipe_view_equipe')){
             session(['equipe_view_equipe' => '']);
         }
@@ -103,6 +107,10 @@ class EquipeView extends Model
             session(['equipe_view_vinculo_tipo_id' => $filters['vinculo_tipo_id'] ?? '']);
         }
 
+        if (Arr::exists($filters, 'carga_horaria_id')) {
+            session(['equipe_view_carga_horaria_id' => $filters['carga_horaria_id'] ?? '']);
+        }
+
         if (Arr::exists($filters, 'equipe')) {
             session(['equipe_view_equipe' => $filters['equipe'] ?? '']);
         }
@@ -159,6 +167,10 @@ class EquipeView extends Model
 
         if (trim(session()->get('equipe_view_vinculo_tipo_id')) !== '') {
             $query->where('vinculo_tipo_id', session()->get('equipe_view_vinculo_tipo_id'));
+        }
+
+        if (trim(session()->get('equipe_view_carga_horaria_id')) !== '') {
+            $query->where('carga_horaria_id', session()->get('equipe_view_carga_horaria_id'));
         }
 
         if (trim(session()->get('equipe_view_equipe')) !== '') {

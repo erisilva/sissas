@@ -24,6 +24,7 @@ return new class extends Migration
             $table->bigInteger('equipe_id')->unsigned()->nullable();
 
             $table->text('changes')->nullable();
+            $table->text('observacao')->nullable();
 
             $table->timestamps();
         });

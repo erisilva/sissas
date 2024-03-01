@@ -68,6 +68,8 @@ class DatabaseSeeder extends Seeder
         $this->call(EquipeProfissionalSeeder::class);
 
         $this->call(HistoricoTipoSeeder::class);
+
+        $this->call(HistoricoSeeder::class);
         
         // \App\Models\User::factory(50)->create();
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Historico;
+use App\Models\HistoricoTipo;
+use App\Models\Perpage;
 use Illuminate\Http\Request;
 
 class HistoricoController extends Controller
@@ -12,54 +14,48 @@ class HistoricoController extends Controller
      */
     public function index()
     {
-        //
+        $this->authorize('historico.index');
+
+        if(request()->has('perpage')) {
+            session(['perPage' => request('perpage')]);
+        }
+
+        return view('historicos.index', [
+            'historicos' => Historico::orderBy('id', 'desc')->filter(request(['name', 'description']))->paginate(session('perPage', '5')),
+            'perpages' => Perpage::orderBy('valor')->get()
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Export the specified resource to PDF.
      */
-    public function create()
+    public function exportpdf() : \Illuminate\Http\Response
     {
-        //
+        $this->authorize('historico-export');
+
+        // return Pdf::loadView('permissions.report', [
+        //     'dataset' => Permission::orderBy('id', 'asc')->filter(request(['name', 'description']))->get()
+        // ])->download(__('Permissions') . '_' .  date("Y-m-d H:i:s") . '.pdf');
+    }
+    
+    /**
+     * Export the specified resource to Excel.
+     */
+    public function exportcsv() : \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        $this->authorize('historico-export');
+
+        //return Excel::download(new PermissionsExport(request(['name', 'description'])),  __('Permissions') . '_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Export the specified resource to Excel.
      */
-    public function store(Request $request)
+    public function exportxls() : \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
-        //
+        $this->authorize('historico-export');
+
+        //return Excel::download(new PermissionsExport(request(['name', 'description'])),  __('Permissions') . '_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Historico $historico)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Historico $historico)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Historico $historico)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Historico $historico)
-    {
-        //
-    }
 }

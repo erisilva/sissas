@@ -58,10 +58,12 @@ class HistoricoTipoSeeder extends Seeder
             'descricao' => 'Foi excluído uma capacitação do profissional',
         ]);
         // profissionais nas unidade
+        # não usado nesta versão
         DB::table('historico_tipos')->insert([
             'id' => 11,
             'descricao' => 'Profissional foi vinculado a uma unidade',
         ]);
+        # não usado nesta versão
         DB::table('historico_tipos')->insert([
             'id' => 12,
             'descricao' => 'Profissional foi desvinculado de uma unidade',

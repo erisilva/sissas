@@ -13,6 +13,7 @@ use App\Models\FeriasTipo;
 use App\Models\LicencaTipo;
 use App\Models\CapacitacaoTipo;
 use App\Models\EquipeProfissional;
+use App\Models\Historico;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -101,9 +102,17 @@ class ProfissionalController extends Controller
             $profissional['admissao'] = $dataFormatadaMysql;
         }        
         
-        Profissional::create($profissional);
+        $new_profissional = Profissional::create($profissional);
 
-        return redirect()->route('profissionals.index');
+        // guarda o histórico
+        $historico = new Historico;
+        $historico->user_id = auth()->user()->id;
+        $historico->profissional_id = $new_profissional->id;
+        $historico->historico_tipo_id = 1; //Profissional registrado no sistema
+        $historico->changes = json_encode($new_profissional);
+        $historico->save();
+
+        return redirect()->route('profissionals.edit', $new_profissional)->with('message', 'Profissional cadastrado com sucesso!');
     }
 
     /**
@@ -170,13 +179,21 @@ class ProfissionalController extends Controller
 
         $profissional->update($profissional_request);
 
+        // guarda o histórico
+        $historico = new Historico;
+        $historico->user_id = auth()->user()->id;
+        $historico->profissional_id = $profissional->id;
+        $historico->historico_tipo_id = 2; //Registro do profissional alterado
+        $historico->changes = json_encode($profissional->getChanges());
+        $historico->save();
+
         return redirect()->route('profissionals.edit', $profissional)->with('message', 'Profissional atualizado com sucesso!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Profissional $profissional)
+    public function destroy(Request $request,Profissional $profissional)
     {
         $this->authorize('profissional.delete');
 
@@ -192,6 +209,14 @@ class ProfissionalController extends Controller
                         $equipe->save();
                     }
                 }
+
+                // log
+                $historico = new Historico;
+                $historico->user_id = auth()->user()->id;
+                $historico->profissional_id = $profissional->id;
+                $historico->historico_tipo_id = 3; //Registro do profissional enviado à lixeira
+                $historico->observacao = $request['motivo'];
+                $historico->save();
 
                 $profissional->delete();
 

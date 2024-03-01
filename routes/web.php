@@ -33,6 +33,7 @@ use App\Http\Controllers\EquipeVagasController;
 use App\Http\Controllers\EquipeGestaoController;
 use App\Http\Controllers\EquipeViewController;
 use App\Http\Controllers\ProfissionalTrashController;
+use App\Http\Controllers\historicoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -319,4 +320,17 @@ Route::get('/equipeview/export/xls/completo', [EquipeViewController::class, 'exp
 
 Route::get('/equipeview/export/pdf', [EquipeViewController::class, 'exportpdf'])->name('equipeview.export.pdf')->middleware('auth', 'verified');
 
-Route::resource('/equipeview', EquipeViewController::class)->only(['index', 'show',])->middleware('auth', 'verified');
+Route::get('/equipeview', [EquipeViewController::class, 'index'])->name('equipeview.index')->middleware('auth', 'verified');
+
+Route::get('/equipeview/{id}', [EquipeViewController::class, 'show'])->name('equipeview.show')->middleware('auth', 'verified');
+
+# Historico
+
+Route::get('/historico/export/csv', [historicoController::class, 'exportcsv'])->name('historico.export.csv')->middleware('auth', 'verified');
+
+Route::get('/historico/export/xls', [historicoController::class, 'exportxls'])->name('historico.export.xls')->middleware('auth', 'verified'); // Export XLS
+
+Route::get('/historico/export/pdf', [historicoController::class, 'exportpdf'])->name('historico.export.pdf')->middleware('auth', 'verified'); // Export PDF
+
+Route::get('/historico', [historicoController::class, 'index'])->name('historico.index')->middleware('auth', 'verified');
+

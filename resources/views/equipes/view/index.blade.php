@@ -24,10 +24,10 @@
     <x-dropdown-menu title='Reports' icon='printer'>
 
       <li>
-        <a class="dropdown-item" href="{{route('equipeview.export.xls.simples', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')])}}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS' }}</a>
+        <a class="dropdown-item" href="{{route('equipeview.export.xls.simples', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'carga_horaria_id' => request()->input('carga_horaria_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')])}}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS' }}</a>
       </li>
       <li>
-        <a class="dropdown-item" href="{{route('equipeview.export.csv.simples', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')])}}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV' }}</a>
+        <a class="dropdown-item" href="{{route('equipeview.export.csv.simples', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'carga_horaria_id' => request()->input('carga_horaria_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')])}}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV' }}</a>
       </li>
 
       <li>
@@ -35,10 +35,10 @@
       </li>
 
       <li>
-        <a class="dropdown-item" href="{{route('equipeview.export.xls.completo', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')])}}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS (Completo)' }}</a>
+        <a class="dropdown-item" href="{{route('equipeview.export.xls.completo', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'carga_horaria_id' => request()->input('carga_horaria_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')])}}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS (Completo)' }}</a>
       </li>
       <li>
-        <a class="dropdown-item" href="{{route('equipeview.export.csv.completo', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')])}}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV (Completo)' }}</a>
+        <a class="dropdown-item" href="{{route('equipeview.export.csv.completo', ['nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'cargo_id' => request()->input('cargo_id'), 'vinculo_id' => request()->input('vinculo_id'), 'vinculo_tipo_id' => request()->input('vinculo_tipo_id'), 'carga_horaria_id' => request()->input('carga_horaria_id'), 'equipe' => request()->input('equipe'), 'cnes' => request()->input('cnes'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')])}}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV (Completo)' }}</a>
       </li>
 
     
@@ -56,6 +56,7 @@
                 <th>CPF</th>
                 <th>Vínculo</th>
                 <th>Tipo</th>
+                <th>CHR</th>
                 <th>Cargo</th>
                 <th>Equipe</th>
                 <th>Tipo</th>
@@ -104,6 +105,14 @@
                       <span class="badge text-bg-info">Vaga Livre</span>                          
                   @endif
                 </td>
+
+                <td>
+                  @if ($equipeviewdata_item->profissional_id)
+                      {{ $equipeviewdata_item->carga_horaria }}
+                  @else
+                      <span class="badge text-bg-info">Vaga Livre</span>                          
+                  @endif
+                </td>
                 
                 <td class="text-nowrap">
                   {{ $equipeviewdata_item->cargo }}
@@ -143,7 +152,7 @@
 
 
                     @can('gestao.equipe.show')
-                    <a href="{{route('equipeview.show', $equipeviewdata_item->id)}}" class="btn btn-info btn-sm" role="button"><x-icon icon='eye'/></a>
+                    <a href="{{route('equipeview.show', $equipeviewdata_item)}}" class="btn btn-info btn-sm" role="button"><x-icon icon='eye'/></a>
                     @endcan
 
                   </x-btn-group>
@@ -194,7 +203,7 @@
           </select>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="vinculo_id" class="form-label">Vínculo</label>
           <select class="form-select" id="vinculo_id" name="vinculo_id">
               <option value="" selected="true">Clique ...</option> 
@@ -206,13 +215,25 @@
           </select>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label for="vinculo_tipo_id" class="form-label">Tipo de Vínculo</label>
           <select class="form-select" id="vinculo_tipo_id" name="vinculo_tipo_id">
               <option value="" selected="true">Clique ...</option> 
               @foreach($vinculo_tipos as $vinculotipo)
               <option value="{{ $vinculotipo->id }}" @selected(session()->get('equipe_view_vinculo_tipo_id') == $vinculotipo->id) >
                 {{ $vinculotipo->nome }}
+              </option>
+              @endforeach
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label for="carga_horaria_id" class="form-label">CHR</label>
+          <select class="form-select" id="carga_horaria_id" name="carga_horaria_id">
+              <option value="" selected="true">Clique ...</option> 
+              @foreach($carga_horarias as $carga_horaria)
+              <option value="{{ $carga_horaria->id }}" @selected(session()->get('equipe_view_carga_horaria_id') == $carga_horaria->id) >
+                {{ $carga_horaria->nome }}
               </option>
               @endforeach
           </select>
@@ -280,7 +301,7 @@
           <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
       
           {{-- Reset the Filter --}}
-          <a href="{{ route('equipeview.index', ['nome' => '', 'matricula' => '', 'cpf' => '', 'cargo_id' => '', 'vinculo_id' => '', 'vinculo_tipo_id' => '', 'equipe' => '', 'equipe_tipo_id' => '', 'numero' => '', 'cnes' => '', 'ine' => '', 'unidade' => '', 'distrito_id' => '', 'mostrar_vagas' => '1']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
+          <a href="{{ route('equipeview.index', ['nome' => '', 'matricula' => '', 'cpf' => '', 'cargo_id' => '', 'vinculo_id' => '', 'vinculo_tipo_id' => '', 'carga_horaria_id' => '', 'equipe' => '', 'equipe_tipo_id' => '', 'numero' => '', 'cnes' => '', 'ine' => '', 'unidade' => '', 'distrito_id' => '', 'mostrar_vagas' => '1']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
         </div>
 
     </div>

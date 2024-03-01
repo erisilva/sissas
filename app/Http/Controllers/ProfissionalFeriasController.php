@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 use App\Models\Ferias;
+use App\Models\Historico;
 
 class ProfissionalFeriasController extends Controller
 {
@@ -34,7 +35,15 @@ class ProfissionalFeriasController extends Controller
             'user_id' => auth()->id(),
         ];  
   
-        Ferias::create($ferias);
+        $new_ferias = Ferias::create($ferias);
+
+        // guarda o histórico
+        $historico = new Historico;
+        $historico->user_id = auth()->id();
+        $historico->profissional_id = $new_ferias->profissional->id;
+        $historico->historico_tipo_id = 5; //Foi cadastrado uma férias para o profissional
+        $historico->observacao = $new_ferias->descricao . ', período entre ' . $new_ferias->inicio . ' e ' . $new_ferias->fim . ', justificativa: ' . $new_ferias->justificativa;
+        $historico->save();
 
         return redirect(route('profissionals.edit', $ferias['profissional_id']))->with('message', 'Férias cadastradas com sucesso!');
     }
@@ -49,6 +58,14 @@ class ProfissionalFeriasController extends Controller
         $ferias = Ferias::findorfail($id);
 
         $profissional_id = $ferias->profissional_id;
+
+        // guarda o histórico
+        $historico = new Historico;
+        $historico->user_id = auth()->id();
+        $historico->profissional_id = $ferias->profissional->id;
+        $historico->historico_tipo_id = 6; //Foi excluído uma férias do profissional
+        $historico->observacao = $ferias->descricao . ', período entre ' . $ferias->inicio . ' e ' . $ferias->fim . ', justificativa: ' . $ferias->justificativa;
+        $historico->save();
 
         $ferias->delete();
 
