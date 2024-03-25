@@ -82,8 +82,8 @@ class FeriasController extends Controller
         $historico = new Historico;
         $historico->user_id = auth()->id();
         $historico->profissional_id = $new_ferias->profissional->id;
-        $historico->historico_tipo_id = 5; //Foi cadastrado uma férias para o profissional
-        $historico->observacao = $new_ferias->descricao . ', período entre ' . $new_ferias->inicio . ' e ' . $new_ferias->fim . ', justificativa: ' . $new_ferias->justificativa;
+        $historico->historico_tipo_id = 5; // Foi cadastrado uma férias para o profissional
+        $historico->observacao = 'Período entre ' . date('d/m/Y', strtotime($new_ferias->inicio)) . ' e ' . date('d/m/Y', strtotime($new_ferias->fim)) . ', justificativa: ' . $new_ferias->justificativa;
         $historico->save();
 
         return redirect(route('ferias.index'))->with('message', 'Férias cadastradas com sucesso!');
@@ -158,8 +158,8 @@ class FeriasController extends Controller
         $historico = new Historico;
         $historico->user_id = auth()->id();
         $historico->profissional_id = $ferias->profissional->id;
-        $historico->historico_tipo_id = 6; //Foi excluído uma férias do profissional
-        $historico->observacao = $ferias->descricao . ', período entre ' . $ferias->inicio . ' e ' . $ferias->fim . ', justificativa: ' . $ferias->justificativa;
+        $historico->historico_tipo_id = 6; // Foi excluído uma férias do profissional
+        $historico->observacao = 'Período entre ' . $ferias->inicio . ' e ' . $ferias->fim . ', justificativa: ' . $ferias->justificativa;
         $historico->save();
 
         Ferias::findorfail($id)->delete();

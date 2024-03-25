@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Históricos')
+@section('title', 'Histórico')
 
 @section('content')
 <div class="container-fluid">
@@ -8,7 +8,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item active" aria-current="page">
         <a href="{{ route('historico.index') }}">
-            Históricos
+            Histórico
         </a>
       </li>
     </ol>
@@ -47,10 +47,13 @@
                 <th scope="col">Descrição</th>
                 <th scope="col">Profissional</th>
                 <th scope="col">Matrícula</th>
+                <th scope="col">CPF</th>
                 <th scope="col">Operador</th>
                 <th scope="col">Equipe</th>
+                <th scope="col">INE</th>
                 <th scope="col">Unidade</th>
                 <th scope="col">Distrito</th>
+                <th scope="col">Observações</th>
             </tr>
         </thead>
         <tbody>
@@ -72,16 +75,25 @@
                     {{ $historico->profissional->matricula }}
                 </td>
                 <td>
+                    {{ $historico->profissional->cpf }}
+                </td>
+                <td>
                     {{ $historico->user->name }}
                 </td>
                 <td>
                     {{$historico->equipe->descricao ?? '-'}}
                 </td>
                 <td>
+                    {{ $historico->equipe->ine ?? '-' }}
+                </td>
+                <td>
                     {{ $historico->equipe->unidade->nome ?? '-' }}
                 </td>
                 <td>
                     {{ $historico->equipe->unidade->distrito->nome ?? '-' }}
+                </td>
+                <td>
+                    {{ $historico->observacao }}
                 </td>
             </tr>    
             @endforeach                                                 
@@ -93,23 +105,93 @@
 
 </div>
 
-<x-modal-filter class="modal-lg" :perpages="$perpages" icon='funnel' title='Filters'>
+<x-modal-filter class="modal-xl" :perpages="$perpages" icon='funnel' title='Filters'>
 
   <form method="GET" action="{{ route('historico.index') }}">
     
-    <div class="mb-3">
-      <label for="name" class="form-label">{{ __('Name') }}</label>
-      <input type="text" class="form-control" id="name" name="name" value="{{ session()->get('permission_name') }}">
+    <div class="row g-3">
+
+      <div class="col-md-3">
+        <label for="data_inicio" class="form-label">Data inicial</label>
+        <input type="text" class="form-control" id="data_inicio" name="data_inicio" value="{{ session()->get('historico_data_inicio') }}" autocomplete="off">
+      </div>
+
+      <div class="col-md-3">
+        <label for="data_fim" class="form-label">Data final</label>
+        <input type="text" class="form-control" id="data_fim" name="data_fim" value="{{ session()->get('historico_data_fim') }}" autocomplete="off">
+      </div>
+
+      <div class="col-md-6">
+        <label for="historico_tipo_id" class="form-label">Tipo de Histórico</label>
+        <select class="form-select" id="historico_tipo_id" name="historico_tipo_id">
+            <option value="" selected="true">Clique ...</option> 
+            @foreach($historicoTipos as $historicoTipo)
+            <option value="{{ $historicoTipo->id }}" @selected(session()->get('profissional_historico_tipo_id') == $historicoTipo->id) >
+              {{ $historicoTipo->descricao }}
+            </option>
+            @endforeach
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label for="nome" class="form-label">Nome do Profissional</label>
+        <input type="text" class="form-control" id="nome" name="nome" value="{{ session()->get('historico_nome') }}">
+      </div>
+
+      <div class="col-md-3">
+        <label for="matricula" class="form-label">Matrícula</label>
+        <input type="text" class="form-control" id="matricula" name="matricula" value="{{ session()->get('historico_matricula') }}">
+      </div>
+
+      <div class="col-md-3">
+        <label for="cpf" class="form-label">CPF</label>
+        <input type="text" class="form-control" id="cpf" name="cpf" value="{{ session()->get('historico_cpf') }}">
+      </div>
+
+      <div class="col-md-5">
+        <label for="user_name" class="form-label">Nome do Operador</label>
+        <input type="text" class="form-control" id="user_name" name="user_name" value="{{ session()->get('historico_user_name') }}">
+      </div>
+
+      <div class="col-md-5">
+        <label for="descricao" class="form-label">Descrição da Equipe</label>
+        <input type="text" class="form-control" id="descricao" name="descricao" value="{{ session()->get('historico_descricao') }}">
+      </div>
+
+      <div class="col-md-2">
+        <label for="ine" class="form-label">INE</label>
+        <input type="text" class="form-control" id="ine" name="ine" value="{{ session()->get('historico_ine') }}">
+      </div>
+
+      <div class="col-md-6">
+        <label for="unidade" class="form-label">Unidade</label>
+        <input type="text" class="form-control" id="unidade" name="unidade" value="{{ session()->get('historico_unidade') }}">
+      </div>
+
+      <div class="col-md-6">
+        <label for="historico_distrito_id" class="form-label">Distrito</label>
+        <select class="form-select" id="historico_distrito_id" name="historico_distrito_id">
+            <option value="" selected="true">Clique ...</option> 
+            @foreach($distritos as $distrito)
+            <option value="{{ $distrito->id }}" @selected(session()->get('historico_distrito_id') == $distrito->id) >
+              {{ $distrito->nome }}
+            </option>
+            @endforeach
+        </select>
+      </div>
+
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
+        <a href="{{ route('historico.index', ['name' => '', 'description' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
+      </div>
+
+      
+
     </div>
     
-    <div class="mb-3">
-      <label for="description" class="form-label">{{ __('Description') }}</label>
-      <input type="text" class="form-control" id="description" name="description" value="{{ session()->get('permission_description') }}">
-    </div>
     
-    <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
     
-    <a href="{{ route('historico.index', ['name' => '', 'description' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
+    
 
   </form>
 

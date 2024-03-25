@@ -61,12 +61,12 @@ class HistoricoTipoSeeder extends Seeder
         # não usado nesta versão
         DB::table('historico_tipos')->insert([
             'id' => 11,
-            'descricao' => 'Profissional foi vinculado a uma unidade',
+            'descricao' => '(Não Usado) Profissional foi vinculado a uma unidade',
         ]);
         # não usado nesta versão
         DB::table('historico_tipos')->insert([
             'id' => 12,
-            'descricao' => 'Profissional foi desvinculado de uma unidade',
+            'descricao' => '(Não Usado) Profissional foi desvinculado de uma unidade',
         ]);
         // profisionais nas equipes
         DB::table('historico_tipos')->insert([

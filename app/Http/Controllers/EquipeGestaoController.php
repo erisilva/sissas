@@ -19,6 +19,7 @@ use Barryvdh\DomPDF\Facade\Pdf; // Export PDF
 
 use App\Exports\EquipeGestaoExport;
 use Maatwebsite\Excel\Facades\Excel; // Export Excel
+use App\Models\Historico;
 
 class EquipeGestaoController extends Controller
 {
@@ -66,7 +67,7 @@ class EquipeGestaoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function preenchervaga(Request $request)
+    public function preenchervaga(Request $request) : RedirectResponse
     {
         $this->authorize('gestao.equipe.vincular.vaga');
 
@@ -86,6 +87,13 @@ class EquipeGestaoController extends Controller
         if (!isset($vaga->profissional_id)){
             $vaga->profissional_id = $input['profissional_id'];
             $vaga->save();
+            $historico = new Historico;
+            $historico->user_id = auth()->id();
+            $historico->profissional_id = $input['profissional_id'];
+            $historico->historico_tipo_id = 13; //Profissional foi vinculado a uma equipe
+            $historico->equipe_id = $vaga->equipe_id;
+            $historico->unidade_id = $vaga->unidade_id;
+            $historico->save();
             $mensagem = 'Profissional vinculado a equipe com sucesso!' ;
         } else {
             $mensagem = 'Vaga já preenchida!' ;
@@ -101,7 +109,7 @@ class EquipeGestaoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function limparvaga(Request $request)
+    public function limparvaga(Request $request) : RedirectResponse
     {
       $this->authorize('gestao.equipe.vincular.vaga');
 
@@ -113,6 +121,16 @@ class EquipeGestaoController extends Controller
         $vaga = EquipeProfissional::findOrFail($input['equipeprofissional_id_limpar']);
 
         if (isset($vaga->profissional_id)){
+        
+            $historico = new Historico;
+            $historico->user_id = auth()->id();
+            $historico->profissional_id = $vaga->profissional_id;
+            $historico->historico_tipo_id = 14; //Profissional foi desvinculado de uma equipe
+            $historico->observacao = $request['motivo_limpar'];
+            $historico->equipe_id = $vaga->equipe_id;
+            $historico->unidade_id = $vaga->unidade_id;
+            $historico->save();
+            
             $vaga->profissional_id = null;
             $vaga->save();
             $mensagem = 'Vaga limpa com sucesso!' ;
@@ -130,7 +148,7 @@ class EquipeGestaoController extends Controller
      * @param  int  $id
      * @return Response::stream()
      */
-    public function exportcsv()
+    public function exportcsv() : \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         $this->authorize('gestao.equipe.export');
 
@@ -138,13 +156,13 @@ class EquipeGestaoController extends Controller
 
     }
 
-         /**
+    /**
      * Exportação para planilha (xls)
      *
      * @param  int  $id
      * @return Response::stream()
      */
-    public function exportxls()
+    public function exportxls() : \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         $this->authorize('gestao.equipe.export');
 
@@ -157,7 +175,7 @@ class EquipeGestaoController extends Controller
      * @param  
      * @return 
      */
-    public function exportpdf()
+    public function exportpdf()  : \Illuminate\Http\Response
     {
         $this->authorize('gestao.equipe.export');
 
@@ -166,18 +184,5 @@ class EquipeGestaoController extends Controller
         ])->download('EquipesGestao_' .  date("Y-m-d H:i:s") . '.pdf');
 
     }
-    
-    /**
-     * Exportação para pdf por protocolo
-     *
-     * @param  $id, id do protocolo
-     * @return pdf
-     */
-    public function exportpdfindividual($id)
-    {
-        if (Gate::denies('gestao.equipe.export')) {
-            abort(403, 'Acesso negado.');
-        }    
-
-    }    
+     
 }

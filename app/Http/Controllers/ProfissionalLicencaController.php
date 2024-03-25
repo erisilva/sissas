@@ -9,6 +9,7 @@ use Illuminate\View\View;
 
 use App\Models\Licenca;
 use App\Models\LicencaTipo;
+use App\Models\Historico;
 
 class ProfissionalLicencaController extends Controller
 {
@@ -35,7 +36,15 @@ class ProfissionalLicencaController extends Controller
             'user_id' => auth()->id(),
         ];  
   
-        Licenca::create($licenca);
+        $new_licenca = Licenca::create($licenca);
+
+        // guarda o histórico
+        $historico = new Historico;
+        $historico->user_id = auth()->id();
+        $historico->profissional_id = $new_licenca->profissional->id;
+        $historico->historico_tipo_id = 7; // Foi cadastrado uma licença para o profissional
+        $historico->observacao = 'Período entre ' . $new_licenca->inicio . ' e ' . $new_licenca->fim . ', observação: ' . $new_licenca->observacao;
+        $historico->save();
 
         return redirect(route('profissionals.edit', $licenca['profissional_id']))->with('message', 'Licença cadastrada com sucesso!');
     }
@@ -48,6 +57,15 @@ class ProfissionalLicencaController extends Controller
         $this->authorize('licenca.delete');
 
         $licenca_profissional_id = $licenca->profissional_id;
+
+        // guarda o histórico
+        $historico = new Historico;
+        $historico->user_id = auth()->id();
+        $historico->profissional_id = $licenca->profissional->id;
+        $historico->historico_tipo_id = 8; // Foi excluído uma licença do profissional
+        $historico->observacao = 'Período entre ' . $licenca->inicio . ' e ' . $licenca->fim . ', observações: ' . $licenca->observacao;
+        $historico->changes = json_encode($licenca);
+        $historico->save();
 
         $licenca->delete();
 

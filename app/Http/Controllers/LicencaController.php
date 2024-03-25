@@ -11,18 +11,19 @@ use App\Models\Licenca;
 use App\Models\Perpage;
 use App\Models\Log;
 use App\Models\LicencaTipo;
+use App\Models\Historico;
 
-use Barryvdh\DomPDF\Facade\Pdf; // Export PDF
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Exports\LicencasExport;
-use Maatwebsite\Excel\Facades\Excel; // Export Excel
+use Maatwebsite\Excel\Facades\Excel;
 
 class LicencaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : View
     {
         $this->authorize('licenca.index');
 
@@ -43,7 +44,7 @@ class LicencaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create() : View
     {
         $this->authorize('licenca.create');
 
@@ -56,7 +57,7 @@ class LicencaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request) : RedirectResponse
     {
         $this->authorize('licenca.create');
 
@@ -76,7 +77,15 @@ class LicencaController extends Controller
             'user_id' => auth()->id(),
         ];  
   
-        Licenca::create($licenca);
+        $new_licenca = Licenca::create($licenca);
+
+        // guarda o histórico
+        $historico = new Historico;
+        $historico->user_id = auth()->id();
+        $historico->profissional_id = $new_licenca->profissional->id;
+        $historico->historico_tipo_id = 7; // Foi cadastrado uma licença para o profissional
+        $historico->observacao = 'Período entre ' . $new_licenca->inicio . ' e ' . $new_licenca->fim . ', observações: ' . $new_licenca->observacao;
+        $historico->save();
 
         return redirect(route('licencas.index'))->with('message', 'Licença cadastrada com sucesso!');
     }
@@ -84,7 +93,7 @@ class LicencaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Licenca $licenca)
+    public function show(Licenca $licenca) : View
     {
         $this->authorize('licenca.show');
 
@@ -97,7 +106,7 @@ class LicencaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Licenca $licenca)
+    public function edit(Licenca $licenca) : View
     {
         $this->authorize('licenca.edit');
 
@@ -110,7 +119,7 @@ class LicencaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Licenca $licenca)
+    public function update(Request $request, Licenca $licenca) : RedirectResponse
     {
         $this->authorize('licenca.edit');
 
@@ -136,9 +145,17 @@ class LicencaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Licenca $licenca)
+    public function destroy(Licenca $licenca) : RedirectResponse
     {
         $this->authorize('licenca.delete');
+
+        // guarda o histórico
+        $historico = new Historico;
+        $historico->user_id = auth()->id();
+        $historico->profissional_id = $licenca->profissional->id;
+        $historico->historico_tipo_id = 8; // Foi excluído uma licença do profissional
+        $historico->observacao = 'Período entre ' . $licenca->inicio . ' e ' . $licenca->fim . ', observações: ' . $licenca->observacao;
+        $historico->save();
 
         $licenca->delete();
 

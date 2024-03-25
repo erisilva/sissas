@@ -85,7 +85,6 @@ class ProfissionalController extends Controller
         $request->validate([
             'nome' => 'required|max:255',
             'cpf' => 'required|max:15|unique:profissionals,cpf',
-            'cpf' => new Cpf,
             'cargo_id' => 'required|integer|exists:cargos,id',
             'vinculo_id' => 'required|integer|exists:vinculos,id',
             'vinculo_tipo_id' => 'required|integer|exists:vinculo_tipos,id',
@@ -175,9 +174,7 @@ class ProfissionalController extends Controller
         if (isset($request->admissao)) {
             $dataFormatadaMysql = Carbon::createFromFormat('d/m/Y', $request->admissao)->format('Y-m-d'); 
             $profissional_request['admissao'] = $dataFormatadaMysql;
-        }
-
-        $profissional->update($profissional_request);
+        }        
 
         // guarda o histórico
         $historico = new Historico;
@@ -186,6 +183,41 @@ class ProfissionalController extends Controller
         $historico->historico_tipo_id = 2; //Registro do profissional alterado
         $historico->changes = json_encode($profissional->getChanges());
         $historico->save();
+
+        if ($profissional->carga_horaria_id != $profissional_request['carga_horaria_id']){
+            // guarda o histórico caso a alteração seja a carga horária
+            $historico = new Historico;
+            $historico->user_id = auth()->user()->id;
+            $historico->profissional_id = $profissional->id;
+            $historico->historico_tipo_id = 15; //A carga horária no registro do profissional alterado
+            $cargaHorariaTemp = CargaHoraria::findOrFail($profissional_request['carga_horaria_id']);
+            $historico->observacao = 'Alterado de ' . $profissional->cargaHoraria->nome . ' para ' . $cargaHorariaTemp->nome;
+            $historico->save();
+        }
+
+        if ($profissional->cargo_id != $profissional_request['cargo_id']){
+            // guarda o histórico caso a alteração seja o cargo
+            $historico = new Historico;
+            $historico->user_id = auth()->user()->id;
+            $historico->profissional_id = $profissional->id;
+            $historico->historico_tipo_id = 16; //O cargo no registro do profissional alterado
+            $cargoTemp = Cargo::findOrFail($profissional_request['cargo_id']);
+            $historico->observacao = 'Alterado de ' . $profissional->cargo->nome . ' para ' . $cargoTemp->nome;
+            $historico->save();
+        }
+
+        if ($profissional->vinculo_id != $profissional_request['vinculo_id']){
+            // guarda o histórico caso a alteração seja o vinculo
+            $historico = new Historico;
+            $historico->user_id = auth()->user()->id;
+            $historico->profissional_id = $profissional->id;
+            $historico->historico_tipo_id = 17; //O vínculo no registro do profissional alterado
+            $vinculoTemp = Vinculo::findOrFail($profissional_request['vinculo_id']);
+            $historico->observacao = 'Alterado de ' . $profissional->vinculo->nome . ' para ' . $vinculoTemp->nome;
+            $historico->save();
+        }
+
+        $profissional->update($profissional_request);
 
         return redirect()->route('profissionals.edit', $profissional)->with('message', 'Profissional atualizado com sucesso!');
     }
@@ -267,9 +299,9 @@ class ProfissionalController extends Controller
      * Função de autocompletar para ser usada pelo typehead
      *
      * @param  
-     * @return json
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function autocomplete(Request $request)
+    public function autocomplete(Request $request) : \Illuminate\Http\JsonResponse
     {
         $this->authorize('profissional.index');
 
@@ -308,7 +340,6 @@ class ProfissionalController extends Controller
         $this->authorize('profissional.index');
 
         $profissional = Profissional::with('cargo', 'vinculo', 'vinculotipo', 'cargahoraria', 'orgaoemissor')->find($profissional->id);
-
 
         return response()->json($profissional, 200, ['Content-type'=> 'application/json; charset=utf-8'], JSON_UNESCAPED_UNICODE);
     }

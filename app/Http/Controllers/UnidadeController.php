@@ -172,7 +172,7 @@ class UnidadeController extends Controller
      * @param  
      * @return json
      */
-    public function autocomplete(Request $request)
+    public function autocomplete(Request $request) : \Illuminate\Http\JsonResponse
     {
         $this->authorize('unidade.index'); // verifica se o usuário possui acesso para listar
 

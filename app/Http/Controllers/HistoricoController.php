@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Historico;
 use App\Models\HistoricoTipo;
 use App\Models\Perpage;
-use Illuminate\Http\Request;
 
 class HistoricoController extends Controller
 {
@@ -22,6 +21,8 @@ class HistoricoController extends Controller
 
         return view('historicos.index', [
             'historicos' => Historico::orderBy('id', 'desc')->filter(request(['name', 'description']))->paginate(session('perPage', '5')),
+            'historicoTipos' => HistoricoTipo::orderBy('descricao')->get(),
+            'distritos'=> auth()->user()->distritos->sortBy('nome'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

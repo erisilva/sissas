@@ -9,6 +9,7 @@ use Illuminate\View\View;
 
 use App\Models\Capacitacao;
 use App\Models\CapacitacaoTipo;
+use App\Models\Historico;
 
 class ProfissionalCapacitacaoController extends Controller
 {
@@ -36,7 +37,16 @@ class ProfissionalCapacitacaoController extends Controller
             'user_id' => auth()->id(),
         ];  
   
-        Capacitacao::create($capacitacao);
+        
+        $new_capacitacao = Capacitacao::create($capacitacao);
+
+        // guarda o histórico
+        $historico = new Historico;
+        $historico->user_id = auth()->id();
+        $historico->profissional_id = $new_capacitacao->profissional->id;
+        $historico->historico_tipo_id = 9; // Foi cadastrado uma capacitação para o profissional
+        $historico->observacao = 'Período entre ' . $new_capacitacao->inicio . ' e ' . $new_capacitacao->fim . ', observação: ' . $new_capacitacao->observacao;
+        $historico->save();
 
         return redirect(route('profissionals.edit', $capacitacao['profissional_id']))->with('message', 'Capacitação cadastrada com sucesso!');
     }
@@ -50,8 +60,17 @@ class ProfissionalCapacitacaoController extends Controller
 
         $capacitacao_profissional_id = $capacitacao->profissional_id;
 
+        // guarda o histórico
+        $historico = new Historico;
+        $historico->user_id = auth()->id();
+        $historico->profissional_id = $capacitacao->profissional->id;
+        $historico->historico_tipo_id = 10; // Foi excluído uma capacitação do profissional
+        $historico->observacao = 'Período entre ' . $capacitacao->inicio . ' e ' . $capacitacao->fim . ', observações: ' . $capacitacao->observacao;
+        $historico->changes = json_encode($capacitacao);
+        $historico->save();
+
         $capacitacao->delete();
 
-        return redirect(route('profissionals.edit', $capacitacao_profissional_id))->with('message', 'Licença excluída com sucesso!');
+        return redirect(route('profissionals.edit', $capacitacao_profissional_id))->with('message', 'Capacitação excluída com sucesso!');
     }
 }

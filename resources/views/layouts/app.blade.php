@@ -64,7 +64,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Histórico</a>
+                            <a class="nav-link" href="{{ route('historico.index') }}">Histórico</a>
                         </li>
 
                         <li class="nav-item dropdown">
