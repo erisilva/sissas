@@ -16,7 +16,6 @@ class HistoricoTipo extends Model
     /**
      * Histórico dos profissionais
      *
-     * @var Licencas
      */
     public function historicos()
     {

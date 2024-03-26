@@ -7,8 +7,15 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
 
-            <h1>ACL 10</h1>
+            <div class="card">
+                <div class="card-header">SisSAS 2.0.0 Abril-2024</div>
 
+                <div class="card-body">
+                    <p>Sistema de Gestão de Equipes e Profissionais de Saúde</p>
+                    <p>Analista Responsável: <a href="mailto:erivelton.silva@contagem.mg.gov.br">Erivelton Silva</a>.</p>
+                    <p>Código fonte do software está disponível no repertório do <a href="https://github.com/erisilva/sissas.git">{{ __('GitHub') }}</a>.</p>
+                </div>    
+            </div>    
         </div>
     </div>
 </div>

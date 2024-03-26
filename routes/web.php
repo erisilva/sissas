@@ -326,11 +326,9 @@ Route::get('/equipeview/{id}', [EquipeViewController::class, 'show'])->name('equ
 
 # Historico
 
-Route::get('/historico/export/csv', [historicoController::class, 'exportcsv'])->name('historico.export.csv')->middleware('auth', 'verified');
+Route::get('/historico/export/csv/completo', [HistoricoController::class, 'exportcsv'])->name('historico.export.csv')->middleware('auth', 'verified');
 
-Route::get('/historico/export/xls', [historicoController::class, 'exportxls'])->name('historico.export.xls')->middleware('auth', 'verified'); // Export XLS
-
-Route::get('/historico/export/pdf', [historicoController::class, 'exportpdf'])->name('historico.export.pdf')->middleware('auth', 'verified'); // Export PDF
+Route::get('/historico/export/xls/completo', [HistoricoController::class, 'exportxls'])->name('historico.export.xls')->middleware('auth', 'verified');
 
 Route::get('/historico', [historicoController::class, 'index'])->name('historico.index')->middleware('auth', 'verified');
 

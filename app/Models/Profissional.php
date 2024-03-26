@@ -203,10 +203,9 @@ class Profissional extends Model
         return $this->belongsTo(OrgaoEmissor::class);
     }
 
-        /**
+    /**
      * Férias do profissional
      *
-     * @var Ferias
      */
     public function ferias() : HasMany
     {
@@ -215,8 +214,6 @@ class Profissional extends Model
 
     /**
      * Licenças do profissional
-     *
-     * @var Licencas
      */
     public function licencas() : HasMany
     {
@@ -226,7 +223,6 @@ class Profissional extends Model
     /**
      * capacitações do profissional
      *
-     * @var Capacitacao
      */
     public function capacitacaos() : HasMany
     {
@@ -236,7 +232,6 @@ class Profissional extends Model
     /**
      * Equipes do profissional
      *
-     * @var EquipeProfissional
      */
     public function equipeProfissionals()
     {
@@ -246,7 +241,6 @@ class Profissional extends Model
     /**
      * Históricos do profissional
      *
-     * @var Historico
      */
     public function historicos()
     {
