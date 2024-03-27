@@ -130,6 +130,12 @@ class Update2023Seeder extends Seeder
         ]);
 
 
+        DB::table('permissions')->insert([
+            'name' => 'gestao.equipe.cadastrar.profissional.vaga',
+            'description' => 'Registrar um profissional a uma vaga da equipe',
+        ]);
+
+
 
         //ACL
         // recebi os perfis
@@ -166,6 +172,8 @@ class Update2023Seeder extends Seeder
         $profissional_mapa_index = Permission::where('name', '=', 'mapa.index')->get()->first();
         $profissional_mapa_show = Permission::where('name', '=', 'mapa.show')->get()->first();
         $profissional_mapa_export = Permission::where('name', '=', 'mapa.export')->get()->first();
+        // para cadastro de profissional na vinculação de equipes
+        $gestaoequipecadastrarprofissional = Permission::where('name', '=', 'gestao.equipe.cadastrar.profissional.vaga')->get()->first();
 
 
 
@@ -197,6 +205,8 @@ class Update2023Seeder extends Seeder
         $administrador_perfil->permissions()->attach($profissional_mapa_index);
         $administrador_perfil->permissions()->attach($profissional_mapa_show);
         $administrador_perfil->permissions()->attach($profissional_mapa_export);
+        // para cadastro de profissional na vinculação de equipes
+        $administrador_perfil->permissions()->attach($gestaoequipecadastrarprofissional);
         
         
 
@@ -223,6 +233,8 @@ class Update2023Seeder extends Seeder
         $gerente_perfil->permissions()->attach($profissional_mapa_index);
         $gerente_perfil->permissions()->attach($profissional_mapa_show);
         $gerente_perfil->permissions()->attach($profissional_mapa_export);
+        // para cadastro de profissional na vinculação de equipes
+        $gerente_perfil->permissions()->attach($gestaoequipecadastrarprofissional);
 
 
         # profissionais->férias

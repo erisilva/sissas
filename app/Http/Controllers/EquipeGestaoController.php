@@ -9,10 +9,14 @@ use Illuminate\View\View;
 
 use App\Models\Equipe;
 use App\Models\Perpage;
-use App\Models\Distrito;
-use App\Models\EquipeTipo;
 use App\Models\Cargo;
+use App\Models\Vinculo;
+use App\Models\VinculoTipo;
+use App\Models\CargaHoraria;
+use App\Models\OrgaoEmissor;
 use App\Models\EquipeProfissional;
+use App\Models\EquipeTipo;
+
 
 
 use Barryvdh\DomPDF\Facade\Pdf; // Export PDF
@@ -57,7 +61,12 @@ class EquipeGestaoController extends Controller
 
         return view('equipes.gestao.show', [
             'equipe' => Equipe::findOrFail($id),
-            'equipeprofissionais' => EquipeProfissional::where('equipe_id', '=', $id)->orderBy('cargo_id', 'desc')->get()
+            'equipeprofissionais' => EquipeProfissional::where('equipe_id', '=', $id)->orderBy('cargo_id', 'desc')->get(),
+            'cargos' => Cargo::orderBy('nome')->get(),
+            'vinculos' => Vinculo::orderBy('nome')->get(),
+            'vinculotipos' => VinculoTipo::orderBy('nome')->get(),
+            'cargahorarias' => CargaHoraria::orderBy('nome')->get(),
+            'orgaoemissors' => OrgaoEmissor::orderBy('nome')->get(),
         ]);
     }
 
@@ -139,6 +148,21 @@ class EquipeGestaoController extends Controller
         }    
 
         return redirect()->route('equipegestao.show', $input['equipe_id_limpar'])->with('message', $mensagem);
+    }
+
+        /**
+     * Limpa a vaga da equipe.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function registrarvaga(Request $request) : RedirectResponse
+    {
+        $this->authorize('gestao.equipe.cadastrar.profissional.vaga'); 
+
+        //code ..
+
+        return redirect()->route('equipegestao.show', $request['equipe_id'])->with('message', 'Registrar');
     }
     
     
