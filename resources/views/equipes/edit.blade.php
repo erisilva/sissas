@@ -202,13 +202,14 @@
                 <th scope="col">CBO</th>
                 <th scope="col">Profissional</th>
                 <th scope="col">Matrícula</th>
+                <th scope="col">CPF</th>
                 <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
             @foreach($equipeprofissionais as $equipeprofissional)
             <tr>
-                <td>{{ $equipeprofissional->cargo->nome }}</td>
+                <td><strong>{{ $equipeprofissional->cargo->nome }}</strong></td>
                 <td>{{ $equipeprofissional->cargo->cbo }}</td>
                 <td>
                   @if(isset($equipeprofissional->profissional->id))
@@ -222,7 +223,12 @@
                   <span class="badge text-bg-info">Vaga Livre</span>
                   @endif
                 </td>
-                <td>{{ isset($equipeprofissional->profissional_id) ?  $equipeprofissional->profissional->matricula : '-' }}</td>
+                <td>
+                  {{ isset($equipeprofissional->profissional_id) ?  $equipeprofissional->profissional->matricula : '-' }}
+                </td>
+                <td>
+                  {{ isset($equipeprofissional->profissional_id) ?  $equipeprofissional->profissional->cpf : '-' }}
+                </td>
                 <td>
                   <form method="post" action="{{route('equipevagas.destroy', $equipeprofissional->id)}}" onsubmit="return confirm('Você tem certeza que quer remover essa vaga?');">
                     @csrf

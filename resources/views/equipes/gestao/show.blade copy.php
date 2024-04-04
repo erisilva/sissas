@@ -70,6 +70,16 @@
 
         <x-flash-message status='success' message='message' />
 
+        @if($errors->any())
+
+        <div class="alert alert-danger" role="alert">
+          <strong>Os seguintes campos precisam ser corrigidos:</strong>
+          {!! implode('', $errors->all(':message ')) !!}
+        </div>
+
+            
+        @endif
+
         @error('cargo_id')
             <div class="alert alert-danger" role="alert">
                 {{ $message }}
@@ -141,8 +151,8 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">Cargo</th>
                             <th scope="col">CBO</th>
+                            <th scope="col">Cargo</th>
                             <th scope="col">Profissional</th>
                             <th scope="col">Matrícula</th>
                             <th scope="col">CPF</th>
@@ -153,10 +163,10 @@
                         @foreach ($equipeprofissionais as $equipeprofissional)
                             <tr>
                                 <td>
-                                    <strong>{{ $equipeprofissional->cargo->nome }}</strong>
+                                    {{ $equipeprofissional->cargo->cbo }}
                                 </td>
                                 <td>
-                                    {{ $equipeprofissional->cargo->cbo }}
+                                    {{ $equipeprofissional->cargo->nome }}
                                 </td>
 
                                 <td>
@@ -209,6 +219,14 @@
                                             data-cargo-nome="{{ $equipeprofissional->cargo->nome }}"
                                             data-equipe-id="{{ $equipe->id }}">
                                             <x-icon icon='plus-circle' /> Atribuir
+                                        </button>
+                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#modalregistrarprofissional"
+                                            data-equipeprofissional-id="{{ $equipeprofissional->id }}"
+                                            data-cargo-id="{{ $equipeprofissional->cargo->id }}"
+                                            data-cargo-nome="{{ $equipeprofissional->cargo->nome }}"
+                                            data-equipe-id="{{ $equipe->id }}">
+                                            <x-icon icon='file-earmark' /> Registrar
                                         </button>
                                     @endif
                                 </td>
@@ -495,6 +513,321 @@
     </div>
 
 
+    {{-- Registrar um novo profissional em uma vaga da equipe --}}
+    <div class="modal fade modal-xl" id="modalregistrarprofissional" tabindex="-1" aria-labelledby="Profissional"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="registrarProfissionalLabel"><x-icon icon='people' /> Profissional
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form method="POST" action="{{ route('equipegestao.registrarvaga') }}">
+                        @csrf
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label for="nome" class="form-label">{{ __('Name') }} <strong
+                                        class="text-danger">(*)</strong></label>
+                                <input type="text" class="form-control @error('nome') is-invalid @enderror"
+                                    name="nome" value="{{ old('nome') ?? '' }}">
+                                @error('nome')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="matricula" class="form-label">Matrícula <strong
+                                        class="text-danger">(*)</strong></label>
+                                <input type="text" class="form-control @error('matricula') is-invalid @enderror"
+                                    name="matricula" value="{{ old('matricula') ?? '' }}">
+                                @error('matricula')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="cpf" class="form-label">CPF <strong
+                                        class="text-danger">(*)</strong></label>
+                                <input type="text" class="form-control @error('cpf') is-invalid @enderror"
+                                    name="cpf" id="cpf" value="{{ old('cpf') ?? '' }}">
+                                @error('cpf')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="cns" class="form-label">CNS</label>
+                                <input type="text" class="form-control @error('cns') is-invalid @enderror"
+                                    name="cns" id="cns" value="{{ old('cns') ?? '' }}">
+                                @error('cns')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">E-mail</label>
+                                <input type="text" class="form-control @error('email') is-invalid @enderror"
+                                    name="email" value="{{ old('email') ?? '' }}">
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="tel" class="form-label">TEL</label>
+                                <input type="text" class="form-control @error('tel') is-invalid @enderror"
+                                    name="tel" id="tel" value="{{ old('tel') ?? '' }}">
+                                @error('tel')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="cel" class="form-label">CEL</label>
+                                <input type="text" class="form-control @error('cel') is-invalid @enderror"
+                                    name="cel" id="cel" value="{{ old('cel') ?? '' }}">
+                                @error('cel')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="cep" class="form-label">CEP</label>
+                                <input type="text" class="form-control @error('cep') is-invalid @enderror"
+                                    name="cep" id="cep" value="{{ old('cep') ?? '' }}">
+                                @error('cep')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-5">
+                                <label for="logradouro" class="form-label">Logradouro</label>
+                                <input type="text" class="form-control @error('logradouro') is-invalid @enderror"
+                                    name="logradouro" id="logradouro" value="{{ old('logradouro') ?? '' }}">
+                                @error('logradouro')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="numero" class="form-label">Nº</label>
+                                <input type="text" class="form-control @error('numero') is-invalid @enderror"
+                                    name="numero" value="{{ old('numero') ?? '' }}">
+                                @error('numero')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="complemento" class="form-label">Complemento</label>
+                                <input type="text" class="form-control @error('complemento') is-invalid @enderror"
+                                    name="complemento" value="{{ old('complemento') ?? '' }}">
+                                @error('complemento')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-5">
+                                <label for="bairro" class="form-label">Bairro</label>
+                                <input type="text" class="form-control @error('bairro') is-invalid @enderror"
+                                    name="bairro" id="bairro" value="{{ old('bairro') ?? '' }}">
+                                @error('bairro')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-5">
+                                <label for="cidade" class="form-label">Cidade</label>
+                                <input type="text" class="form-control @error('cidade') is-invalid @enderror"
+                                    name="cidade" id="cidade" value="{{ old('cidade') ?? '' }}">
+                                @error('cidade')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="uf" class="form-label">UF</label>
+                                <input type="text" class="form-control @error('uf') is-invalid @enderror"
+                                    name="uf" id="uf" value="{{ old('uf') ?? '' }}">
+                                @error('uf')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+
+
+                            {{--  Cargo --}}
+                            <div class="col-md-5">
+                                <label for="cargo" class="form-label">Cargo <strong
+                                        class="text-danger">(*ATENÇÃO*)</strong></label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" name="cargo" id="cargo"
+                                        value="" readonly aria-label="Cargo do Profissional"
+                                        aria-describedby="basic-addon2">
+                                    <span class="input-group-text text-bg-danger" id="basic-addon2"><x-icon
+                                            icon='exclamation-diamond-fill' /></span>
+                                </div>
+                            </div>
+
+                            {{--  Vinculo --}}
+                            <div class="col-md-3">
+                                <label for="vinculo_id" class="form-label">Vínculo <strong
+                                        class="text-danger">(*)</strong></label>
+                                <select class="form-select" id="vinculo_id" name="vinculo_id">
+                                    <option value="" selected>Clique ...</option>
+                                    @foreach ($vinculos as $vinculo)
+                                        <option value="{{ $vinculo->id }}" @selected(old('vinculo_id') == $vinculo->id)>
+                                            {{ $vinculo->nome }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('vinculo_id'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('vinculo_id') }}
+                                    </div>
+                                @endif
+                            </div>
+
+                            {{-- VinculoTipo --}}
+                            <div class="col-md-4">
+                                <label for="vinculo_tipo_id" class="form-label">Tipo de Vínculo <strong
+                                        class="text-danger">(*)</strong></label>
+                                <select class="form-select" id="vinculo_tipo_id" name="vinculo_tipo_id">
+                                    <option value="" selected>Clique ...</option>
+                                    @foreach ($vinculotipos as $vinculotipo)
+                                        <option value="{{ $vinculotipo->id }}" @selected(old('vinculo_tipo_id') == $vinculotipo->id)>
+                                            {{ $vinculotipo->nome }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('vinculo_tipo_id'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('vinculo_tipo_id') }}
+                                    </div>
+                                @endif
+                            </div>
+
+                            {{--  CargaHoraria --}}
+                            <div class="col-md-3">
+                                <label for="carga_horaria_id" class="form-label">Carga Horária <strong
+                                        class="text-danger">(*)</strong></label>
+                                <select class="form-select" id="carga_horaria_id" name="carga_horaria_id">
+                                    <option value="" selected>Clique ...</option>
+                                    @foreach ($cargahorarias as $cargahoraria)
+                                        <option value="{{ $cargahoraria->id }}" @selected(old('carga_horaria_id') == $cargahoraria->id)>
+                                            {{ $cargahoraria->nome }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('carga_horaria_id'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('carga_horaria_id') }}
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="col-md-6">
+                                <p>Flexibilização</p>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="flexibilizacao"
+                                        id="inlineRadio1" value="Nenhum" checked="true">
+                                    <label class="form-check-label" for="inlineRadio1">Nenhum</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="flexibilizacao"
+                                        id="inlineRadio2" value="Extensão">
+                                    <label class="form-check-label" for="inlineRadio2">Extensão</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="flexibilizacao"
+                                        id="inlineRadio3" value="Redução">
+                                    <label class="form-check-label" for="inlineRadio3">Redução</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="admissao" class="form-label">Admissão <strong
+                                        class="text-danger">(*)</strong></label>
+                                <input type="text" class="form-control @error('admissao') is-invalid @enderror"
+                                    name="admissao" id="admissao" value="{{ old('admissao') ?? '' }}">
+                                @error('admissao')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="registroClasse" class="form-label">Registro de Classe</label>
+                                <input type="text" class="form-control @error('registroClasse') is-invalid @enderror"
+                                    name="registroClasse" value="{{ old('registroClasse') ?? '' }}">
+                                @error('registroClasse')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- OrgaoEmissor --}}
+                            <div class="col-md-4">
+                                <label for="orgao_emissor_id" class="form-label">Orgão Emissor <strong
+                                        class="text-danger">(*)</strong></label>
+                                <select class="form-select" id="orgao_emissor_id" name="orgao_emissor_id">
+                                    <option value="" selected>Clique ...</option>
+                                    @foreach ($orgaoemissors as $orgaoemissor)
+                                        <option value="{{ $orgaoemissor->id }}" @selected(old('orgao_emissor_id') == $orgaoemissor->id)>
+                                            {{ $orgaoemissor->nome }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('orgao_emissor_id'))
+                                    <div class="text-danger">
+                                        {{ $errors->first('orgao_emissor_id') }}
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="ufOrgaoEmissor" class="form-label">UF/SSP</label>
+                                <input type="text" class="form-control @error('ufOrgaoEmissor') is-invalid @enderror"
+                                    name="ufOrgaoEmissor" value="{{ old('ufOrgaoEmissor') ?? '' }}" maxlength="2"
+                                    style="text-transform:uppercase">
+                                @error('ufOrgaoEmissor')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-12">
+                                <label for="observacao">Observações</label>
+                                <textarea class="form-control" name="observacao" rows="3">{{ old('observacao') ?? '' }}</textarea>
+                            </div>
+
+
+
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-warning"><x-icon icon='file-earmark' /> Registrar
+                                    Profissional</button>
+                            </div>
+
+
+                            <input type="hidden" id="equipe_id_registrar" name="equipe_id_registrar" value="">
+                            <input type="hidden" id="cargo_id_registrar" name="cargo_id_registrar" value="">
+                            <input type="hidden" id="equipeprofissional_id_registrar" name="equipeprofissional_id_registrar" value="">
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <x-icon icon='x' /> Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 @endsection
 
 
@@ -610,6 +943,20 @@
                 $(e.currentTarget).find('input[name="cargo_nome_limpar"]').val(cargonome);
                 $(e.currentTarget).find('input[name="profissional_nome_limpar"]').val(profissionalnome);
                 $(e.currentTarget).find('input[name="equipe_id_limpar"]').val(equipeid);
+            });
+
+
+            $('#modalregistrarprofissional').on('show.bs.modal', function(e) {
+                var equipeprofissionalid = $(e.relatedTarget).data('equipeprofissional-id');
+                var cargonome = $(e.relatedTarget).data('cargo-nome');
+                var cargoid = $(e.relatedTarget).data('cargo-id');
+                var equipeid = $(e.relatedTarget).data('equipe-id');
+
+                $(e.currentTarget).find('input[name="equipeprofissional_id_registrar"]').val(
+                    equipeprofissionalid);
+                $(e.currentTarget).find('input[name="cargo"]').val(cargonome);
+                $(e.currentTarget).find('input[name="cargo_id_registrar"]').val(cargoid);
+                $(e.currentTarget).find('input[name="equipe_id_registrar"]').val(equipeid);
             });
 
 

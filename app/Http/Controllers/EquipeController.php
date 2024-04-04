@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\View\View;
 
@@ -13,6 +14,7 @@ use App\Models\Distrito;
 use App\Models\EquipeTipo;
 use App\Models\Cargo;
 use App\Models\EquipeProfissional;
+
 
 
 use Barryvdh\DomPDF\Facade\Pdf; // Export PDF
@@ -91,7 +93,7 @@ class EquipeController extends Controller
 
         return view('equipes.show', [
             'equipe' => $equipe,
-            'equipeprofissionais' => EquipeProfissional::where('equipe_id', '=', $equipe->id)->orderBy('cargo_id', 'desc')->get()
+            'equipeprofissionais' => EquipeProfissional::where('equipe_id', '=', $equipe->id)->join('cargos', 'equipe_profissionals.cargo_id', '=', 'cargos.id')->orderBy('cargos.nome')->get()
         ]);
     }
 
@@ -106,7 +108,7 @@ class EquipeController extends Controller
             'equipe' => $equipe,
             'equipetipos' => EquipeTipo::orderBy('nome')->get(),
             'cargos' => Cargo::orderBy('nome')->get(),
-            'equipeprofissionais' => EquipeProfissional::where('equipe_id', '=', $equipe->id)->orderBy('cargo_id', 'desc')->get()
+            'equipeprofissionais' => EquipeProfissional::where('equipe_id', '=', $equipe->id)->join('cargos', 'equipe_profissionals.cargo_id', '=', 'cargos.id')->orderBy('cargos.nome')->get()
         ]);
     }
 
@@ -140,9 +142,19 @@ class EquipeController extends Controller
     {
         $this->authorize('equipe.delete');
 
-        $equipe->delete();
+        DB::beginTransaction();
 
-        return redirect()->route('equipes.index')->with('message', 'Equipe excluída com sucesso.');
+        try {
+            $equipe->delete();
+
+            DB::commit();
+            return redirect(route('equipes.index'))->with('message', 'Equipe excluída com sucesso!');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return redirect()->route('equipes.index')->with('message', __('Error saving record!') . ' ' . $e->getMessage());
+        }
     }
 
     /**

@@ -183,7 +183,6 @@ class Equipe extends Model
     /**
      * Calcula a quantidade de vagas da equipe.
      *
-     * @var quantidade de vagas
      */
     public function getTotalVagasAttribute(){
         return $this->equipeProfissionals->count();
@@ -192,7 +191,6 @@ class Equipe extends Model
     /**
      * Calcula a quantidade de vagas preenchidas da equipe.
      *
-     * @var quantidade de vagas preenchidas
      */
     public function getVagasPreenchidasAttribute(){
         return (int) $this->equipeProfissionals->whereNotNull('profissional_id')->count();
@@ -201,7 +199,6 @@ class Equipe extends Model
     /**
      * Calcula a quantidade de vagas disponíveis da equipe.
      *
-     * @var quantidade de vagas disponíveis
      */
     public function getVagasDisponiveisAttribute(){
         return (int) $this->equipeProfissionals->whereNull('profissional_id')->count();

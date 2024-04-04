@@ -17,13 +17,14 @@ use App\Models\OrgaoEmissor;
 use App\Models\EquipeProfissional;
 use App\Models\EquipeTipo;
 
-
+use Carbon\Carbon;
 
 use Barryvdh\DomPDF\Facade\Pdf; // Export PDF
 
 use App\Exports\EquipeGestaoExport;
 use Maatwebsite\Excel\Facades\Excel; // Export Excel
 use App\Models\Historico;
+use App\Models\Profissional;
 
 class EquipeGestaoController extends Controller
 {
@@ -61,8 +62,8 @@ class EquipeGestaoController extends Controller
 
         return view('equipes.gestao.show', [
             'equipe' => Equipe::findOrFail($id),
-            'equipeprofissionais' => EquipeProfissional::where('equipe_id', '=', $id)->orderBy('cargo_id', 'desc')->get(),
-            'cargos' => Cargo::orderBy('nome')->get(),
+            'equipeprofissionais' => EquipeProfissional::where('equipe_profissionals.equipe_id', '=', $id)->join('cargos', 'equipe_profissionals.cargo_id', '=', 'cargos.id')->orderBy('cargos.nome')->get(),
+            'cargos' => Cargo::orderBy('cargos.nome')->get(),
             'vinculos' => Vinculo::orderBy('nome')->get(),
             'vinculotipos' => VinculoTipo::orderBy('nome')->get(),
             'cargahorarias' => CargaHoraria::orderBy('nome')->get(),
@@ -158,11 +159,44 @@ class EquipeGestaoController extends Controller
      */
     public function registrarvaga(Request $request) : RedirectResponse
     {
-        $this->authorize('gestao.equipe.cadastrar.profissional.vaga'); 
+        $this->authorize('gestao.equipe.cadastrar.profissional.vaga');
 
-        //code ..
+        
 
-        return redirect()->route('equipegestao.show', $request['equipe_id'])->with('message', 'Registrar');
+        $request->validate([
+            'nome' => 'required|max:255',
+            'cpf' => 'required|max:15|unique:profissionals,cpf',            
+            'vinculo_id' => 'required|integer|exists:vinculos,id',
+            'vinculo_tipo_id' => 'required|integer|exists:vinculo_tipos,id',
+            'carga_horaria_id' => 'required|integer|exists:carga_horarias,id',
+            'orgao_emissor_id' => 'required|integer|exists:orgao_emissors,id',
+            'matricula' => 'required|max:20',
+            'admissao' => 'required|date_format:d/m/Y',
+            'cargo_id_registrar'=> 'required|integer|exists:cargos,id',
+            'equipe_id_registrar'=> 'required|integer|exists:equipes,id',
+            'equipeprofissional_id_registrar'=> 'required|integer|exists:equipe_profissionals,id',
+        ]);
+
+        
+        dd($request->all());
+
+        $profissional = $request->all();
+
+
+        if (isset($request->admissao)) {
+            $dataFormatadaMysql = Carbon::createFromFormat('d/m/Y', $request->admissao)->format('Y-m-d'); 
+            $profissional['admissao'] = $dataFormatadaMysql;
+        }        
+        
+        $new_profissional = Profissional::create($profissional);
+
+        EquipeProfissional::create([
+            'profissional_id'=> $new_profissional->id,
+            'cargo_id'=> $profissional['cargo_id'],
+            'equipe_id'=> $profissional['equipe_id'],
+        ]);
+
+        return redirect()->route('equipegestao.show', $profissional['equipe_id'])->with('message', 'Registrar');
     }
     
     

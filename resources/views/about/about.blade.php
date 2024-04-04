@@ -12,7 +12,7 @@
 
                 <div class="card-body">
                     <p>Sistema de Gestão de Equipes e Profissionais de Saúde</p>
-                    <p>Analista Responsável: <a href="mailto:erivelton.silva@contagem.mg.gov.br">Erivelton Silva</a>.</p>
+                    <p>Analista Responsável: Erivelton da Silva <a href="mailto:erivelton.silva@contagem.mg.gov.br">erivelton.silva@contagem.mg.gov.br</a></p>
                     <p>Código fonte do software está disponível no repertório do <a href="https://github.com/erisilva/sissas.git">{{ __('GitHub') }}</a>.</p>
                 </div>    
             </div>    
