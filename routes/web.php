@@ -33,7 +33,7 @@ use App\Http\Controllers\EquipeVagasController;
 use App\Http\Controllers\EquipeGestaoController;
 use App\Http\Controllers\EquipeViewController;
 use App\Http\Controllers\ProfissionalTrashController;
-use App\Http\Controllers\historicoController;
+use App\Http\Controllers\HistoricoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -332,5 +332,5 @@ Route::get('/historico/export/csv/completo', [HistoricoController::class, 'expor
 
 Route::get('/historico/export/xls/completo', [HistoricoController::class, 'exportxls'])->name('historico.export.xls')->middleware('auth', 'verified');
 
-Route::get('/historico', [historicoController::class, 'index'])->name('historico.index')->middleware('auth', 'verified');
+Route::get('/historico', [HistoricoController::class, 'index'])->name('historico.index')->middleware('auth', 'verified');
 

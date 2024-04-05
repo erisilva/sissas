@@ -6,6 +6,9 @@ use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Pagination\Paginator;
 
+use Faker\Factory as FakerFactory;
+use Faker\Generator as FakerGenerator;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,8 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(\Faker\Generator::class, function () {
-            return \Faker\Factory::create('pt_BR');
+        $this->app->singleton(FakerGenerator::class, function () {
+            return FakerFactory::create('pt_BR');
         });
     }
 
