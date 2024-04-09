@@ -93,7 +93,9 @@ class EquipeController extends Controller
 
         return view('equipes.show', [
             'equipe' => $equipe,
-            'equipeprofissionais' => EquipeProfissional::where('equipe_id', '=', $equipe->id)->join('cargos', 'equipe_profissionals.cargo_id', '=', 'cargos.id')->orderBy('cargos.nome')->get()
+            'equipeprofissionais' => EquipeProfissional::where('equipe_id', '=', $equipe->id)
+                                     ->select('equipe_profissionals.id', 'equipe_profissionals.profissional_id', 'equipe_profissionals.cargo_id', 'equipe_profissionals.equipe_id', 'equipe_profissionals.created_at', 'equipe_profissionals.updated_at')
+                                     ->join('cargos', 'equipe_profissionals.cargo_id', '=', 'cargos.id')->orderBy('cargos.nome')->get()
         ]);
     }
 

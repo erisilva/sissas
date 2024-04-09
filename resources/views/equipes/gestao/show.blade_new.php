@@ -70,14 +70,11 @@
 
         <x-flash-message status='success' message='message' />
 
-        @if($errors->any())
-
-        <div class="alert alert-danger" role="alert">
-          <strong>Os seguintes campos precisam ser corrigidos:</strong>
-          {!! implode('', $errors->all(':message ')) !!}
-        </div>
-
-            
+        @if ($errors->any())
+            <div class="alert alert-danger" role="alert">
+                <strong>Os seguintes campos precisam ser corrigidos:</strong>
+                {!! implode('', $errors->all(':message ')) !!}
+            </div>
         @endif
 
         @error('cargo_id')
@@ -229,10 +226,7 @@
                                             <x-icon icon='file-earmark' /> Registrar
                                         </button>
                                     @endif
-                                </td>
-
-
-
+                                    </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -527,6 +521,10 @@
 
                     <form method="POST" action="{{ route('equipegestao.registrarvaga') }}">
                         @csrf
+                        <input type="hidden" id="equipe_id_registrar" name="equipe_id_registrar" value="">
+                        <input type="hidden" id="cargo_id_registrar" name="cargo_id_registrar" value="">
+                        <input type="hidden" id="equipeprofissional_id_registrar" name="equipeprofissional_id_registrar"
+                            value="">
                         <div class="row g-3">
 
                             <div class="col-md-6">
@@ -803,17 +801,10 @@
                                 <textarea class="form-control" name="observacao" rows="3">{{ old('observacao') ?? '' }}</textarea>
                             </div>
 
-
-
                             <div class="col-12">
                                 <button type="submit" class="btn btn-warning"><x-icon icon='file-earmark' /> Registrar
                                     Profissional</button>
                             </div>
-
-
-                            <input type="hidden" id="equipe_id_registrar" name="equipe_id_registrar" value="">
-                            <input type="hidden" id="cargo_id_registrar" name="cargo_id_registrar" value="">
-                            <input type="hidden" id="equipeprofissional_id_registrar" name="equipeprofissional_id_registrar" value="">
                         </div>
                     </form>
 

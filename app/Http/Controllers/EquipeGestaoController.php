@@ -62,7 +62,9 @@ class EquipeGestaoController extends Controller
 
         return view('equipes.gestao.show', [
             'equipe' => Equipe::findOrFail($id),
-            'equipeprofissionais' => EquipeProfissional::where('equipe_profissionals.equipe_id', '=', $id)->join('cargos', 'equipe_profissionals.cargo_id', '=', 'cargos.id')->orderBy('cargos.nome')->get(),
+            'equipeprofissionais' => EquipeProfissional::where('equipe_profissionals.equipe_id', '=', $id)
+                          ->select('equipe_profissionals.id', 'equipe_profissionals.profissional_id', 'equipe_profissionals.cargo_id', 'equipe_profissionals.equipe_id', 'equipe_profissionals.created_at', 'equipe_profissionals.updated_at')
+                          ->join('cargos', 'equipe_profissionals.cargo_id', '=', 'cargos.id')->orderBy('cargos.nome')->get(),
             'cargos' => Cargo::orderBy('cargos.nome')->get(),
             'vinculos' => Vinculo::orderBy('nome')->get(),
             'vinculotipos' => VinculoTipo::orderBy('nome')->get(),
@@ -130,7 +132,7 @@ class EquipeGestaoController extends Controller
 
         $vaga = EquipeProfissional::findOrFail($input['equipeprofissional_id_limpar']);
 
-        if (isset($vaga->profissional_id)){
+        if (!is_null($vaga->profissional_id)){
         
             $historico = new Historico;
             $historico->user_id = auth()->id();
@@ -146,7 +148,7 @@ class EquipeGestaoController extends Controller
             $mensagem = 'Vaga limpa com sucesso!' ;
         } else {
             $mensagem = 'Vaga já está limpa!' ;
-        }    
+        }
 
         return redirect()->route('equipegestao.show', $input['equipe_id_limpar'])->with('message', $mensagem);
     }

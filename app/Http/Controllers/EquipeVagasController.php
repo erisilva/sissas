@@ -47,6 +47,6 @@ class EquipeVagasController extends Controller
 
         $equipeProfissional->delete();
 
-        return redirect()->route('equipes.edit', $equipeProfissional->equipe_id)->with('message', 'Vaga removida com sucesso!');
+        return redirect()->route('equipes.edit', $id)->with('message', 'Vaga removida com sucesso!');
     }
 }
