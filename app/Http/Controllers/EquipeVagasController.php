@@ -43,10 +43,12 @@ class EquipeVagasController extends Controller
     {
         $this->authorize('equipe.edit');
 
-        $equipeProfissional = EquipeProfissional::findOrFail($id);
+        $equipeProfissional = EquipeProfissional::where('id', $id)->first();
+
+        $equipe_id = $equipeProfissional->equipe->id;
 
         $equipeProfissional->delete();
 
-        return redirect()->route('equipes.edit', $id)->with('message', 'Vaga removida com sucesso!');
+        return redirect()->route('equipes.edit', $equipe_id)->with('message', 'Vaga removida com sucesso!');
     }
 }
