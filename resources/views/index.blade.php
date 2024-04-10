@@ -51,7 +51,7 @@
 
         <div class="col">
             <div class="text-center">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ route('historico.index') }}">
                     <i class="bi bi-journal-arrow-down fs-1 text-primary"></i>
                 </a>
                 <h2 class="py-2">Histórico</h2>

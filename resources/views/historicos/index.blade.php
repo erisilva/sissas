@@ -24,7 +24,7 @@
      
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalFilter"><x-icon icon='funnel'/> {{ __('Filters') }}</button>
 
-    @can('permission-export')
+    @can('historico.export')
     <x-dropdown-menu title='Reports' icon='printer'>
 
       <li>
