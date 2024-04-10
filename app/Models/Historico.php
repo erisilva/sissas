@@ -234,7 +234,7 @@ class Historico extends Model
 
         if (trim(session()->get('historico_unidade')) !== '') {
             $query->whereHas('unidade', function ($query) {
-                $query->where('descricao', 'like', '%' . session()->get('historico_unidade') . '%');
+                $query->where('nome', 'like', '%' . session()->get('historico_unidade') . '%');
             });
         }
 

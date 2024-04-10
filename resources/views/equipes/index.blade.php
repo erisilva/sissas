@@ -16,13 +16,13 @@
 
   <x-btn-group label='MenuPrincipal' class="py-1">
 
-    @can('permission-create')
+    @can('equipe.create')
     <a class="btn btn-primary" href="{{ route('equipes.create') }}" role="button"><x-icon icon='file-earmark'/> {{ __('New') }}</a>
     @endcan
      
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalFilter"><x-icon icon='funnel'/> {{ __('Filters') }}</button>
 
-    @can('permission-export')
+    @can('equipe.export')
     <x-dropdown-menu title='Reports' icon='printer'>
 
       <li>

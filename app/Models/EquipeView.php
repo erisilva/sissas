@@ -158,7 +158,7 @@ class EquipeView extends Model
         }
 
         if (trim(session()->get('equipe_view_cargo_id')) !== '') {
-            $query->where('cargo_equipe_id', session()->get('equipe_view_cargo_id'));
+            $query->where('cargo_id', session()->get('equipe_view_cargo_id'));
         }
 
         if (trim(session()->get('equipe_view_vinculo_id')) !== '') {

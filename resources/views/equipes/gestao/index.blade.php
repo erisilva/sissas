@@ -20,7 +20,7 @@
      
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalFilter"><x-icon icon='funnel'/> {{ __('Filters') }}</button>
 
-    @can('permission-export')
+    @can('equipe.export')
     <x-dropdown-menu title='Reports' icon='printer'>
       {{-- compact(request()->input(['descricao', 'cnes', ...]))  --}}
       <li>
