@@ -5,18 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Builder;
 
 class Historico extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'changes', 'observacao', 'historico_tipo_id', 'profissional_id', 'user_id', 'unidade_id', 'equipe_id',
+        'changes',
+        'observacao',
+        'historico_tipo_id',
+        'profissional_id',
+        'user_id',
+        'unidade_id',
+        'equipe_id',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
-      ];
+    ];
 
     /**
      * Profissional do histórico
@@ -29,7 +36,7 @@ class Historico extends Model
     }
 
     /**
-     * Unidade do histórico
+     * Equipe do histórico
      *
      * @var Unidade - weak key
      */
@@ -73,7 +80,7 @@ class Historico extends Model
      *
      * @return string
      */
-    public function scopeFilter($query, array $filters) : void
+    public function scopeFilter($query, array $filters): void
     {
         // historico_data_inicio
         // historico_data_fim
@@ -85,55 +92,54 @@ class Historico extends Model
         // historico_equipe_descricao
         // historico_ine
         // historico_unidade
-        // historico_distrito_id
-
+        // historico_distrito_id        
 
         // start session values if not yet initialized
-        if (!session()->exists('historico_data_inicio')){
+        if (!session()->exists('historico_data_inicio')) {
             session(['historico_data_inicio' => '']);
         }
 
-        if (!session()->exists('historico_data_fim')){
+        if (!session()->exists('historico_data_fim')) {
             session(['historico_data_fim' => '']);
         }
 
-        if (!session()->exists('historico_historico_tipo_id')){
+        if (!session()->exists('historico_historico_tipo_id')) {
             session(['historico_historico_tipo_id' => '']);
         }
 
-        if (!session()->exists('historico_profissional_id')){
+        if (!session()->exists('historico_profissional_id')) {
             session(['historico_profissional_id' => '']);
         }
 
-        if (!session()->exists('historico_nome')){
+        if (!session()->exists('historico_nome')) {
             session(['historico_nome' => '']);
         }
 
-        if (!session()->exists('historico_matricula')){
+        if (!session()->exists('historico_matricula')) {
             session(['historico_matricula' => '']);
         }
 
-        if (!session()->exists('historico_cpf')){
+        if (!session()->exists('historico_cpf')) {
             session(['historico_cpf' => '']);
         }
 
-        if (!session()->exists('historico_user_name')){
+        if (!session()->exists('historico_user_name')) {
             session(['historico_user_name' => '']);
         }
 
-        if (!session()->exists('historico_equipe_descricao')){
+        if (!session()->exists('historico_equipe_descricao')) {
             session(['historico_equipe_descricao' => '']);
         }
 
-        if (!session()->exists('historico_ine')){
+        if (!session()->exists('historico_ine')) {
             session(['historico_ine' => '']);
         }
 
-        if (!session()->exists('historico_unidade')){
-            session(['historico_unidade' => '']);
+        if (!session()->exists('historico_unidade_descricao')) {
+            session(['historico_unidade_descricao' => '']);
         }
 
-        if (!session()->exists('historico_distrito_id')){
+        if (!session()->exists('historico_distrito_id')) {
             session(['historico_distrito_id' => '']);
         }
 
@@ -175,8 +181,8 @@ class Historico extends Model
             session(['historico_ine' => $filters['ine'] ?? '']);
         }
 
-        if (Arr::exists($filters, 'unidade')) {
-            session(['historico_unidade' => $filters['unidade'] ?? '']);
+        if (Arr::exists($filters, 'unidade_descricao')) {
+            session(['historico_unidade_descricao' => $filters['unidade_descricao'] ?? '']);
         }
 
         if (Arr::exists($filters, 'distrito_id')) {
@@ -230,19 +236,24 @@ class Historico extends Model
             $query->whereHas('equipe', function ($query) {
                 $query->where('ine', 'like', '%' . session()->get('historico_ine') . '%');
             });
+
+            //dd($query->toSql());
         }
 
-        if (trim(session()->get('historico_unidade')) !== '') {
-            $query->whereHas('unidade', function ($query) {
-                $query->where('nome', 'like', '%' . session()->get('historico_unidade') . '%');
+        if (trim(session()->get('historico_unidade_descricao')) !== '') {
+            $query->whereHas('unidade', function (Builder $query) {
+                $query->where('nome', 'like', '%' . session()->get('historico_unidade_descricao') . '%');
+
             });
         }
 
         if (trim(session()->get('historico_distrito_id')) !== '') {
             $query->whereHas('unidade', function ($query) {
-                $query->where('distrito_id', session()->get('historico_distrito_id'));
+                $query->where('unidades.distrito_id', session()->get('historico_distrito_id'));
             });
         }
+        //dd($query->ddRawSql());
+        // dd($query->toSql());
 
-    }    
+    }
 }

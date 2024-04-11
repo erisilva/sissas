@@ -133,7 +133,7 @@
       <div class="row g-3">
         <div class="col-md-4">
           <label for="nome" class="form-label">{{ __('Name') }}</label>
-          <input type="text" class="form-control" id="nome" name="nome" value="{{ session()->get('profissonal_nome') }}">
+          <input type="text" class="form-control" id="nome" name="nome" value="{{ session()->get('profissional_nome') }}">
         </div>
         <div class="col-md-4">
           <label for="matricula" class="form-label">Matrícula</label>

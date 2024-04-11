@@ -28,10 +28,10 @@
     <x-dropdown-menu title='Reports' icon='printer'>
 
       <li>
-        <a class="dropdown-item" href="{{ route('historico.export.xls', ['data_inicio' => request()->input('data_inicio'), 'data_fim' => request()->input('data_fim'), 'historico_tipo_id' => request()->input('historico_tipo_id'), 'nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'user_name' => request()->input('user_name'), 'equipe_descricao' => request()->input('equipe_descricao'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')]) }}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS' }}</a>
+        <a class="dropdown-item" href="{{ route('historico.export.xls', ['data_inicio' => request()->input('data_inicio'), 'data_fim' => request()->input('data_fim'), 'historico_tipo_id' => request()->input('historico_tipo_id'), 'nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'user_name' => request()->input('user_name'), 'equipe_descricao' => request()->input('equipe_descricao'), 'ine' => request()->input('ine'), 'unidade_descricao' => request()->input('unidade_descricao'), 'distrito_id' => request()->input('distrito_id')]) }}"><x-icon icon='file-earmark-spreadsheet-fill' /> {{ __('Export') . ' XLS' }}</a>
       </li>
       <li>
-        <a class="dropdown-item" href="{{ route('historico.export.csv', ['data_inicio' => request()->input('data_inicio'), 'data_fim' => request()->input('data_fim'), 'historico_tipo_id' => request()->input('historico_tipo_id'), 'nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'user_name' => request()->input('user_name'), 'equipe_descricao' => request()->input('equipe_descricao'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')]) }}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV' }}</a>
+        <a class="dropdown-item" href="{{ route('historico.export.csv', ['data_inicio' => request()->input('data_inicio'), 'data_fim' => request()->input('data_fim'), 'historico_tipo_id' => request()->input('historico_tipo_id'), 'nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'user_name' => request()->input('user_name'), 'equipe_descricao' => request()->input('equipe_descricao'), 'ine' => request()->input('ine'), 'unidade_descricao' => request()->input('unidade_descricao'), 'distrito_id' => request()->input('distrito_id')]) }}"><x-icon icon='file-earmark-spreadsheet-fill'/> {{ __('Export') . ' CSV' }}</a>
       </li>
     
     </x-dropdown-menu>
@@ -45,7 +45,7 @@
             <tr>
                 <th scope="col">Data</th>
                 <th scope="col">Hora</th>
-                <th scope="col">Descrição</th>
+                <th scope="col">Tipo de Histórico</th>
                 <th scope="col">Profissional</th>
                 <th scope="col">Matrícula</th>
                 <th scope="col">CPF</th>
@@ -88,10 +88,10 @@
                     {{ $historico->equipe->ine ?? '-' }}
                 </td>
                 <td>
-                    {{ $historico->equipe->unidade->nome ?? '-' }}
+                    {{ $historico->unidade->nome ?? '-' }}
                 </td>
                 <td>
-                    {{ $historico->equipe->unidade->distrito->nome ?? '-' }}
+                    {{ $historico->unidade->distrito->nome ?? '-' }}
                 </td>
                 <td>
                     {{ $historico->observacao }}
@@ -165,8 +165,8 @@
       </div>
 
       <div class="col-md-6">
-        <label for="unidade" class="form-label">Unidade</label>
-        <input type="text" class="form-control" id="unidade" name="unidade" value="{{ session()->get('historico_unidade') }}">
+        <label for="unidade_descricao" class="form-label">Unidade</label>
+        <input type="text" class="form-control" id="unidade_descricao" name="unidade_descricao" value="{{ session()->get('historico_unidade_descricao') }}">
       </div>
 
       <div class="col-md-6">
@@ -181,10 +181,10 @@
         </select>
       </div>
 
-      {{-- 'data_inicio' => '', 'data_fim' => '', 'historico_tipo_id' => '', 'nome' => '', 'matricula' => '','cpf' => '', 'user_name' => '', 'equipe_descricao' => '', 'ine' => '', 'unidade' => '', 'distrito_id' => '' --}}
+      {{-- 'data_inicio' => '', 'data_fim' => '', 'historico_tipo_id' => '', 'nome' => '', 'matricula' => '','cpf' => '', 'user_name' => '', 'equipe_descricao' => '', 'ine' => '', 'unidade_descricao' => '', 'distrito_id' => '' --}}
       <div class="col-12">
         <button type="submit" class="btn btn-primary btn-sm"><x-icon icon='search'/> {{ __('Search') }}</button>
-        <a href="{{ route('historico.index', ['data_inicio' => '', 'data_fim' => '', 'historico_tipo_id' => '', 'nome' => '', 'matricula' => '','cpf' => '', 'user_name' => '', 'equipe_descricao' => '', 'ine' => '', 'unidade' => '', 'distrito_id' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
+        <a href="{{ route('historico.index', ['data_inicio' => '', 'data_fim' => '', 'historico_tipo_id' => '', 'nome' => '', 'matricula' => '','cpf' => '', 'user_name' => '', 'equipe_descricao' => '', 'ine' => '', 'unidade_descricao' => '', 'distrito_id' => '']) }}" class="btn btn-secondary btn-sm" role="button"><x-icon icon='stars'/> {{ __('Reset') }}</a>
       </div>      
 
     </div>
@@ -204,7 +204,7 @@ $(document).ready(function(){
     $('#perpage').on('change', function() {
         perpage = $(this).find(":selected").val(); 
         
-        window.open("{{ route('ferias.index') }}" + "?perpage=" + perpage,"_self");
+        window.open("{{ route('historico.index') }}" + "?perpage=" + perpage,"_self");
     });
 
 

@@ -23,10 +23,10 @@ class HistoricoController extends Controller
         }
 
         return view('historicos.index', [
-            'historicos' => Historico::orderBy('id', 'desc')
-                ->filter(request(['data_inicio', 'data_fim', 'historico_tipo_id', 'nome', 'matricula','cpf', 'user_name', 'equipe_descricao', 'ine', 'unidade', 'distrito_id']))
+            'historicos' => Historico::orderBy('historicos.created_at', 'desc')
+                ->filter(request(['data_inicio', 'data_fim', 'historico_tipo_id', 'nome', 'matricula','cpf', 'user_name', 'equipe_descricao', 'ine', 'unidade_descricao', 'distrito_id']))
                 ->paginate(session('perPage', '5'))
-                ->appends(request(['data_inicio', 'data_fim', 'historico_tipo_id', 'nome', 'matricula','cpf', 'user_name', 'equipe_descricao', 'ine', 'unidade', 'distrito_id'])),
+                ->appends(request(['data_inicio', 'data_fim', 'historico_tipo_id', 'nome', 'matricula','cpf', 'user_name', 'equipe_descricao', 'ine', 'unidade_descricao', 'distrito_id'])),
             'historicoTipos' => HistoricoTipo::orderBy('descricao')->get(),
             'distritos'=> auth()->user()->distritos->sortBy('nome'),
             'perpages' => Perpage::orderBy('valor')->get()
@@ -42,7 +42,7 @@ class HistoricoController extends Controller
 
         // ['data_inicio' => request()->input('data_inicio'), 'data_fim' => request()->input('data_fim'), 'historico_tipo_id' => request()->input('historico_tipo_id'), 'nome' => request()->input('nome'), 'matricula' => request()->input('matricula'), 'cpf' => request()->input('cpf'), 'user_name' => request()->input('user_name'), 'equipe_descricao' => request()->input('equipe_descricao'), 'ine' => request()->input('ine'), 'unidade' => request()->input('unidade'), 'distrito_id' => request()->input('distrito_id')]
 
-        return Excel::download(new HistoricoExport(request(['data_inicio', 'data_fim', 'historico_tipo_id', 'nome', 'matricula','cpf', 'user_name', 'equipe_descricao', 'ine', 'unidade', 'distrito_id'])),  'Histórico' . '_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
+        return Excel::download(new HistoricoExport(request(['data_inicio', 'data_fim', 'historico_tipo_id', 'nome', 'matricula','cpf', 'user_name', 'equipe_descricao', 'ine', 'unidade_descricao', 'distrito_id'])),  'Histórico' . '_' .  date("Y-m-d H:i:s") . '.csv', \Maatwebsite\Excel\Excel::CSV);
     }
 
     /**
@@ -52,7 +52,7 @@ class HistoricoController extends Controller
     {
         $this->authorize('historico.export');
 
-        return Excel::download(new HistoricoExport(request(['data_inicio', 'data_fim', 'historico_tipo_id', 'nome', 'matricula','cpf', 'user_name', 'equipe_descricao', 'ine', 'unidade', 'distrito_id'])), 'Histórico' . '_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+        return Excel::download(new HistoricoExport(request(['data_inicio', 'data_fim', 'historico_tipo_id', 'nome', 'matricula','cpf', 'user_name', 'equipe_descricao', 'ine', 'unidade_descricao', 'distrito_id'])), 'Histórico' . '_' .  date("Y-m-d H:i:s") . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
 
 
