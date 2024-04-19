@@ -61,7 +61,7 @@ Route::get('/', function () {
 });
 
 # add 'register' => false to Auth::routes() to disable registration
-Auth::routes(['verify' => true]);
+Auth::routes(['verify' => false, 'register' => false]);
 
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile')->middleware('auth', 'verified');
 Route::post('/profile/update/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update')->middleware('auth', 'verified');

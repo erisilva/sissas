@@ -78,7 +78,7 @@
                 <div class="col-md-3">
                     <label for="minima_show" class="form-label">Mínima</label>
                     <input type="text" class="form-control" name="minima_show" id="minima_show"
-                        value="{{ $equipe->minima }}" readonly>
+                        value="{{ ($equipe->minima == 's') ? 'Sim' : 'Não' }}" readonly>
                 </div>
                 <div class="col-md-3">
                     <label for="tipo_show" class="form-label">Tipo</label>
