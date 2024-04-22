@@ -121,5 +121,9 @@ class Licenca extends Model
             $query->where('licenca_tipo_id', session()->get('licenca_licenca_tipo_id'));
         }
 
+        $query->whereHas('profissional', function ($query) {
+            $query->whereNull('deleted_at');
+        });
+
     }
 }

@@ -125,6 +125,10 @@ class Ferias extends Model
             $query->where('ferias_tipo_id', session()->get('ferias_ferias_tipo_id'));
         }
 
+        $query->whereHas('profissional', function ($query) {
+            $query->whereNull('deleted_at');
+        });
+
     }
        
 }
