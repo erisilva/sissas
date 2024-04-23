@@ -75,7 +75,7 @@ Route::get('/permissions/export/xls', [PermissionController::class, 'exportxls']
 
 Route::get('/permissions/export/pdf', [PermissionController::class, 'exportpdf'])->name('permissions.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/permissions', PermissionController::class)->middleware(['auth', 'verified']); // Resource Route, crud
+Route::resource('/permissions', PermissionController::class)->middleware('auth'); // Resource Route, crud
 
 # Role::class
 
@@ -85,7 +85,7 @@ Route::get('/roles/export/xls', [RoleController::class, 'exportxls'])->name('rol
 
 Route::get('/roles/export/pdf', [RoleController::class, 'exportpdf'])->name('roles.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/roles', RoleController::class)->middleware(['auth', 'verified']); // Resource Route, crud
+Route::resource('/roles', RoleController::class)->middleware('auth'); // Resource Route, crud
 
 # User::class
 
@@ -95,11 +95,11 @@ Route::get('/users/export/xls', [UserController::class, 'exportxls'])->name('use
 
 Route::get('/users/export/pdf', [UserController::class, 'exportpdf'])->name('users.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/users', UserController::class)->middleware(['auth', 'verified']); // Resource Route, crud
+Route::resource('/users', UserController::class)->middleware('auth'); // Resource Route, crud
 
 # Log::class
 
-Route::resource('/logs', LogController::class)->middleware(['auth', 'verified'])->only('show', 'index'); // Resource Route, crud
+Route::resource('/logs', LogController::class)->middleware('auth')->only('show', 'index'); // Resource Route, crud
 
 # Distrito::class
 
@@ -109,7 +109,7 @@ Route::get('/distritos/export/xls', [DistritoController::class, 'exportxls'])->n
 
 Route::get('/distritos/export/pdf', [DistritoController::class, 'exportpdf'])->name('distritos.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/distritos', DistritoController::class)->middleware(['auth', 'verified']);
+Route::resource('/distritos', DistritoController::class)->middleware('auth');
 
 # Unidade::class
 
@@ -121,7 +121,7 @@ Route::get('/unidades/export/pdf', [UnidadeController::class, 'exportpdf'])->nam
 
 Route::get('/unidades/autocomplete', [UnidadeController::class, 'autocomplete'])->name('unidades.autocomplete')->middleware('auth', 'verified');
 
-Route::resource('/unidades', UnidadeController::class)->middleware(['auth', 'verified']);
+Route::resource('/unidades', UnidadeController::class)->middleware('auth');
 
 # Cargo::class
 
@@ -131,7 +131,7 @@ Route::get('/cargos/export/xls', [CargoController::class, 'exportxls'])->name('c
 
 Route::get('/cargos/export/pdf', [CargoController::class, 'exportpdf'])->name('cargos.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/cargos', CargoController::class)->middleware(['auth', 'verified']);
+Route::resource('/cargos', CargoController::class)->middleware('auth');
 
 # CargaHoraria::class
 
@@ -141,7 +141,7 @@ Route::get('/cargahorarias/export/xls', [CargaHorariaController::class, 'exportx
 
 Route::get('/cargahorarias/export/pdf', [CargaHorariaController::class, 'exportpdf'])->name('cargahorarias.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/cargahorarias', CargaHorariaController::class)->middleware(['auth', 'verified']);
+Route::resource('/cargahorarias', CargaHorariaController::class)->middleware('auth');
 
 # Vinculo::class
 
@@ -151,7 +151,7 @@ Route::get('/vinculos/export/xls', [VinculoController::class, 'exportxls'])->nam
 
 Route::get('/vinculos/export/pdf', [VinculoController::class, 'exportpdf'])->name('vinculos.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/vinculos', VinculoController::class)->middleware(['auth', 'verified']);
+Route::resource('/vinculos', VinculoController::class)->middleware('auth');
 
 # LicencaTipo::class
 
@@ -161,7 +161,7 @@ Route::get('/licencatipos/export/xls', [LicencaTipoController::class, 'exportxls
 
 Route::get('/licencatipos/export/pdf', [LicencaTipoController::class, 'exportpdf'])->name('licencatipos.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/licencatipos', LicencaTipoController::class)->middleware(['auth', 'verified']);
+Route::resource('/licencatipos', LicencaTipoController::class)->middleware('auth');
 
 # FeriasTipo::class
 
@@ -171,7 +171,7 @@ Route::get('/feriastipos/export/xls', [FeriasTipoController::class, 'exportxls']
 
 Route::get('/feriastipos/export/pdf', [FeriasTipoController::class, 'exportpdf'])->name('feriastipos.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/feriastipos', FeriasTipoController::class)->middleware(['auth', 'verified']);
+Route::resource('/feriastipos', FeriasTipoController::class)->middleware('auth');
 
 # CapacitacaoTipo::class
 
@@ -181,7 +181,7 @@ Route::get('/capacitacaotipos/export/xls', [CapacitacaoTipoController::class, 'e
 
 Route::get('/capacitacaotipos/export/pdf', [CapacitacaoTipoController::class, 'exportpdf'])->name('capacitacaotipos.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/capacitacaotipos', CapacitacaoTipoController::class)->middleware(['auth', 'verified']);
+Route::resource('/capacitacaotipos', CapacitacaoTipoController::class)->middleware('auth');
 
 # OrgaoEmissor::class
 
@@ -191,7 +191,7 @@ Route::get('/orgaoemissors/export/xls', [OrgaoEmissorController::class, 'exportx
 
 Route::get('/orgaoemissors/export/pdf', [OrgaoEmissorController::class, 'exportpdf'])->name('orgaoemissors.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/orgaoemissors', OrgaoEmissorController::class)->middleware(['auth', 'verified']);
+Route::resource('/orgaoemissors', OrgaoEmissorController::class)->middleware('auth');
 
 # VinculoTipo::class
 
@@ -201,7 +201,7 @@ Route::get('/vinculotipos/export/xls', [VinculoTipoController::class, 'exportxls
 
 Route::get('/vinculotipos/export/pdf', [VinculoTipoController::class, 'exportpdf'])->name('vinculotipos.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/vinculotipos', VinculoTipoController::class)->middleware(['auth', 'verified']);
+Route::resource('/vinculotipos', VinculoTipoController::class)->middleware('auth');
 
 # Profissional::class
 
@@ -225,7 +225,7 @@ Route::post('/profissionals/trash/{id}/restore', [ProfissionalTrashController::c
 
 Route::get('/profissionals/export/json/{profissional}', [ProfissionalController::class, 'exportjson'])->name('profissionals.export.json')->middleware('auth', 'verified');
 
-Route::resource('/profissionals', ProfissionalController::class)->middleware(['auth', 'verified']);
+Route::resource('/profissionals', ProfissionalController::class)->middleware('auth');
 
 # Ferias::class
 
@@ -235,7 +235,7 @@ Route::get('/ferias/export/xls', [FeriasController::class, 'exportxls'])->name('
 
 Route::get('/ferias/export/pdf', [FeriasController::class, 'exportpdf'])->name('ferias.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/ferias', FeriasController::class)->middleware(['auth', 'verified']);
+Route::resource('/ferias', FeriasController::class)->middleware('auth');
 
 # licencas::class
 
@@ -245,7 +245,7 @@ Route::get('/licencas/export/xls', [LicencaController::class, 'exportxls'])->nam
 
 Route::get('/licencas/export/pdf', [LicencaController::class, 'exportpdf'])->name('licencas.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/licencas', LicencaController::class)->middleware(['auth', 'verified']);
+Route::resource('/licencas', LicencaController::class)->middleware('auth');
 
 # ProfissionalFerias::class
 
@@ -273,7 +273,7 @@ Route::get('/equipetipos/export/xls', [EquipeTipoController::class, 'exportxls']
 
 Route::get('/equipetipos/export/pdf', [EquipeTipoController::class, 'exportpdf'])->name('equipetipos.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/equipetipos', EquipeTipoController::class)->middleware(['auth', 'verified']);
+Route::resource('/equipetipos', EquipeTipoController::class)->middleware('auth');
 
 # Equipe::class
 
@@ -283,11 +283,11 @@ Route::get('/equipes/export/xls', [EquipeController::class, 'exportxls'])->name(
 
 Route::get('/equipes/export/pdf', [EquipeController::class, 'exportpdf'])->name('equipes.export.pdf')->middleware('auth', 'verified'); // Export PDF
 
-Route::resource('/equipes', EquipeController::class)->middleware(['auth', 'verified']);
+Route::resource('/equipes', EquipeController::class)->middleware('auth');
 
 # EquipeVagas::class
 
-Route::resource('/equipevagas', EquipeVagasController::class)->only(['store', 'destroy',])->middleware(['auth', 'verified']);
+Route::resource('/equipevagas', EquipeVagasController::class)->only(['store', 'destroy',])->middleware('auth');
 
 # EquipeGestao::class
 
@@ -308,7 +308,7 @@ Route::post('/equipegestao/limparvaga', [EquipeGestaoController::class, 'limparv
 
 Route::post('/equipegestao/registrarvaga', [EquipeGestaoController::class, 'registrarvaga'])->name('equipegestao.registrarvaga')->middleware('auth', 'verified');
 
-Route::resource('/equipegestao', EquipeGestaoController::class)->only(['index', 'show',])->middleware(['auth', 'verified']);
+Route::resource('/equipegestao', EquipeGestaoController::class)->only(['index', 'show',])->middleware('auth');
 
 # Equipes::View
 
