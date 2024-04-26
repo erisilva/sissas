@@ -2,11 +2,11 @@
 
 return [
     'disable' => env('CAPTCHA_DISABLE', false),
-    'characters' => ['2', '3', '4', '6', '7', '8', 'a', 'b', 'c', 'd', 'e', 'h', 'x', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'M', 'R', 'T', 'U', 'X', 'Z'],
+    'characters' => ['2', '3', '4', '6', '7', '8', '9', 'A', 'M', 'X', 'Y', 'Z' ],
     'default' => [
-        'length' => 5,
-        'width' => 140,
-        'height' => 40,
+        'length' => 4,
+        'width' => 180,
+        'height' => 55,
         'quality' => 90,
         'math' => false,
         'expire' => 60,
