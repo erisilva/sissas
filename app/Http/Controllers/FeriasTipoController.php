@@ -29,7 +29,7 @@ class FeriasTipoController extends Controller
         }
 
         return view('feriastipos.index', [
-            'feriastipos' => FeriasTipo::orderBy('nome', 'asc')->paginate(session('perPage', '5')),
+            'feriastipos' => FeriasTipo::orderBy('nome', 'asc')->paginate(session('perPage', '5'))->withPath(env('APP_URL', null) .  '/feriastipos'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

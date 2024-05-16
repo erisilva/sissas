@@ -30,7 +30,7 @@ class CargoController extends Controller
         }
 
         return view('cargos.index', [
-            'cargos' => Cargo::orderBy('nome', 'asc')->paginate(session('perPage', '5')),
+            'cargos' => Cargo::orderBy('nome', 'asc')->paginate(session('perPage', '5'))->withPath(env('APP_URL', null) .  '/cargos'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

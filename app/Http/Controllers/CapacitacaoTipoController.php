@@ -29,7 +29,7 @@ class CapacitacaoTipoController extends Controller
         }
 
         return view('capacitacaotipos.index', [
-            'capacitacaotipos' => CapacitacaoTipo::orderBy('nome', 'asc')->paginate(session('perPage', '5')),
+            'capacitacaotipos' => CapacitacaoTipo::orderBy('nome', 'asc')->paginate(session('perPage', '5'))->withPath(env('APP_URL', null) .  '/capacitacaotipos'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

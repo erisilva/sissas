@@ -40,7 +40,8 @@ class EquipeController extends Controller
             'equipes' => Equipe::orderBy('descricao', 'asc')
                 ->filter(request(['descricao','numero', 'cnes', 'ine', 'minima', 'unidade', 'distrito', 'tipo']))
                 ->paginate(session('perPage', '5'))
-                ->appends(request(['descricao','numero', 'cnes', 'ine', 'minima', 'unidade', 'distrito', 'tipo'])),
+                ->appends(request(['descricao','numero', 'cnes', 'ine', 'minima', 'unidade', 'distrito', 'tipo']))
+                ->withPath(env('APP_URL', null) .  '/equipes'),
             'distritos' => auth()->user()->distritos->sortBy('nome'),
             'equipetipos' => EquipeTipo::orderBy('nome')->get(),
             'perpages' => Perpage::orderBy('valor')->get()

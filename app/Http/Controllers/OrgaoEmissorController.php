@@ -29,7 +29,7 @@ class OrgaoEmissorController extends Controller
         }
 
         return view('orgaoemissors.index', [
-            'orgaoemissors' => OrgaoEmissor::orderBy('nome', 'asc')->paginate(session('perPage', '5')),
+            'orgaoemissors' => OrgaoEmissor::orderBy('nome', 'asc')->paginate(session('perPage', '5'))->withPath(env('APP_URL', null) .  '/orgaoemissors'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

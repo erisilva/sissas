@@ -33,7 +33,7 @@ class UserController extends Controller
         }
 
         return view('users.index', [
-            'users' => User::orderBy('name', 'asc')->filter(request(['name', 'email']))->paginate(session('perPage', '5'))->appends(request(['name', 'email'])),
+            'users' => User::orderBy('name', 'asc')->filter(request(['name', 'email']))->paginate(session('perPage', '5'))->appends(request(['name', 'email']))->withPath(env('APP_URL', null) . '/users'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

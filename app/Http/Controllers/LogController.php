@@ -22,7 +22,7 @@ class LogController extends Controller
         }
 
         return view('logs.index', [
-            'logs' => Log::orderBy('id', 'desc')->paginate(session('perPage', '5')),
+            'logs' => Log::orderBy('id', 'desc')->paginate(session('perPage', '5'))->withPath(env('APP_URL', null) .  '/logs'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

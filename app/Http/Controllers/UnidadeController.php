@@ -29,7 +29,7 @@ class UnidadeController extends Controller
         }
 
         return view('unidades.index', [
-            'unidades' => Unidade::orderBy('nome', 'asc')->filter(request(['nome', 'distrito_id']))->paginate(session('perPage', '5'))->appends(request(['nome', 'descricao'])),
+            'unidades' => Unidade::orderBy('nome', 'asc')->filter(request(['nome', 'distrito_id']))->paginate(session('perPage', '5'))->appends(request(['nome', 'descricao']))->withPath(env('APP_URL', null) . '/unidades'),
             'perpages' => Perpage::orderBy('valor')->get(),
             'distritos' => auth()->user()->distritos->sortBy('nome'),
         ]);

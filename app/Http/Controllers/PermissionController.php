@@ -31,7 +31,7 @@ class PermissionController extends Controller
         }
 
         return view('permissions.index', [
-            'permissions' => Permission::orderBy('name', 'asc')->filter(request(['name','description']))->paginate(session('perPage', '5'))->appends(request(['name', 'description'])),
+            'permissions' => Permission::orderBy('name', 'asc')->filter(request(['name','description']))->paginate(session('perPage', '5'))->appends(request(['name', 'description']))->withPath(env('APP_URL', null) .  '/permissions'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

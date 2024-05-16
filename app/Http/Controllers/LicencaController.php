@@ -34,7 +34,8 @@ class LicencaController extends Controller
         return view('licencas.index', [
             'licencas' => Licenca::orderBy('id', 'desc')->filter(request(['data_inicio','data_fim', 'profissional', 'ferias_tipo_id']))
                                                     ->paginate(session('perPage', '5'))
-                                                    ->appends(request(['data_inicio','data_fim', 'profissional', 'ferias_tipo_id'])),
+                                                    ->appends(request(['data_inicio','data_fim', 'profissional', 'ferias_tipo_id']))
+                                                    ->withPath(env('APP_URL', null) .  '/licencas'),
             'perpages' => Perpage::orderBy('valor')->get(),
             'licencatipos' => LicencaTipo::orderBy('nome')->get(),
         ]);

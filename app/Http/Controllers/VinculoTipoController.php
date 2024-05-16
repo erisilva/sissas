@@ -29,7 +29,7 @@ class VinculoTipoController extends Controller
         }
 
         return view('vinculotipos.index', [
-            'vinculotipos' => VinculoTipo::orderBy('nome', 'asc')->paginate(session('perPage', '5')),
+            'vinculotipos' => VinculoTipo::orderBy('nome', 'asc')->paginate(session('perPage', '5'))->withPath(env('APP_URL', null) .  '/vinculotipos'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

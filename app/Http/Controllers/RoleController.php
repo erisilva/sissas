@@ -32,7 +32,7 @@ class RoleController extends Controller
         }
 
         return view('roles.index', [
-            'roles' => Role::orderBy('id', 'asc')->filter(request(['name', 'description']))->paginate(session('perPage', '5'))->appends(request(['name', 'description'])),
+            'roles' => Role::orderBy('id', 'asc')->filter(request(['name', 'description']))->paginate(session('perPage', '5'))->appends(request(['name', 'description']))->withPath(env('APP_URL', null) . '/roles'),            
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

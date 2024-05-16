@@ -30,7 +30,7 @@ class CargaHorariaController extends Controller
         }
 
         return view('cargahorarias.index', [
-            'cargahorarias' => CargaHoraria::orderBy('nome', 'asc')->paginate(session('perPage', '5')),
+            'cargahorarias' => CargaHoraria::orderBy('nome', 'asc')->paginate(session('perPage', '5'))->withPath(env('APP_URL', null) .  '/cargahorarias'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

@@ -35,7 +35,8 @@ class FeriasController extends Controller
         return view('ferias.index', [
             'ferias' => Ferias::orderBy('id', 'desc')->filter(request(['data_inicio','data_fim', 'profissional', 'ferias_tipo_id']))
                                                     ->paginate(session('perPage', '5'))
-                                                    ->appends(request(['data_inicio','data_fim', 'profissional', 'ferias_tipo_id'])),
+                                                    ->appends(request(['data_inicio','data_fim', 'profissional', 'ferias_tipo_id']))
+                                                    ->withPath(env('APP_URL', null) .  '/ferias'),
             'perpages' => Perpage::orderBy('valor')->get(),
             'feriastipos' => FeriasTipo::orderBy('nome')->get(),
         ]);

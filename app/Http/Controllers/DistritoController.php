@@ -29,7 +29,7 @@ class DistritoController extends Controller
         }
 
         return view('distritos.index', [
-            'distritos' => Distrito::orderBy('nome', 'asc')->paginate(session('perPage', '5')),
+            'distritos' => Distrito::orderBy('nome', 'asc')->paginate(session('perPage', '5'))->withPath(env('APP_URL', null) .  '/distritos'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

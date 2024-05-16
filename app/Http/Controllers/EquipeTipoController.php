@@ -29,7 +29,7 @@ class EquipeTipoController extends Controller
         }
 
         return view('equipetipos.index', [
-            'equipetipos' => EquipeTipo::orderBy('nome', 'asc')->paginate(session('perPage', '5')),
+            'equipetipos' => EquipeTipo::orderBy('nome', 'asc')->paginate(session('perPage', '5'))->withPath(env('APP_URL', null) .  '/equipetipos'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

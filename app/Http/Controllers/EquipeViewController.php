@@ -35,7 +35,8 @@ class EquipeViewController extends Controller
             'equipeviewdata' => EquipeView::orderBy('equipe_id', 'asc')
                 ->filter(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas']))
                 ->paginate(session('perPage', '5'))
-                ->appends(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas'])),
+                ->appends(request(['nome','matricula', 'cpf', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'equipe', 'equipe_tipo_id', 'numero', 'cnes', 'ine', 'unidade', 'distrito_id', 'mostrar_vagas']))
+                ->withPath(env('APP_URL', null) .  '/equipeview'),
             'perpages' => Perpage::orderBy('valor')->get(),
             'cargos' => Cargo::orderBy('nome')->get(),
             'equipe_tipos' => EquipeTipo::orderBy('nome')->get(),

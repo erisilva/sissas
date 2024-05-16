@@ -26,7 +26,8 @@ class HistoricoController extends Controller
             'historicos' => Historico::orderBy('historicos.created_at', 'desc')
                 ->filter(request(['data_inicio', 'data_fim', 'historico_tipo_id', 'nome', 'matricula','cpf', 'user_name', 'equipe_descricao', 'ine', 'unidade_descricao', 'distrito_id']))
                 ->paginate(session('perPage', '5'))
-                ->appends(request(['data_inicio', 'data_fim', 'historico_tipo_id', 'nome', 'matricula','cpf', 'user_name', 'equipe_descricao', 'ine', 'unidade_descricao', 'distrito_id'])),
+                ->appends(request(['data_inicio', 'data_fim', 'historico_tipo_id', 'nome', 'matricula','cpf', 'user_name', 'equipe_descricao', 'ine', 'unidade_descricao', 'distrito_id']))
+                ->withPath(env('APP_URL', null) .  '/historicos'),
             'historicoTipos' => HistoricoTipo::orderBy('descricao')->get(),
             'distritos'=> auth()->user()->distritos->sortBy('nome'),
             'perpages' => Perpage::orderBy('valor')->get()

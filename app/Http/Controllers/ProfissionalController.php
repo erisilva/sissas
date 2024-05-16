@@ -49,7 +49,8 @@ class ProfissionalController extends Controller
             'profissionals' => Profissional::orderBy('nome', 'asc')
                 ->filter(request(['nome', 'matricula', 'cpf', 'cns', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'flexibilizacao']))
                 ->paginate(session('perPage', '5'))
-                ->appends(request(['nome', 'matricula', 'cpf', 'cns', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'flexibilizacao'])),
+                ->appends(request(['nome', 'matricula', 'cpf', 'cns', 'cargo_id', 'vinculo_id', 'vinculo_tipo_id', 'carga_horaria_id', 'flexibilizacao']))
+                ->withPath(env('APP_URL', null) .  '/profissionals'),
             'perpages' => Perpage::orderBy('valor')->get(),
             'cargos' => Cargo::orderBy('nome')->get(),
             'vinculos' => Vinculo::orderBy('nome')->get(),

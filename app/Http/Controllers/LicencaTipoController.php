@@ -29,7 +29,7 @@ class LicencaTipoController extends Controller
         }
 
         return view('licencatipos.index', [
-            'licencatipos' => LicencaTipo::orderBy('nome', 'asc')->paginate(session('perPage', '5')),
+            'licencatipos' => LicencaTipo::orderBy('nome', 'asc')->paginate(session('perPage', '5'))->withPath(env('APP_URL', null) .  '/licencatipos'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }

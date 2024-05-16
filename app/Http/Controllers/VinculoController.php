@@ -29,7 +29,7 @@ class VinculoController extends Controller
         }
 
         return view('vinculos.index', [
-            'vinculos' => Vinculo::orderBy('nome', 'asc')->paginate(session('perPage', '5')),
+            'vinculos' => Vinculo::orderBy('nome', 'asc')->paginate(session('perPage', '5'))->withPath(env('APP_URL', null) .  '/vinculos'),
             'perpages' => Perpage::orderBy('valor')->get()
         ]);
     }
