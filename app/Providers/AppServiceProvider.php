@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Pagination\Paginator;
 
+use Illuminate\Support\Facades\URL;
+
 use Faker\Factory as FakerFactory;
 use Faker\Generator as FakerGenerator;
 
@@ -26,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        URL::forceScheme('https');
+
         Paginator::useBootstrap();
     }
 }
