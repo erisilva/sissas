@@ -45,6 +45,10 @@ class EquipeVagasController extends Controller
 
         $equipeProfissional = EquipeProfissional::where('id', $id)->first();
 
+        if ($equipeProfissional->profissional_id) {
+            return back()->with('message', 'Desvincular o profissional dessa vaga antes de fazer a exclusão desse registro');
+        }
+
         $equipe_id = $equipeProfissional->equipe->id;
 
         $equipeProfissional->delete();
